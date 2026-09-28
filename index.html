@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-motion="running">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Explore Windows 11 services and useful tools, understand privacy and performance tradeoffs, and build a PowerShell script with backup and restore instructions.">
+  <title>Winwise — Windows 11 service guide</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script src="appearance-init.js"></script>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="intro.css">
+  <script src="services.js" defer></script>
+  <script src="script-builder.js" defer></script>
+  <script src="intro.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="appearance.js" defer></script>
+</head>
+<body>
+  <div class="ambient-scene" aria-hidden="true"><div class="ambient-halo"></div><canvas id="ambient-particles"></canvas><div class="ambient-vignette"></div></div>
+  <canvas id="launch-effects" aria-hidden="true" hidden></canvas>
+  <a class="skip-link" href="#directory">Skip to services</a>
+  <header class="site-header"><div class="header-inner">
+    <a href="./" class="brand" aria-label="Winwise home"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i><i></i></span>winwise<span class="brand-dot">.</span></a>
+    <nav class="top-nav" aria-label="Main navigation"><a class="active" href="#directory" data-view="directory">Service directory</a><a href="#builder" data-view="builder">Script builder <span class="nav-pill">PS</span></a><button data-dialog="guide">How to make changes <span aria-hidden="true">↗</span></button></nav>
+    <div class="header-utilities"><span class="os-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z" fill="currentColor"/></svg>Windows 11</span><nav class="header-resources" aria-label="Tools and recovery"><a href="#tools" data-view="tools">Useful tools</a><a href="#backup" data-view="backup">How to back up your OS</a></nav><div class="appearance-controls"><button id="motion-toggle" class="appearance-button" aria-label="Pause background animation" title="Pause background animation"><svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button id="theme-toggle" class="appearance-button theme-toggle" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5 9 9 0 1 0 20.5 14.2Z"/></svg><span class="theme-toggle-label">Light mode</span></button></div></div>
+  </div></header>
+  <main class="page-shell">
+    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Choose services in a few clicks, then download your script.</span><span>Updated September 27, 2026</span></div></section>
+    <div class="directory-stage">
+    <section id="welcome" class="launch-panel" aria-labelledby="launch-title" hidden>
+      <div class="launch-grid" aria-hidden="true"></div>
+      <div class="launch-copy">
+        <p class="launch-eyebrow"><span></span>THE WINDOWS 11 SERVICE GUIDE</p>
+        <h2 id="launch-title">Know what’s running.<br><span>Choose what stays.</span></h2>
+        <p class="launch-description">Explore the services behind your PC. Understand what each one does, what you can turn off, and which features depend on it.</p>
+        <p class="launch-settings"><span data-icon="sliders"></span><span>Find links to Windows settings (where available) and instructions for locating and changing services.</span></p>
+      </div>
+      <div class="launch-action">
+        <div class="launch-planes" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="launch-count"><strong id="launch-count">70</strong><span>services, explained</span></div>
+        <button id="start-directory" class="launch-start" type="button" aria-controls="directory"><span>START</span><span class="launch-start-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></span></button>
+        <span class="launch-button-note">Explore the service directory</span>
+      </div>
+      <div class="launch-bottom" aria-hidden="true"><span>UNDERSTAND · CHOOSE · CONTROL</span><span class="launch-track"><i></i><i></i><i></i></span></div>
+    </section>
+    <section class="overview" aria-label="Guide overview">
+      <button class="overview-total" type="button" data-category="all" aria-label="Show all services"><span class="overview-icon" data-icon="grid"></span><span class="overview-total-copy"><strong id="total-stat">—</strong><span>services explained</span></span><span class="stat-annotation">One place to understand<br>what’s running.</span></button>
+      <button class="overview-item" data-category="privacy"><span class="overview-icon purple" data-icon="shield"></span><div><strong>Privacy</strong><span>Limit data &amp; connected features</span></div><span class="overview-arrow" aria-hidden="true">↗</span></button>
+      <button class="overview-item" data-category="performance"><span class="overview-icon mint" data-icon="gauge"></span><div><strong>Performance</strong><span>Review background activity</span></div><span class="overview-arrow" aria-hidden="true">↗</span></button>
+    </section>
+    <div class="workspace" id="directory">
+      <aside class="sidebar" aria-label="Directory filters"><p class="section-label">BROWSE SERVICES</p><nav id="categories" class="category-nav" aria-label="Service categories"></nav><div class="sidebar-note"><span data-icon="sliders"></span><h2>Small changes.<br>One at a time.</h2><p>Many services start only when needed. Fewer running services doesn’t automatically mean a faster PC.</p><button data-dialog="guide">Read the change guide <span aria-hidden="true">↗</span></button></div><button class="sidebar-source" data-dialog="sources"><span data-icon="book"></span>About this guide</button></aside>
+      <section class="directory-content" aria-labelledby="directory-title">
+        <div class="directory-heading"><div><h2 id="directory-title">All services <span id="heading-count"></span></h2><p id="category-description">The useful candidates, the tradeoffs, and the essentials to leave alone.</p></div></div>
+        <div class="directory-toolbar"><label class="search-box"><span data-icon="search"></span><input id="search" type="search" placeholder="Search by service name or purpose…" aria-label="Search services" autocomplete="off"><kbd aria-hidden="true">/</kbd></label><div class="sort-control"><span class="sr-only" id="sort-label">Sort services</span><select id="sort" aria-labelledby="sort-label"><option value="recommended">Suggested order</option><option value="az">Name: A–Z</option><option value="za">Name: Z–A</option></select><span data-icon="chevron"></span></div></div>
+        <div class="filter-row"><div class="recommendation-filters" role="group" aria-label="Filter by recommendation"><button data-status="all" aria-pressed="true" class="selected">All recommendations</button><button data-status="conditional" aria-pressed="false"><span class="key-mark amber"></span>Can disable if unused</button><span class="filter-tooltip"><button data-status="settings" aria-pressed="false" aria-describedby="settings-tooltip"><span class="key-mark purple"></span>Use Settings toggle in OS instead</button><span id="settings-tooltip" role="tooltip">Turn the feature off in Windows Settings rather than disabling the service.</span></span><button data-status="keep" aria-pressed="false"><span class="key-mark gray"></span>Keep enabled</button></div></div>
+        <div class="context-note"><span data-icon="info"></span><div><p><strong>There’s no universal disable list.</strong> Availability varies by edition, build, and hardware. These are conditional recommendations, not a scan of your PC.</p></div></div>
+        <div class="results-meta"><p id="result-count" role="status" aria-live="polite"></p><span>SELECT A SERVICE TO SEE THE TRADEOFFS</span></div>
+        <div class="service-table"><div class="table-head" aria-hidden="true"><span>SERVICE</span><span>RECOMMENDATION</span><span>WHAT IT DOES</span><span></span></div><div id="service-list"></div></div>
+        <div id="empty-state" class="empty-state" hidden><span data-icon="search"></span><h3>No services found</h3><p>Try a different name or clear your filters.</p><button id="reset-filters" class="primary-button">Reset filters</button></div>
+        <div class="directory-footer"><span data-icon="terminal"></span><p>Looking for every service installed on your PC? <button data-dialog="inventory">View your local service list <span aria-hidden="true">↗</span></button></p></div>
+      </section>
+    </div>
+    </div>
+    <section id="builder" class="builder-view" aria-labelledby="builder-title" hidden></section>
+    <section id="tools" class="tools-section" aria-labelledby="tools-title" hidden>
+      <div class="tools-heading"><div><h1 id="tools-title" tabindex="-1">Useful tools for Windows 11<span>.</span></h1><p>Make everyday tasks easier, find files faster, and understand what’s running on your PC.</p></div><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
+      <div class="tools-grid">
+        <article class="tool-card tool-card-featured" aria-labelledby="tool-powertoys">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="sliders"></span><span class="tool-category">Everyday productivity</span><span class="tool-pick">Start here</span></div>
+          <h3 id="tool-powertoys">Microsoft PowerToys</h3><p class="tool-publisher">Microsoft Corporation · Free &amp; open source</p>
+          <p>Arrange windows with FancyZones, rename files in bulk with PowerRename, and preview files with Peek. A collection of useful additions to Windows.</p>
+          <p class="tool-detail">Choose which utilities to enable in PowerToys Settings.</p>
+          <div class="tool-links"><a class="tool-download" href="https://apps.microsoft.com/detail/xp89dcgq3k6vld" target="_blank" rel="noopener noreferrer">Get PowerToys <span data-icon="external"></span></a><a href="https://learn.microsoft.com/en-us/windows/powertoys/" target="_blank" rel="noopener noreferrer">Microsoft guide</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-everything">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="search"></span><span class="tool-category">Find files</span></div>
+          <h3 id="tool-everything">Everything</h3><p class="tool-publisher">voidtools</p>
+          <p>Find files and folders by name as you type. Useful when you remember a filename but not where you saved it.</p>
+          <p class="tool-detail">Focused on filenames. Keep Windows Search for Outlook and other features that depend on its index.</p>
+          <div class="tool-links"><a class="tool-download" href="https://www.voidtools.com/downloads/" target="_blank" rel="noopener noreferrer">Get Everything <span data-icon="external"></span></a><a href="https://www.voidtools.com/support/everything/" target="_blank" rel="noopener noreferrer">Official guide</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-sharex">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="monitor"></span><span class="tool-category">Capture &amp; explain</span></div>
+          <h3 id="tool-sharex">ShareX</h3><p class="tool-publisher">ShareX team · Free &amp; open source</p>
+          <p>Capture and annotate screenshots, record a screen or GIF, and build shortcuts for repeat capture tasks.</p>
+          <p class="tool-detail">Review its after-capture tasks to choose whether captures stay local or are uploaded.</p>
+          <div class="tool-links"><a class="tool-download" href="https://getsharex.com/" target="_blank" rel="noopener noreferrer">Get ShareX <span data-icon="external"></span></a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-nanazip">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="cube"></span><span class="tool-category">Work with archives</span></div>
+          <h3 id="tool-nanazip">NanaZip</h3><p class="tool-publisher">M2-Team · Open source</p>
+          <p>A file archiver based on 7-Zip, with integration into the Windows 11 right-click menu and support for many archive formats.</p>
+          <p class="tool-detail">Choose the stable NanaZip release for everyday use.</p>
+          <div class="tool-links"><a class="tool-download" href="https://apps.microsoft.com/detail/9n8g7tscl18r" target="_blank" rel="noopener noreferrer">Get NanaZip <span data-icon="external"></span></a><a href="https://github.com/M2Team/NanaZip" target="_blank" rel="noopener noreferrer">Official project</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-process-explorer">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="gauge"></span><span class="tool-category">Understand processes</span></div>
+          <h3 id="tool-process-explorer">Process Explorer</h3><p class="tool-publisher">Microsoft Sysinternals</p>
+          <p>Look deeper into running processes and their loaded files. Find which program is holding a file open when Windows won’t let you move or delete it.</p>
+          <p class="tool-detail">Useful for investigating an unfamiliar background process before deciding what to change.</p>
+          <div class="tool-links"><a class="tool-download" href="https://learn.microsoft.com/en-us/sysinternals/downloads/process-explorer" target="_blank" rel="noopener noreferrer">Get Process Explorer <span data-icon="external"></span></a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-autoruns">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="terminal"></span><span class="tool-category">Review startup · Advanced</span></div>
+          <h3 id="tool-autoruns">Autoruns</h3><p class="tool-publisher">Microsoft Sysinternals</p>
+          <p>See what starts automatically, including sign-in entries, scheduled tasks, services, and Explorer extensions.</p>
+          <p class="tool-detail">Use Hide Signed Microsoft Entries to focus on third-party items. Review each entry before disabling it.</p>
+          <div class="tool-links"><a class="tool-download" href="https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns" target="_blank" rel="noopener noreferrer">Get Autoruns <span data-icon="external"></span></a></div>
+        </article>
+      </div>
+      <p class="tools-reviewed">Official publisher and project sources checked <time datetime="2026-09-25">September 25, 2026</time>.</p>
+    </section>
+    <section id="backup" class="backup-view" aria-labelledby="backup-title" hidden>
+      <div class="backup-heading"><p class="eyebrow"><span class="tiny-line"></span>BEFORE YOU MAKE A CHANGE</p><h1 id="backup-title" tabindex="-1">How to back up your OS<span>.</span></h1><p class="backup-lead">Before changing any service, create a Windows System Restore point. It can help you recover system settings if a change prevents normal startup or sign-in.</p></div>
+      <div class="backup-panel">
+        <section class="backup-section" aria-labelledby="create-restore-title">
+          <div class="backup-section-heading"><span class="backup-number">01</span><h2 id="create-restore-title">Create “Before Winwise”</h2></div>
+          <ol class="backup-steps">
+            <li>Open <strong>Start</strong>, search for <strong>Create a restore point</strong>, and open the matching result.</li>
+            <li>In <strong>System Protection</strong>, select your Windows drive — usually <strong>C:</strong>.</li>
+            <li>Select <strong>Create</strong>, name the restore point <strong>Before Winwise</strong>, then select <strong>Create</strong> again. Wait for the success message before changing services.</li>
+          </ol>
+          <div class="backup-note"><h3>Is Create greyed out?</h3><p>Select the Windows drive, choose <strong>Configure → Turn on system protection</strong>, allow disk space using the slider, then choose <strong>Apply → OK</strong>. Try <strong>Create</strong> again.</p></div>
+          <a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-protection" target="_blank" rel="noopener noreferrer">Microsoft: create a restore point <span aria-hidden="true">↗</span></a>
+        </section>
+        <section class="backup-section" aria-labelledby="both-backups-title">
+          <div class="backup-section-heading"><span class="backup-number">02</span><h2 id="both-backups-title">Why you need both backups</h2></div>
+          <p>Your JSON backup is a scalpel — it reverts only the services you changed. A restore point is the safety net when you can’t reach PowerShell at all.</p>
+          <div class="backup-comparison"><div><span data-icon="terminal"></span><h3>Winwise JSON backup</h3><p>Restores the recorded startup settings and attempts the previous running state for the services in that backup. Use it with your downloaded script when you can run PowerShell.</p></div><div><span data-icon="undo"></span><h3>Windows restore point</h3><p>Rolls back system files, registry settings, and installed programs. It can be applied from Windows Recovery Environment.</p></div></div>
+          <p class="backup-limits">A restore point is not a full disk backup and does not back up your personal files. Keep a separate copy of important files. System Restore is one recovery option; a restore point may be unavailable or fail.</p>
+        </section>
+        <section class="backup-section" aria-labelledby="recovery-title">
+          <div class="backup-section-heading"><span class="backup-number">03</span><h2 id="recovery-title">If Windows won’t boot or sign in</h2></div>
+          <ol class="backup-steps">
+            <li>If the sign-in screen is available, hold <strong>Shift</strong> while selecting <strong>Power → Restart</strong>.</li>
+            <li>In the recovery menu, select <strong>Troubleshoot → Advanced options → System Restore</strong>.</li>
+            <li>Choose <strong>Before Winwise</strong>. Use <strong>Show more restore points</strong> if needed, review affected programs, then select <strong>Next → Finish</strong>. Let recovery complete, then restart.</li>
+          </ol>
+          <details class="backup-recovery-option"><summary>Can’t reach the sign-in screen?</summary><p>When normal startup is already failing: turn the PC on and wait for the Windows or manufacturer logo, then hold the power button to shut it down. Repeat this interruption once more. On the <strong>third start, let it continue</strong>; Windows should open Automatic Repair. Select <strong>Advanced options</strong>, then follow the recovery menu above. Avoid forcing a shutdown during an update or a restore.</p></details>
+          <div class="backup-note"><h3>Have your BitLocker recovery key ready</h3><p>If the Windows drive is encrypted, System Restore in recovery requires the key. Keep it accessible from another device before making changes. <a href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-restore" target="_blank" rel="noopener noreferrer">Microsoft’s recovery guide includes a link to find your key.</a></p></div>
+          <p class="backup-limits">If the point is missing or recovery does not work, Windows RE also offers Startup Repair; Windows installation media can provide another route to recovery tools.</p>
+          <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-restore" target="_blank" rel="noopener noreferrer">Microsoft: System Restore <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/windows-recovery-environment" target="_blank" rel="noopener noreferrer">Microsoft: recovery options <span aria-hidden="true">↗</span></a></div>
+        </section>
+        <div class="backup-bottom"><p>Keep “Before Winwise” and your first JSON backup.</p><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Back to the script builder</a></div>
+      </div>
+    </section>
+    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>Independent guide. Not affiliated with Microsoft.</p><button data-dialog="sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
+  </main>
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-topline"><span id="dialog-eyebrow">SERVICE DETAILS</span><button id="close-dialog" class="icon-button" aria-label="Close details"><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Enable JavaScript to search the directory. See <a href="https://learn.microsoft.com/en-us/windows/iot/iot-enterprise/optimize/services">Microsoft’s service reference</a> for service definitions; its disable advice is intended for fixed-purpose IoT devices.</p></noscript>
+</body>
+</html>
