@@ -2,7 +2,16 @@
 
 A guide to Windows 11 services: what each one does, what you gain or lose by turning it off, and a builder that creates a reversible PowerShell script for the services you choose.
 
-**Live site:** https://heliakon.github.io/winwise/
+## Use it
+
+- **Online:** https://heliakon.github.io/winwise/
+- **Offline:** [download winwise.html](https://github.com/heliakon/winwise/releases/latest/download/winwise.html) and open it in your browser. It's one self-contained file, so there's nothing to install and no internet connection needed.
+
+Every release also has a `winwise.html.sha256` file. To check your download, run this in PowerShell and compare the result with it:
+
+```
+Get-FileHash .\winwise.html -Algorithm SHA256
+```
 
 ## What's inside
 
@@ -10,7 +19,7 @@ A guide to Windows 11 services: what each one does, what you gain or lose by tur
 - **Script builder:** pick the features you don't use and Winwise selects the related services for your script.
 - **Safety built in:** every script supports a `-WhatIf` dry run, saves the original settings to a JSON backup before changing anything, and restores them with `-RestoreFrom`. Services that can break boot or sign-in are excluded.
 - **Backup guide** for creating a System Restore point first, plus a short list of useful Windows tools.
-- Dark and light themes. No build step, no tracking and no cookies: theme and motion preferences stay in your own browser.
+- Dark and light themes. No tracking and no cookies: theme and motion preferences stay in your own browser.
 
 ## Using a generated script
 
@@ -22,21 +31,16 @@ A guide to Windows 11 services: what each one does, what you gain or lose by tur
 
 The script only changes service startup settings and running state. It downloads nothing, creates no scheduled tasks and leaves security services alone. Read it before you run it: it comes with no warranty (see the license).
 
-## Run it locally
+## Project structure
 
-Winwise is plain HTML, CSS and JavaScript. Serve the folder with any static web server, for example:
+| Path | What it is |
+| --- | --- |
+| `index.html` | The whole site in one file, built from `src/`. Don't edit it by hand. |
+| `src/` | The source files listed below |
+| `tools/build.mjs` | Combines `src/` into `index.html`. Node.js only, no dependencies. |
+| `.github/workflows/` | Checks that `index.html` matches `src/`, and attaches `winwise.html` to each release |
 
-```
-python3 -m http.server 8000
-```
-
-On Windows use `py -m http.server 8000`. Then open http://localhost:8000.
-
-Opening `index.html` straight from disk shows the guide, but the script builder needs a server because it loads `script-template.ps1` over HTTP.
-
-## Files
-
-| File | What it does |
+| File in `src/` | What it does |
 | --- | --- |
 | `index.html` | Page structure and all sections |
 | `services.js` | Service data: descriptions, tradeoffs, risks and Microsoft sources |
@@ -47,7 +51,14 @@ Opening `index.html` straight from disk shows the guide, but the script builder 
 | `appearance-init.js`, `appearance.js` | Theme and motion settings |
 | `theme.css`, `styles.css` | Colours and layout |
 
-## Contributing
+## Making changes
+
+1. Edit the files in `src/`.
+2. Run `node tools/build.mjs` (Node.js 18 or later).
+3. Open `index.html` in your browser to check the change.
+4. Commit `src/` and `index.html` together.
+
+GitHub Actions rebuilds `index.html` on every push and pull request and fails if it doesn't match `src/`. While you edit, you can also serve `src/` with any local web server, for example `python3 -m http.server 8000 --directory src`, to see changes without rebuilding.
 
 Corrections and new services are welcome. Open an issue or a pull request, and link a Microsoft source for any change to what a service does. To report a security problem, see [SECURITY.md](SECURITY.md).
 
