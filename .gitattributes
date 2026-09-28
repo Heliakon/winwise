@@ -1,0 +1,2 @@
+# Keep LF line endings on every platform, so tools/build.mjs produces the same index.html everywhere.
+* text=auto eol=lf
