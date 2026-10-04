@@ -21,7 +21,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if ([string]::IsNullOrWhiteSpace($PSScriptRoot)) { throw 'Save and run this as a .ps1 file (for example: .\Winwise-Services.ps1).' }
 $SelectedServices = @(__SERVICE_NAMES__)
-$AllowedServices = @('DiagTrack','SysMain','WSearch','RemoteRegistry','TermService','Spooler','PrintDeviceConfigurationService','BTAGService','BthAvctpSvc','bthserv','Fax','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','wisvc')
+$AllowedServices = @('DiagTrack','RemoteRegistry','SysMain','WSearch','Spooler','PrintDeviceConfigurationService','Fax','wisvc','TermService','bthserv','BTAGService','BthAvctpSvc','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','PrintNotify','XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc','WiaRpc','stisvc')
 $MachineId = (Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Cryptography' -Name MachineGuid).MachineGuid
 
 function Get-ServiceKey([string]$Name) {

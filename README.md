@@ -15,11 +15,13 @@ Get-FileHash .\winwise.html -Algorithm SHA256
 
 ## What's inside
 
-- **70 Windows 11 services** explained in plain language, with privacy and performance tradeoffs, search, filters and sorting.
+- **145 Windows 11 service entries** explained in plain language, with privacy and performance tradeoffs, search, filters and sorting.
 - **Script builder:** pick the features you don't use and Winwise selects the related services for your script.
 - **Safety built in:** every script supports a `-WhatIf` dry run, saves the original settings to a JSON backup before changing anything, and restores them with `-RestoreFrom`. Services that can break boot or sign-in are excluded.
 - **Backup guide** for creating a System Restore point first, plus a short list of useful Windows tools.
-- Dark and light themes. No tracking and no cookies: theme and motion preferences stay in your own browser.
+- Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion preference stays in your browser.
+
+Service coverage reviewed **October 4, 2026**. See [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for the coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
 
 ## Using a generated script
 
@@ -48,6 +50,8 @@ The script only changes service startup settings and running state. It downloads
 | `script-template.ps1` | The PowerShell template the builder fills in |
 | `app.js` | Directory, filters, details dialog and builder interface |
 | `intro.js`, `intro.css` | Opening animation |
+| `galaxy.js` | Shared particle distribution, spiral shape, colors, and nebula glow for the three galaxy scenes |
+| `launch-glass.js` | A rotating particle galaxy with mint and violet arms, a warm nebula glow, and compact gears in the START panel’s bottom-right corner; pauses with motion preferences and stops after START |
 | `appearance-init.js`, `appearance.js` | Theme and motion settings |
 | `theme.css`, `styles.css` | Colours and layout |
 

@@ -4,18 +4,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b0d10">
+  <meta name="theme-color" content="#0a101b">
   <meta name="color-scheme" content="dark light">
   <meta name="description" content="Explore Windows 11 services and useful tools, understand privacy and performance tradeoffs, and build a PowerShell script with backup and restore instructions.">
   <title>Winwise — Windows 11 service guide</title>
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiM2OTUxZDUiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTYgMTZoMTN2MTNIMTZ6bTE5IDBoMTN2MTNIMzV6TTE2IDM1aDEzdjEzSDE2em0xOSAwaDEzdjEzSDM1eiIvPjwvc3ZnPgo=">
   <script>'use strict';
-// Apply preferences before styles load so the default never flashes light.
+// Always open in dark mode, before the first paint. Light mode is an in-page choice.
 (() => {
-  let theme = 'dark';
+  const theme = 'dark';
   let motion = 'running';
   try {
-    if (localStorage.getItem('winwise.theme') === 'light') theme = 'light';
     if (localStorage.getItem('winwise.motion') === 'paused') motion = 'paused';
   } catch { /* The default also works when browser storage is unavailable. */ }
   if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) motion = 'paused';
@@ -23,23 +22,24 @@
   document.documentElement.dataset.motion = motion;
   // Hide the directory before the first paint on a fresh homepage visit.
   document.documentElement.dataset.intro = !location.hash || location.hash === '#directory' ? 'waiting' : 'ready';
-  document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0b0d10' : '#eef1f5';
+  document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0a101b' : '#e8eef6';
 })();
 </script>
   <style>/* The entire UI derives its colors from one palette. Dark is the fallback. */
 :root {
   color-scheme: dark;
-  --page: #0b0d10;
-  --surface: #111419;
-  --surface-raised: #181c22;
-  --surface-inset: #0e1115;
-  --surface-hover: #20252d;
-  --header: #0b0d10f2;
+  --page: #0a101b;
+  --surface: #0f1929;
+  --surface-raised: #172740;
+  --surface-inset: #0c1524;
+  --surface-hover: #1b2e49;
+  --panel-gradient: linear-gradient(135deg,#162840,#0f1929 68%);
+  --header: #0a101bf2;
   --text: #eef1f5;
-  --text-secondary: #adb6c4;
-  --text-muted: #929dad;
-  --line: #2b313b;
-  --line-soft: #222831;
+  --text-secondary: #b4c2d5;
+  --text-muted: #9cabc0;
+  --line: #2c405c;
+  --line-soft: #203149;
   --accent: #b5ebc6;
   --accent-hover: #cbf5d7;
   --accent-text: #152b1d;
@@ -58,32 +58,33 @@
   --risk-bg: #382023;
   --risk-text: #ffc0bd;
   --risk-border: #80504d;
-  --note-bg: #191e28;
-  --note-border: #374254;
-  --note-text: #b2c0d3;
-  --code-bg: #090c10;
+  --note-bg: #15243a;
+  --note-border: #344d70;
+  --note-text: #bccfe8;
+  --code-bg: #091220;
   --code-text: #c8decf;
   --shadow: 0 20px 60px #00000022;
   --backdrop: #020406bc;
-  --halo-one: #96c6b20d;
-  --halo-two: #a5a6d912;
+  --halo-one: #548fd11a;
+  --halo-two: #6b84cf1a;
   --ambient-opacity: 1;
   --selection-bg: #365947;
   --selection-text: #f1fff5;
 }
 :root[data-theme="light"] {
   color-scheme: light;
-  --page: #eef1f5;
-  --surface: #ffffff;
-  --surface-raised: #f6f8fa;
-  --surface-inset: #eff3f6;
-  --surface-hover: #e9eef3;
-  --header: #fffffff2;
+  --page: #e8eef6;
+  --surface: #f7faff;
+  --surface-raised: #edf3fb;
+  --surface-inset: #e5edf7;
+  --surface-hover: #deebf9;
+  --panel-gradient: linear-gradient(135deg,#eaf2ff,#f7faff 68%);
+  --header: #f3f7fdf2;
   --text: #1d2832;
-  --text-secondary: #516171;
-  --text-muted: #5b6978;
-  --line: #cfd8e1;
-  --line-soft: #e2e7ed;
+  --text-secondary: #4d6078;
+  --text-muted: #586b82;
+  --line: #c3d3e6;
+  --line-soft: #d7e2f0;
   --accent: #246747;
   --accent-hover: #1c573a;
   --accent-text: #ffffff;
@@ -102,15 +103,15 @@
   --risk-bg: #fff0ef;
   --risk-text: #a32927;
   --risk-border: #e6a7a3;
-  --note-bg: #edf2f8;
-  --note-border: #cbd7e5;
-  --note-text: #4b6179;
-  --code-bg: #eaf0ec;
+  --note-bg: #e6effb;
+  --note-border: #bed0e7;
+  --note-text: #425e80;
+  --code-bg: #e4edf7;
   --code-text: #284c36;
   --shadow: 0 15px 45px #32475d0a;
   --backdrop: #17242b75;
-  --halo-one: #609e7d0d;
-  --halo-two: #8b90c90d;
+  --halo-one: #6699dc12;
+  --halo-two: #8599d910;
   --ambient-opacity: .9;
   --selection-bg: #c5e3d0;
   --selection-text: #193322;
@@ -138,7 +139,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 /* Script creator: the same surfaces, navigation and contrast hierarchy. */
 .builder-view{scroll-margin-top:24px}.builder-heading{display:flex;align-items:center;justify-content:space-between;gap:22px;margin:7px 0 25px}.builder-heading .section-label{color:var(--accent);margin:0 0 10px}.builder-heading h2{font-size:1.8rem;font-weight:600;letter-spacing:-.7px;line-height:1.3;margin:0 0 9px}.builder-heading h2>span{color:var(--accent)}.builder-heading p:last-child{font-size:1rem;color:var(--text-secondary);line-height:1.75;margin:0}.back-link{font-size:.875rem;color:var(--text-secondary);flex-shrink:0}.back-link:hover{color:var(--accent)}.builder-layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:start}.builder-options{padding:24px;background:var(--surface);border:1px solid var(--line);border-radius:14px}.preset-card{display:flex;align-items:center;gap:14px;background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:9px;padding:17px;margin-bottom:27px}.preset-icon{display:grid;place-items:center;width:38px;height:38px;flex-shrink:0;background:var(--surface-inset);border:1px solid var(--accent-border);border-radius:8px;color:var(--accent)}.preset-card h3{font-size:1rem;margin:0 0 6px;font-weight:600}.preset-card p{font-size:.875rem;line-height:1.7;color:var(--text-secondary);margin:0}.preset-card button{display:flex;align-items:center;gap:8px;margin-left:auto;padding:10px 12px;background:var(--surface);border:1px solid var(--accent-border);border-radius:7px;color:var(--accent);font-size:.875rem;font-weight:500;flex-shrink:0}.preset-card button:hover{background:var(--surface-hover)}.preset-card button svg{width:14px;height:14px}.step-heading{display:flex;align-items:flex-start;gap:11px;margin:0 0 18px}.step-heading>span{width:28px;height:28px;display:grid;place-items:center;background:var(--surface-raised);border:1px solid var(--line);color:var(--text-secondary);border-radius:6px;font-family:Consolas,monospace;font-size:.75rem;flex-shrink:0;margin-top:2px}.step-heading h3{font-size:1.05rem;font-weight:600;letter-spacing:-.25px;margin:0 0 6px}.step-heading p{font-size:.875rem;color:var(--text-secondary);line-height:1.6;margin:0}.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.feature-card{position:relative;display:flex;flex-direction:column;padding:18px;background:var(--surface-inset);border:1px solid var(--line);border-radius:9px;cursor:pointer;min-width:0}.feature-card:hover{background:var(--surface-raised);border-color:var(--accent-border)}.feature-card.chosen{background:var(--accent-soft);border-color:var(--accent-border)}.feature-card>input{position:absolute;top:17px;right:17px;width:21px;height:21px;margin:0;opacity:0}.feature-card:focus-within{outline:2px solid var(--focus);outline-offset:3px}.feature-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;color:var(--text-secondary)}.feature-card-top>svg{width:20px;height:20px}.custom-checkbox{display:grid;place-items:center;width:21px;height:21px;background:var(--surface);border:1px solid var(--text-muted);border-radius:5px}.custom-checkbox svg{display:none;width:15px;height:15px}.feature-card>input:checked~.feature-card-top .custom-checkbox{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}.feature-card>input:checked~.feature-card-top .custom-checkbox svg{display:block}.feature-card>input:indeterminate~.feature-card-top .custom-checkbox{background:var(--accent-border);border-color:var(--accent)}.feature-card>strong{font-size:1rem;font-weight:550;line-height:1.5;margin-bottom:8px}.feature-description{font-size:.875rem;color:var(--text-secondary);line-height:1.75;flex:1}.feature-count{font-family:Consolas,monospace;font-size:.75rem;color:var(--text-muted);margin-top:16px}.advanced-heading{margin-top:29px}.advanced-choices{border:1px solid var(--line);background:var(--surface-inset);border-radius:9px;overflow:hidden}.advanced-option{display:flex;align-items:flex-start;gap:12px;padding:19px;cursor:pointer}.advanced-option+.advanced-option{border-top:1px solid var(--line-soft)}.advanced-option:hover{background:var(--surface-raised)}.advanced-option input,.individual-picker input{width:18px;height:18px;flex-shrink:0;margin:4px 0 0;accent-color:var(--accent);cursor:pointer}.advanced-option>span{min-width:0}.advanced-option strong{display:block;font-size:1rem;font-weight:550;line-height:1.6;margin-bottom:5px}.advanced-option>span>span{display:block;font-size:.875rem;line-height:1.75;color:var(--text-secondary)}.advanced-option>code{flex-shrink:0;font-size:.75rem;padding:4px 6px;margin:2px 0 0 auto;background:var(--surface-raised);border:1px solid var(--line-soft);color:var(--text-muted);border-radius:4px}.individual-picker{border:1px solid var(--line);border-radius:9px;background:var(--surface-inset);margin-top:20px}.individual-picker summary{padding:18px;font-size:.95rem;font-weight:550;line-height:1.6;cursor:pointer}.individual-picker summary>span{font-size:.75rem;font-weight:400;color:var(--text-muted);margin-left:8px}.individual-picker>p{font-size:.875rem;color:var(--text-secondary);line-height:1.7;margin:0 18px 17px}.individual-picker>div{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:0 18px 19px}.individual-picker label{display:flex;align-items:flex-start;gap:10px;font-size:.875rem;line-height:1.6;cursor:pointer;min-width:0}.individual-picker label>span{overflow-wrap:anywhere}.individual-picker label code{display:block;font-size:.75rem;line-height:1.5;color:var(--text-muted);margin-top:4px}.builder-boundary{display:flex;align-items:flex-start;gap:10px;padding:20px 0 0}.builder-boundary>svg{width:17px;height:17px;color:var(--accent);margin-top:3px}.builder-boundary p{font-size:.875rem;color:var(--text-secondary);line-height:1.75;margin:0}.builder-summary{position:sticky;top:24px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}.summary-title{display:flex;align-items:center;justify-content:space-between;background:var(--surface-raised);border-bottom:1px solid var(--line);padding:20px;font-size:.75rem;letter-spacing:1px;color:var(--text-secondary)}.summary-title svg{width:18px;height:18px;color:var(--accent)}.summary-body{padding:21px}.summary-count{display:flex;align-items:center;justify-content:space-between;gap:13px}.summary-count h3{font-size:1.05rem;font-weight:600;margin:0}.summary-count button{font-size:.875rem;color:var(--text-muted);padding:3px 0}.summary-count button:hover{color:var(--accent)}.summary-count button:disabled{opacity:.5}#selected-count{font-size:.875rem;line-height:1.6;color:var(--text-secondary);margin:8px 0 17px}#selected-count strong{color:var(--accent);font-weight:600}#selected-services{max-height:360px;overflow:auto}.selection-empty{display:flex;align-items:center;flex-direction:column;padding:25px 16px;text-align:center;background:var(--surface-inset);border:1px dashed var(--line);border-radius:8px}.selection-empty>svg{width:23px;height:23px;color:var(--text-muted)}.selection-empty p{font-size:.875rem;color:var(--text-secondary);line-height:1.75;margin:13px 0 0}.selected-service{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-top:1px solid var(--line-soft)}.selected-service strong{display:block;font-size:.875rem;font-weight:500;line-height:1.6}.selected-service code{display:block;font-size:.75rem;color:var(--text-muted);margin-top:5px;overflow-wrap:anywhere}.selected-service>button{padding:5px;color:var(--text-muted);border-radius:5px;flex-shrink:0}.selected-service>button svg{width:15px;height:15px}.selected-service>button:hover{background:var(--surface-hover);color:var(--text)}.script-properties{display:grid;gap:11px;margin:23px 0}.script-properties>span{display:flex;align-items:center;gap:9px;color:var(--text-secondary);font-size:.875rem}.script-properties svg{width:15px;height:15px;color:var(--accent)}#download-script{width:100%;font-size:.875rem;min-height:47px}.secondary-button{display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 12px;border:1px solid var(--line);border-radius:7px;background:var(--surface-raised);color:var(--text);font-size:.875rem;min-height:44px}.secondary-button svg{width:16px;height:16px}.secondary-button:not(:disabled):hover{background:var(--surface-hover);border-color:var(--accent-border)}.secondary-button:disabled{color:var(--text-muted);opacity:.65;cursor:not-allowed}#preview-script{width:100%;margin-top:9px}#template-status{text-align:center;font-size:.75rem;line-height:1.6;margin:11px 0 21px}.run-instructions-link{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;font-size:.875rem;color:var(--accent);font-weight:500;padding:0}.run-instructions-link svg{width:14px;height:14px}.builder-expectation{padding-top:18px;border-top:1px solid var(--line-soft);color:var(--text-muted);font-size:.875rem;line-height:1.75;margin:20px 0 0}
 /* Clear script-builder actions and in-context service details. */
-.intro-action{gap:8px;max-width:370px}.intro-action .builder-button-note{font-size:.875rem;line-height:1.55;color:var(--text-secondary);text-align:right}.advanced-option{align-items:center}.advanced-option>label{display:flex;align-items:flex-start;gap:12px;min-width:0;flex:1;cursor:pointer}.advanced-option>label>span{min-width:0}.advanced-option>label strong{display:block;font-size:1rem;font-weight:550;line-height:1.6;margin-bottom:5px}.advanced-option>label>span>span{display:block;font-size:.875rem;line-height:1.75;color:var(--text-secondary)}.advanced-option>label input{width:18px;height:18px;flex-shrink:0;margin:4px 0 0;accent-color:var(--accent);cursor:pointer}.builder-read-more{color:var(--accent);font-size:.875rem;font-weight:600;line-height:1.4;padding:6px 0;white-space:nowrap}.builder-read-more:hover{text-decoration:underline}.individual-picker>div{gap:0 18px}.individual-service{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-soft);min-width:0}.individual-service label{flex:1}.selected-service>div{min-width:0}.selected-service .builder-read-more{display:block;margin-top:5px;font-size:.8125rem}.script-properties{gap:13px;margin:25px 0}.script-properties>span{gap:11px;font-size:1rem;line-height:1.5;color:var(--text)}.script-properties>span strong{font-weight:600}.script-properties>span code{font-size:.9em;color:var(--accent)}.script-properties svg{width:19px;height:19px;flex-shrink:0}.run-instructions-link{min-height:46px;border:1px solid var(--accent-border);border-radius:8px;background:var(--accent-soft);font-size:1rem;font-weight:650;padding:10px 14px}.run-instructions-link:hover{background:var(--surface-hover)}.run-instructions-link svg{width:17px;height:17px}
+.intro-action{gap:8px;max-width:none;flex-shrink:0}.intro-action .builder-button-note{font-size:.875rem;line-height:1.55;color:var(--text-secondary);text-align:right;white-space:nowrap}.advanced-option{align-items:center}.advanced-option>label{display:flex;align-items:flex-start;gap:12px;min-width:0;flex:1;cursor:pointer}.advanced-option>label>span{min-width:0}.advanced-option>label strong{display:block;font-size:1rem;font-weight:550;line-height:1.6;margin-bottom:5px}.advanced-option>label>span>span{display:block;font-size:.875rem;line-height:1.75;color:var(--text-secondary)}.advanced-option>label input{width:18px;height:18px;flex-shrink:0;margin:4px 0 0;accent-color:var(--accent);cursor:pointer}.builder-read-more{color:var(--accent);font-size:.875rem;font-weight:600;line-height:1.4;padding:6px 0;white-space:nowrap}.builder-read-more:hover{text-decoration:underline}.individual-picker>div{gap:0 18px}.individual-service{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-soft);min-width:0}.individual-service label{flex:1}.selected-service>div{min-width:0}.selected-service .builder-read-more{display:block;margin-top:5px;font-size:.8125rem}.script-properties{gap:13px;margin:25px 0}.script-properties>span{gap:11px;font-size:1rem;line-height:1.5;color:var(--text)}.script-properties>span strong{font-weight:600}.script-properties>span code{font-size:.9em;color:var(--accent)}.script-properties svg{width:19px;height:19px;flex-shrink:0}.run-instructions-link{min-height:46px;border:1px solid var(--accent-border);border-radius:8px;background:var(--accent-soft);font-size:1rem;font-weight:650;padding:10px 14px}.run-instructions-link:hover{background:var(--surface-hover)}.run-instructions-link svg{width:17px;height:17px}
 
 /* Responsive layout. Typography and themes remain the same at every width. */
 @media(max-width:1320px){.header-inner{gap:28px;padding:0 30px}.top-nav{gap:21px}.os-tag{display:none}.page-shell{padding:34px 30px 0}.stat-annotation{display:none}.workspace{grid-template-columns:202px minmax(0,1fr)}.directory-content{padding:22px 22px 0}.table-head,.service-row{grid-template-columns:minmax(185px,1.1fr) minmax(156px,.9fr) minmax(180px,1.1fr) 14px;gap:14px}.service-icon{display:none}.dialog-title-row .service-icon{display:grid}.overview-total,.overview-item{padding:18px}.overview-item>div>span{font-size:.8125rem}.builder-layout{grid-template-columns:minmax(0,1fr) 305px}.builder-options{padding:21px}.preset-card{flex-wrap:wrap}.preset-card>div{flex:1}.preset-card button{margin-left:52px}.advanced-option>code{display:none}}
@@ -176,7 +177,13 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 .builder-settings-first .builder-settings-path{color:var(--text);font-weight:500}
 .builder-settings-first .source-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:.875rem;line-height:1.5;white-space:normal}
 .builder-settings-first .source-link svg{width:16px;height:16px}
-.individual-choice .builder-settings-first{margin:14px 0 0}
+.individual-settings-grid>.individual-choice{display:flex;flex-direction:column;min-width:0}
+.individual-settings-grid .builder-settings-first{margin:0;flex:1}
+.individual-settings-grid .individual-service{align-items:flex-start;padding-top:13px}
+.individual-service-grid>.individual-choice{display:flex;min-width:0}
+.individual-service-grid .individual-service{width:100%}
+.individual-service-grid>.individual-choice:last-child:nth-child(odd),.feature-grid>.feature-card:last-child:nth-child(odd){grid-column:1/-1}
+@supports(grid-template-rows:subgrid){.individual-settings-grid>.individual-choice{display:grid;grid-template-rows:subgrid;grid-row:span 2}}
 .context-note p+p{margin-top:8px}
 
 /* Practical utilities, with PowerToys featured and publishers made explicit. */
@@ -222,6 +229,14 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 @media(max-width:560px){.header-resources{flex:1 1 auto;margin-left:0}.header-resources a{flex:1 1 auto}.header-utilities .theme-toggle-label{display:none}.header-utilities .appearance-button.theme-toggle{min-width:0;width:37px;padding:0}.header-utilities .appearance-controls{flex-shrink:0;gap:5px}}
 
 .guide-manual-heading{font-size:1.125rem;line-height:1.5;font-weight:600;margin:26px 0 20px}
+
+/* Carry the welcome panel's blue depth into the reading and utility sections. */
+.workspace,.builder-options,.builder-summary,.backup-panel,.detail-dialog,.overview-item,.tool-card:not(.tool-card-featured){background:var(--panel-gradient)}
+
+/* Service categories use the same colors in overview cards, rows, and details. */
+.service-icon.service-icon-privacy{color:var(--tag-purple-text);background:var(--tag-purple-bg);border-color:var(--tag-purple-border)}
+.service-icon.service-icon-performance{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-border)}
+@media(max-width:680px){.intro-action{max-width:100%;flex-direction:column;align-items:flex-start;gap:8px}.intro-action .builder-button-note{max-width:100%;font-size:clamp(.625rem,3vw,.8125rem);text-align:left}}
 </style>
   <style>/* The homepage starts with a short introduction, then opens into the directory. */
 .directory-stage{position:relative}
@@ -229,25 +244,20 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 [data-intro="waiting"] .intro-action{visibility:hidden}
 [data-intro="waiting"] .launch-panel{display:grid!important}
 [data-intro="revealing"] body{overflow-x:clip}
-[data-intro="revealing"] .launch-panel{position:absolute;inset:0 0 auto;z-index:3;pointer-events:none}
-.launch-panel{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(280px,.75fr) minmax(0,1.35fr);gap:32px;align-items:center;min-height:clamp(450px,49vh,690px);padding:64px 70px 86px;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:linear-gradient(115deg,var(--surface) 20%,var(--surface-inset));box-shadow:var(--shadow)}
-.launch-panel:before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 8% 70%,#9de6b514,transparent 60%),radial-gradient(ellipse at 38% 0%,#bab0ed0b,transparent 55%)}
-.launch-panel:after{content:'';position:absolute;inset:0 auto auto 8%;height:1px;width:65%;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.65}
-.launch-grid{position:absolute;z-index:-1;inset:0;pointer-events:none;background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(90deg,#0005,transparent 65%);opacity:.8}
-.launch-copy{position:relative;z-index:1;max-width:820px;grid-column:2;grid-row:1}
+[data-intro="revealing"] .launch-panel{position:absolute;inset:0 0 auto;z-index:3;pointer-events:none;overflow:hidden;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-intro="revealing"] .launch-universe{visibility:hidden}
+.launch-panel{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;align-items:center;min-height:clamp(450px,49vh,690px);padding:64px 60px 142px;overflow:visible;border:1px solid var(--line);border-radius:28px;background:var(--surface);box-shadow:var(--shadow)}
+.launch-focus{grid-column:2;grid-row:1;min-height:340px;align-self:stretch;pointer-events:none}
+.launch-copy{position:relative;z-index:1;max-width:560px;grid-column:3;grid-row:1}
 .launch-eyebrow{display:flex;align-items:center;gap:12px;font-size:.75rem;font-weight:550;letter-spacing:2px;color:var(--text-muted);margin-bottom:26px}
 .launch-eyebrow>span{width:25px;height:1px;background:var(--accent)}
-.launch-copy h2{font-size:clamp(2.5rem,3.7vw,4.3rem);line-height:1.12;font-weight:550;letter-spacing:-2.6px;margin:0 0 27px}
+.launch-copy h2{font-size:clamp(2rem,2.5vw,3.35rem);line-height:1.13;font-weight:550;letter-spacing:-1.7px;margin:0 0 24px}
 .launch-copy h2>span{color:var(--accent)}
-.launch-description{max-width:49ch;color:var(--text-secondary);font-size:1.25rem;line-height:1.8;margin-bottom:25px}
-.launch-settings{display:flex;gap:13px;align-items:flex-start;color:var(--text-muted);font-size:1.0625rem;line-height:1.8;max-width:49ch;margin:0}
+.launch-description{max-width:40ch;color:var(--text-secondary);font-size:1.1875rem;line-height:1.7;margin-bottom:22px}
+.launch-settings{display:flex;gap:13px;align-items:flex-start;color:var(--text-muted);font-size:1rem;line-height:1.7;max-width:40ch;margin:0}
 .launch-settings>span:first-child{color:var(--accent);padding-top:4px}
 .launch-settings svg{width:19px;height:19px}
-.launch-action{position:relative;display:flex;align-items:center;flex-direction:column;justify-content:center;min-height:330px;padding:15px 0;grid-column:1;grid-row:1;justify-self:end;width:100%;max-width:380px}
-.launch-planes{position:absolute;inset:3% 0;z-index:-1;pointer-events:none;perspective:900px}
-.launch-planes i{position:absolute;inset:0;border:1px solid var(--accent-border);border-radius:15px;transform:rotate(-8deg) scale(.94);opacity:.25}
-.launch-planes i:nth-child(2){transform:rotate(5deg) scale(.88);opacity:.35}
-.launch-planes i:nth-child(3){transform:rotate(-1deg) scale(.81);opacity:.2}
+.launch-action{position:relative;z-index:2;display:flex;align-items:center;flex-direction:column;justify-content:center;min-height:330px;padding:15px 0;grid-column:1;grid-row:1;justify-self:center;width:100%;max-width:340px}
 .launch-count{display:flex;flex-direction:column;align-items:center;margin-bottom:29px}
 .launch-count strong{font-size:clamp(6rem,8vw,9.5rem);font-weight:400;letter-spacing:-9px;line-height:1;color:var(--text);font-variant-numeric:tabular-nums}
 .launch-count>span{color:var(--text-muted);font-size:1rem;letter-spacing:1px;margin-top:9px}
@@ -261,25 +271,119 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 .launch-start-arrow svg{width:25px;height:25px;transition:transform .2s ease}
 .launch-start:hover svg{transform:translateX(3px)}
 .launch-button-note{font-size:.875rem;color:var(--text-muted);margin-top:20px}
-.launch-bottom{position:absolute;bottom:25px;left:70px;right:70px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line-soft);padding-top:18px;font-size:.6875rem;letter-spacing:1.9px;color:var(--text-muted)}
-.launch-track{display:flex;gap:6px}
-.launch-track i{display:block;width:24px;height:2px;background:var(--accent);opacity:.65}
-.launch-track i:nth-child(2){opacity:.35}.launch-track i:nth-child(3){opacity:.15}
+.launch-bottom{position:absolute;z-index:2;bottom:18px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--line-soft);padding-top:8px;font-size:.6875rem;letter-spacing:1.9px;color:var(--text-muted)}
 #launch-effects{position:fixed;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;contain:strict}
 #ambient-particles{transition:opacity .45s ease-out}
 [data-intro="revealing"] #ambient-particles{opacity:0;transition:none}
+[data-intro="waiting"] #ambient-particles{opacity:0;transition:none}
 [data-intro="revealing"] .overview>button{position:relative;overflow:hidden}
 [data-intro="revealing"] .overview>button:after{content:'';position:absolute;inset:-100% -50%;pointer-events:none;background:linear-gradient(110deg,transparent 38%,#c6d3ff16 49%,#dae5f424 50%,transparent 63%);transform:translateX(-80%);animation:launch-card-glint 1.2s 1.55s both}
 [data-intro="revealing"] .overview>button:nth-child(2):after{animation-delay:1.73s}
 [data-intro="revealing"] .overview>button:nth-child(3):after{animation-delay:1.91s}
 @keyframes launch-card-glint{0%{transform:translateX(-80%);opacity:0}20%{opacity:1}100%{transform:translateX(80%);opacity:0}}
-@media(min-width:1800px){.page-shell,.header-inner{max-width:1880px;padding-left:56px;padding-right:56px}.page-shell{padding-top:52px}.intro{margin-bottom:36px}.launch-panel{padding-left:90px;padding-right:90px;gap:42px}.launch-copy h2{font-size:4.65rem}.launch-description{font-size:1.3125rem}.launch-settings{font-size:1.125rem}.launch-bottom{left:90px;right:90px}}
-@media(max-width:1100px){.launch-panel{gap:24px;padding:42px 38px 79px;grid-template-columns:270px minmax(0,1fr)}.launch-copy h2{font-size:2.8rem;letter-spacing:-1.5px}.launch-description{font-size:1.125rem}.launch-bottom{left:38px;right:38px}.launch-planes{inset:5% 0}}
-@media(max-width:760px){.launch-panel{grid-template-columns:1fr;gap:18px;padding:32px 25px 75px;min-height:0}.launch-copy{grid-column:1;grid-row:1}.launch-copy h2{font-size:clamp(2rem,6.6vw,2.9rem);letter-spacing:-1.2px;margin-bottom:19px}.launch-eyebrow{font-size:.6875rem;letter-spacing:1.3px;margin-bottom:20px}.launch-description{margin-bottom:17px}.launch-settings{font-size:1rem}.launch-action{grid-column:1;grid-row:2;max-width:none;min-height:0;display:grid;grid-template-columns:1fr 1.1fr;gap:16px;padding-top:15px}.launch-count{margin:0}.launch-count strong{font-size:4.5rem;letter-spacing:-4px}.launch-count>span{font-size:.8125rem;letter-spacing:0}.launch-start{min-width:0;min-height:70px;gap:16px;padding:13px 14px 13px 20px}.launch-start>span:first-child{font-size:1rem;letter-spacing:2px}.launch-start-arrow{width:34px;height:34px}.launch-button-note{grid-column:1/-1;text-align:center;margin-top:0}.launch-planes{display:none}.launch-bottom{left:25px;right:25px;bottom:21px;letter-spacing:1px}.launch-track i{width:13px}}
-@media(max-width:430px){.launch-action{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:12px}.launch-start{gap:8px;padding:12px}.launch-start>span:first-child{font-size:.875rem;letter-spacing:1.3px}.launch-start-arrow{width:30px;height:30px}.launch-count>span{font-size:.75rem;text-align:center}.launch-bottom>span:first-child{font-size:.625rem;letter-spacing:.7px}}
+@media(min-width:1800px){.page-shell,.header-inner{max-width:1880px;padding-left:56px;padding-right:56px}.page-shell{padding-top:52px}.intro{margin-bottom:36px}.launch-panel{padding-left:70px;padding-right:70px;gap:38px}.launch-copy h2{font-size:3.35rem}.launch-description{font-size:1.25rem}.launch-settings{font-size:1.0625rem}.launch-bottom{left:70px;right:70px}}
+@media(max-width:1600px) and (min-width:1001px){.launch-panel{padding:44px 38px 142px;gap:24px}.launch-eyebrow{font-size:.625rem;letter-spacing:1.25px;gap:8px;margin-bottom:20px}.launch-description{font-size:1.0625rem}.launch-settings{font-size:.9375rem;gap:10px}.launch-start{min-width:0!important;width:100%;max-width:264px}.launch-button-note{font-size:.8125rem;text-align:center}.launch-bottom{left:38px;right:38px}}
+@media(max-width:1000px){.launch-panel{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;padding:38px 34px 142px;min-height:0}.launch-action{grid-column:1;grid-row:1;min-height:270px;max-width:280px}.launch-focus{grid-column:2;grid-row:1;min-height:270px}.launch-copy{grid-column:1/-1;grid-row:2;max-width:none}.launch-copy h2{font-size:2.7rem;letter-spacing:-1.5px}.launch-description,.launch-settings{max-width:55ch}.launch-count strong{font-size:6rem;letter-spacing:-5px}.launch-start{min-width:0!important;width:100%;max-width:264px}.launch-bottom{left:34px;right:34px}}
+@media(max-width:760px){[data-intro="waiting"] .intro-action{display:none}.launch-panel{gap:26px 16px;padding:28px 25px 120px}.launch-focus{min-height:245px}.launch-action{min-height:245px;max-width:none;padding:0}.launch-copy h2{font-size:clamp(2rem,6.6vw,2.7rem);letter-spacing:-1.2px;margin-bottom:19px}.launch-eyebrow{font-size:.6875rem;letter-spacing:1.3px;margin-bottom:20px}.launch-description{font-size:1.125rem;margin-bottom:17px}.launch-settings{font-size:1rem}.launch-count{margin-bottom:21px}.launch-count strong{font-size:4.5rem;letter-spacing:-4px}.launch-count>span{font-size:.8125rem;letter-spacing:0;text-align:center}.launch-start{min-height:65px;gap:8px;padding:12px}.launch-start>span:first-child{font-size:.9375rem;letter-spacing:1.7px}.launch-start-arrow{width:30px;height:30px;flex-shrink:0}.launch-button-note{font-size:.75rem;line-height:1.5;text-align:center;margin-top:15px}.launch-bottom{left:25px;right:25px;bottom:18px;letter-spacing:1px}}
+@media(max-width:430px){.launch-start>span:first-child{font-size:.875rem;letter-spacing:1.3px}.launch-count>span{font-size:.75rem}.launch-bottom>span:first-child{font-size:.625rem;letter-spacing:.7px}}
 @media(prefers-reduced-motion:reduce){.launch-start,.launch-start:before,.launch-start svg,#ambient-particles{transition:none}.launch-start:hover,.launch-start:active,.launch-start:hover svg{transform:none}.overview>button:after{animation:none!important}}
 [data-motion="paused"] .launch-start,[data-motion="paused"] .launch-start:before,[data-motion="paused"] .launch-start svg,[data-motion="paused"] #ambient-particles{transition:none}
 [data-motion="paused"] .launch-start:hover,[data-motion="paused"] .launch-start:active,[data-motion="paused"] .launch-start:hover svg{transform:none}
+
+/* A quiet glass panel around the welcome galaxy. */
+.launch-panel{
+  border:1px solid #c4d9ed26;
+  background:radial-gradient(ellipse at 50% 48%,#14192dc9,transparent 60%),linear-gradient(135deg,#0d1420f0,#0a0e18f5);
+  box-shadow:0 24px 64px #00000030,inset 0 1px 0 #e7f4ff14,inset 0 -1px 0 #00000020;
+  -webkit-backdrop-filter:blur(24px) saturate(120%);
+  backdrop-filter:blur(24px) saturate(120%);
+}
+.launch-glass{position:absolute;inset:0;z-index:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;opacity:0;contain:strict}
+.launch-glass.is-ready{opacity:1}
+.launch-universe{position:absolute;z-index:0;pointer-events:none;contain:strict;overflow:hidden}
+.launch-orbits{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.launch-gears{
+  position:relative;display:block;z-index:1;width:119.8154px;height:105.6px;aspect-ratio:590/520;flex:0 0 119.8154px;max-width:none;pointer-events:none;opacity:.94;overflow:visible;
+  filter:drop-shadow(0 7px 8px #00000065) drop-shadow(0 0 15px #a0ffd91c);
+}
+.gear-stop-bright{stop-color:#a3caba}.gear-stop-mid{stop-color:#416f60}.gear-stop-dark{stop-color:#1a3830}
+.gear-stop-edge{stop-color:#b4e6d0;stop-opacity:.8}.gear-stop-shadow{stop-color:#102b26;stop-opacity:.6}
+.gear-depth{fill:#060f11;stroke:#030c0e;stroke-width:2}
+.gear-face{fill:url(#gear-metal);stroke:url(#gear-bevel);stroke-width:1.3;stroke-linejoin:round}
+.gear-etch{fill:none;stroke:#a7d9c4;stroke-width:.85;opacity:.43}
+.gear-bearing{fill:none;stroke:#a0cfbd;stroke-width:2.5;opacity:.6}
+.gear-bearing-inner{fill:none;stroke:#0a1d1b;stroke-width:2}
+.gear-ticks{fill:none;stroke:#b7e8d3;stroke-width:1;opacity:.43}
+.gear-screws{fill:#0b2420;stroke:#a4d8c4;stroke-width:.7}
+.launch-panel:before{
+  content:'';position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(0deg,#0b1119d9,transparent 16%),linear-gradient(90deg,#0b1119c4, #0b111980 22%,transparent 38%,transparent 60%,#0b111999 74%,#0b1119d9);
+}
+.launch-panel:after{
+  content:'';position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(140deg,#e1f1ff52,transparent 33%,#c1e6d313 66%,#e3f4ff29);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask-composite:exclude;
+}
+.launch-copy{z-index:2;min-width:0}
+.launch-count strong{text-shadow:0 2px 28px #07171166}
+.launch-copy h2,.launch-count strong{color:#f2f5f8}
+.launch-description{color:#c7d0dd}
+.launch-eyebrow,.launch-settings,.launch-count>span,.launch-button-note{color:#aebdcc}
+.launch-bottom{color:#a6b6c6;border-color:#cadaeb1f}
+.launch-start{
+  min-width:264px;max-width:100%;border-radius:18px;
+  border:1px solid #c5f4d74d;background:linear-gradient(145deg,#2b6049,#193c2f);
+  color:#edfff4;box-shadow:0 12px 30px #00000026,inset 0 1px 0 #edfff426;
+}
+.launch-start:before{background:linear-gradient(110deg,transparent 40%,#f0fff51c 50%,transparent 60%)}
+.launch-start:hover{transform:translateY(-2px);background:linear-gradient(145deg,#326f53,#1e4535);box-shadow:0 15px 34px #0000002b,inset 0 1px 0 #edfff43b}
+.launch-start-arrow{border:0;border-radius:50%;background:#e1ffeb0a}
+.launch-start:focus-visible{outline:3px solid var(--focus);outline-offset:5px}
+[data-theme="light"] .launch-panel{
+  background:linear-gradient(135deg,#dfe4e8f2,#d2d9dff2);border-color:#8b9aa94d;
+  box-shadow:0 20px 60px #253d5514,inset 0 1px 0 #edf1f3a6;
+}
+[data-theme="light"] .launch-gears{opacity:.8;filter:drop-shadow(0 7px 8px #285b3c26)}
+[data-theme="light"] .gear-stop-bright{stop-color:#deeee5}
+[data-theme="light"] .gear-stop-mid{stop-color:#a6c4b5}
+[data-theme="light"] .gear-stop-dark{stop-color:#6f9688}
+[data-theme="light"] .gear-stop-shadow{stop-color:#567567}
+[data-theme="light"] .gear-depth{fill:#5c8270;stroke:#577b6b}
+[data-theme="light"] .gear-etch,[data-theme="light"] .gear-ticks{stroke:#385f4c;opacity:.45}
+[data-theme="light"] .gear-bearing{stroke:#456e5c}
+[data-theme="light"] .gear-bearing-inner{stroke:#557b68}
+[data-theme="light"] .gear-screws{fill:#4e7964;stroke:#f0fff6}
+[data-theme="light"] .launch-count strong{text-shadow:none}
+[data-theme="light"] .launch-panel:before{background:linear-gradient(0deg,#dce2e6eb,transparent 16%),linear-gradient(90deg,#dce2e6df,#dce2e699 22%,transparent 38%,transparent 60%,#dbe1e6ba 74%,#dbe1e6eb)}
+[data-theme="light"] .launch-panel:after{background:linear-gradient(140deg,#edf1f3b3,transparent 37%,#a9b7c452 67%,#edf1f38f)}
+[data-theme="light"] .launch-copy h2,[data-theme="light"] .launch-count strong{color:#1d2832}
+[data-theme="light"] .launch-description{color:#435465}
+[data-theme="light"] .launch-eyebrow,[data-theme="light"] .launch-settings,[data-theme="light"] .launch-count>span,[data-theme="light"] .launch-button-note,[data-theme="light"] .launch-bottom{color:#4c5e6f}
+[data-theme="light"] .launch-bottom{border-color:#849bb633}
+[data-theme="light"] .launch-start{color:#183e2a;background:linear-gradient(145deg,#dce9e1,#bcd5c6);border-color:#73a68b70;box-shadow:0 12px 30px #274b3714,inset 0 1px 0 #edf4efb3}
+[data-theme="light"] .launch-start:hover{background:linear-gradient(145deg,#e3eee7,#c7ddcf);box-shadow:0 15px 34px #274b371c,inset 0 1px 0 #edf4efcc}
+[data-theme="light"] .launch-start-arrow{background:#24674709}
+@media(max-width:1000px){
+  .launch-panel:before{background:linear-gradient(0deg,#0b1119d9,#0b1119ba 42%,transparent 70%),linear-gradient(90deg,#0b111999,transparent 72%)}
+  [data-theme="light"] .launch-panel:before{background:linear-gradient(0deg,#dbe1e6ed,#dbe1e6cc 42%,transparent 70%),linear-gradient(90deg,#dce2e6c9,transparent 72%)}
+}
+@media(max-width:760px){
+  .launch-panel{border-radius:22px}
+  .launch-gears{width:87.1385px;height:76.8px;flex-basis:87.1385px}
+  .launch-start{min-width:0;border-radius:15px}
+}
+@media(prefers-reduced-transparency:reduce){
+  .launch-panel{-webkit-backdrop-filter:none;backdrop-filter:none;background:#101923}
+  [data-theme="light"] .launch-panel{background:#dce2e6}
+  .launch-glass{visibility:hidden}
+}
+@media(prefers-contrast:more){
+  .launch-panel{border-color:var(--text-muted)}
+  .launch-copy h2,.launch-count strong,.launch-description,.launch-eyebrow,.launch-settings,.launch-count>span,.launch-button-note,.launch-bottom{color:var(--text)!important}
+}
 </style>
 </head>
 <body>
@@ -292,23 +396,26 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
     <div class="header-utilities"><span class="os-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z" fill="currentColor"/></svg>Windows 11</span><nav class="header-resources" aria-label="Tools and recovery"><a href="#tools" data-view="tools">Useful tools</a><a href="#backup" data-view="backup">How to back up your OS</a></nav><div class="appearance-controls"><button id="motion-toggle" class="appearance-button" aria-label="Pause background animation" title="Pause background animation"><svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button id="theme-toggle" class="appearance-button theme-toggle" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5 9 9 0 1 0 20.5 14.2Z"/></svg><span class="theme-toggle-label">Light mode</span></button></div></div>
   </div></header>
   <main class="page-shell">
-    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Choose services in a few clicks, then download your script.</span><span>Updated September 27, 2026</span></div></section>
+    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-04">October 4, 2026</time></span></div></section>
     <div class="directory-stage">
     <section id="welcome" class="launch-panel" aria-labelledby="launch-title" hidden>
-      <div class="launch-grid" aria-hidden="true"></div>
+      <canvas class="launch-glass" id="launch-glass" aria-hidden="true"></canvas>
+      <div class="launch-universe" id="launch-universe" aria-hidden="true">
+        <canvas class="launch-orbits" id="launch-orbits"></canvas>
+      </div>
+      <div class="launch-focus" aria-hidden="true"></div>
       <div class="launch-copy">
         <p class="launch-eyebrow"><span></span>THE WINDOWS 11 SERVICE GUIDE</p>
         <h2 id="launch-title">Know what’s running.<br><span>Choose what stays.</span></h2>
-        <p class="launch-description">Explore the services behind your PC. Understand what each one does, what you can turn off, and which features depend on it.</p>
-        <p class="launch-settings"><span data-icon="sliders"></span><span>Find links to Windows settings (where available) and instructions for locating and changing services.</span></p>
+        <p class="launch-description">Take control of background services. See what they do, which you can disable if unused, and which features rely on them.</p>
+        <p class="launch-settings"><span data-icon="sliders"></span><span>Use Windows settings shortcuts where available, with clear steps to turn services on or off.</span></p>
       </div>
       <div class="launch-action">
-        <div class="launch-planes" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="launch-count"><strong id="launch-count">70</strong><span>services, explained</span></div>
+        <div class="launch-count"><strong id="launch-count">145</strong><span>services, explained</span></div>
         <button id="start-directory" class="launch-start" type="button" aria-controls="directory"><span>START</span><span class="launch-start-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></span></button>
         <span class="launch-button-note">Explore the service directory</span>
       </div>
-      <div class="launch-bottom" aria-hidden="true"><span>UNDERSTAND · CHOOSE · CONTROL</span><span class="launch-track"><i></i><i></i><i></i></span></div>
+      <div class="launch-bottom" aria-hidden="true"><span>UNDERSTAND · CHOOSE · CONTROL</span><svg class="launch-gears" id="launch-gears" viewBox="45 15 590 520" focusable="false"></svg></div>
     </section>
     <section class="overview" aria-label="Guide overview">
       <button class="overview-total" type="button" data-category="all" aria-label="Show all services"><span class="overview-icon" data-icon="grid"></span><span class="overview-total-copy"><strong id="total-stat">—</strong><span>services explained</span></span><span class="stat-annotation">One place to understand<br>what’s running.</span></button>
@@ -375,8 +482,29 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
           <p class="tool-detail">Use Hide Signed Microsoft Entries to focus on third-party items. Review each entry before disabling it.</p>
           <div class="tool-links"><a class="tool-download" href="https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns" target="_blank" rel="noopener noreferrer">Get Autoruns <span data-icon="external"></span></a></div>
         </article>
+        <article class="tool-card" aria-labelledby="tool-warp">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="terminal"></span><span class="tool-category">Work in the terminal</span></div>
+          <h3 id="tool-warp">Warp</h3><p class="tool-publisher">Warp</p>
+          <p>Run PowerShell commands in a modern terminal with tabs, split panes, and command output grouped into blocks. Built-in AI can help with command-line tasks.</p>
+          <p class="tool-detail">Supports both Windows PowerShell and PowerShell 7. Choose your preferred shell in Settings.</p>
+          <div class="tool-links"><a class="tool-download" href="https://www.warp.dev/download" target="_blank" rel="noopener noreferrer">Get Warp <span data-icon="external"></span></a><a href="https://docs.warp.dev/getting-started/migrate-to-warp/migrate-to-warp-from-windows-terminal" target="_blank" rel="noopener noreferrer">Windows guide</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-zed">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="keyboard"></span><span class="tool-category">Edit code</span></div>
+          <h3 id="tool-zed">Zed</h3><p class="tool-publisher">Zed Industries</p>
+          <p>A native code editor built for responsive editing and collaboration. Work with language extensions, navigate projects, and use coding agents in the editor.</p>
+          <p class="tool-detail">Built-in WSL support lets you edit projects inside a Linux environment from Windows.</p>
+          <div class="tool-links"><a class="tool-download" href="https://zed.dev/download" target="_blank" rel="noopener noreferrer">Get Zed <span data-icon="external"></span></a><a href="https://zed.dev/windows" target="_blank" rel="noopener noreferrer">Zed on Windows</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-localsend">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="network"></span><span class="tool-category">Share between devices</span></div>
+          <h3 id="tool-localsend">LocalSend</h3><p class="tool-publisher">LocalSend · Free &amp; open source</p>
+          <p>Send photos, files, and text between your PC and nearby phones or computers over your local network. No cloud upload or account needed.</p>
+          <p class="tool-detail">Install it on both devices and connect them to the same local network. Works across Windows, macOS, Linux, Android, and iOS.</p>
+          <div class="tool-links"><a class="tool-download" href="https://localsend.org/download" target="_blank" rel="noopener noreferrer">Get LocalSend <span data-icon="external"></span></a><a href="https://localsend.org/" target="_blank" rel="noopener noreferrer">How it works</a></div>
+        </article>
       </div>
-      <p class="tools-reviewed">Official publisher and project sources checked <time datetime="2026-09-25">September 25, 2026</time>.</p>
+      <p class="tools-reviewed">Original selection checked <time datetime="2026-09-25">September 25, 2026</time>. Warp, Zed, and LocalSend checked against official sources <time datetime="2026-10-04">October 4, 2026</time>.</p>
     </section>
     <section id="backup" class="backup-view" aria-labelledby="backup-title" hidden>
       <div class="backup-heading"><p class="eyebrow"><span class="tiny-line"></span>BEFORE YOU MAKE A CHANGE</p><h1 id="backup-title" tabindex="-1">How to back up your OS<span>.</span></h1><p class="backup-lead">Before changing any service, create a Windows System Restore point. It can help you recover system settings if a change prevents normal startup or sign-in.</p></div>
@@ -440,7 +568,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if ([string]::IsNullOrWhiteSpace($PSScriptRoot)) { throw 'Save and run this as a .ps1 file (for example: .\Winwise-Services.ps1).' }
 $SelectedServices = @(__SERVICE_NAMES__)
-$AllowedServices = @('DiagTrack','SysMain','WSearch','RemoteRegistry','TermService','Spooler','PrintDeviceConfigurationService','BTAGService','BthAvctpSvc','bthserv','Fax','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','wisvc')
+$AllowedServices = @('DiagTrack','RemoteRegistry','SysMain','WSearch','Spooler','PrintDeviceConfigurationService','Fax','wisvc','TermService','bthserv','BTAGService','BthAvctpSvc','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','PrintNotify','XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc','WiaRpc','stisvc')
 $MachineId = (Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Cryptography' -Name MachineGuid).MachineGuid
 
 function Get-ServiceKey([string]$Name) {
@@ -661,6 +789,18 @@ if ($failed -gt 0) { throw "$failed service change(s) failed. Review warnings an
 // Service definitions are factual references. Recommendations are Winwise's
 // conditional editorial judgments for general-purpose Windows 11 PCs.
 const SOURCES = {
+  wia:{title:'Microsoft: Windows Image Acquisition architecture',url:'https://learn.microsoft.com/en-us/windows-hardware/drivers/image/wia-architecture-overview',note:'How imaging applications use the WIA service to communicate with scanners and compatible cameras.'},
+  hello:{"title": "Microsoft: How Windows Hello works", "url": "https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/how-it-works", "note": "Keys, PINs, and biometric authentication used by Windows Hello."},
+  securityApp:{"title": "Microsoft: Windows Security services", "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/system-security/windows-defender-security-center/windows-defender-security-center", "note": "The separate roles of SecurityHealthService, Security Center, and antivirus protection."},
+  defender:{"title": "Microsoft: Defender Antivirus compatibility", "url": "https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-compatibility", "note": "How Defender operating modes depend on the other security products and management configuration."},
+  updates:{"title": "Microsoft: How Windows Update works", "url": "https://learn.microsoft.com/en-us/windows/deployment/update/how-windows-update-works", "note": "Update orchestration, downloads, installation, and restarts."},
+  time:{"title": "Microsoft: Windows Time service", "url": "https://learn.microsoft.com/en-us/windows-server/networking/windows-time-service/windows-time-service-top", "note": "Clock synchronization and its role in network authentication."},
+  ncsi:{"title": "Microsoft: Network connectivity detection", "url": "https://learn.microsoft.com/en-us/windows-server/networking/ncsi/ncsi-overview", "note": "On Windows 11, NCSI runs in Network List Manager rather than Network Location Awareness."},
+  installer:{"title": "Microsoft: Windows Installer", "url": "https://learn.microsoft.com/en-us/windows/win32/msi/windows-installer-portal", "note": "Installation and maintenance of Windows Installer packages."},
+  fileHistory:{"title": "Microsoft: Back up and restore with File History", "url": "https://support.microsoft.com/en-us/windows/experience/backup-recovery/backup-and-restore-with-file-history", "note": "File History backup and recovery controls in Control Panel."},
+  smartCard:{"title": "Microsoft: Smart card architecture", "url": "https://learn.microsoft.com/en-us/windows/security/identity-protection/smart-cards/smart-card-architecture", "note": "Smart card services and authentication dependencies."},
+  removed:{"title": "Microsoft: Removed Windows features", "url": "https://learn.microsoft.com/en-us/windows/whats-new/removed-features", "note": "Used to distinguish retired features from current Windows components."},
+  deprecated:{"title": "Microsoft: Deprecated Windows features", "url": "https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features", "note": "Deprecation is not the same as removal; availability still depends on the installed build."},
   stopService:{title:'Microsoft: Stop-Service and dependent services',url:'https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/stop-service',note:'The script uses Stop-Service without -Force to refuse stopping a service with running dependents.'},
   restore:{"title": "Microsoft: System Restore", "url": "https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-restore", "note": "What restore points cover and how to apply one from Windows Recovery Environment."},
   protection:{"title": "Microsoft: System Protection", "url": "https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-protection", "note": "Enable System Protection and create a restore point before changing Windows."},
@@ -699,9 +839,9 @@ const SERVICES = [
   service("SysMain","SysMain (Superfetch)","performance","conditional","Consider a change when SysMain causes persistent disk or CPU activity.","Preloading stops, so frequently used applications may take longer to open.","Keep the default unless persistent background activity has been traced to this service. If you disable it and app launches become slower, restore the previous setting.","system",{"script": true, "description": "Learns usage patterns and preloads application data into memory to help frequently used apps launch faster.", "recommendation": "Only for troubleshooting"}),
   service("WSearch","Windows Search","performance","settings","Try fewer indexed locations before turning it off.","File Explorer and apps that use the Windows index, including classic Outlook, may return slower or incomplete search results.","Choose Classic indexing or exclude busy folders in Settings → Privacy & security → Search or Searching Windows. Disable only if you accept the effect on all apps using the index.","search",{"script": true, "description": "Builds and updates a local index so Windows and compatible apps can quickly find files, properties, and file contents."}),
   service("Spooler","Print Spooler","optional","conditional","Can disable if you never print, including to PDF.","Local printers, shared printers, and virtual printing such as Microsoft Print to PDF can stop working.","Keep it for any print workflow, even without a physical printer. If you never print, review its dependencies and disable it with a backup of the original settings.","print",{"script": true, "description": "Queues print jobs and connects applications to local, network, and virtual printers."}),
-  service("PrintDeviceConfigurationService","Print Device Configuration Service","optional","conditional","Can disable only if you never print or add a printer.","Adding or configuring printers may fail.","Keep it if you print or add printers. The script skips this service if it is not installed.","print",{"script": true, "description": "Handles print-device configuration.", "availability": "May be absent depending on the Windows build and installed printing components."}),
+  service("PrintDeviceConfigurationService","Print Device Configuration Service","optional","conditional","Can disable only if you never print or add a printer.","Adding or configuring printers may fail.","Keep it if you print or add printers. Check its local description and dependencies because printing components differ between builds. The script skips it if it is absent.","print",{"script": true, "description": "Handles print-device configuration.", "availability": "Build-dependent printing component. The linked reference explains the printing stack; check services.msc for this component’s local description and dependencies."}),
   service("Fax","Fax","optional","conditional","Can disable when Windows fax features are unused.","Sending or receiving faxes through Windows becomes unavailable. Other fax software may have different requirements.","Disable if you do not use Windows faxing. If the service is absent or already disabled, no action is needed; the script skips it.","network",{"script": true, "description": "Provides Windows fax sending and receiving when the optional fax components are installed.", "availability": "Optional feature. The Fax service may not exist on your Windows 11 installation."}),
-  service("TabletInputService","Touch Keyboard and Handwriting Panel Service","optional","keep","Keep input services available, even without touch.","On-screen typing, handwriting, and input-method functions can stop working.","Leave input services at their existing defaults, including on PCs with a physical keyboard.","input",{"description": "Supports touch-keyboard and handwriting input. Related text-input services also support input method editors (IMEs).", "aliases": ["TextInputManagementService", "Text Input Management Service", "inking", "stylus", "IME"], "availability": "The name differs across Windows builds. Newer versions use Text Input Management Service; search your local service list for the exact name."}),
+  service("TabletInputService","Touch Keyboard and Handwriting Panel Service","optional","keep","Keep input services available, even without touch.","On-screen typing, handwriting, and input-method functions can stop working.","Leave input services at their existing defaults, including on PCs with a physical keyboard.","input",{"description": "Supports the touch keyboard and handwriting panel on builds that include this service.", "aliases": ["touch keyboard", "handwriting", "inking", "stylus"], "availability": "An older service name. Current builds may instead list TextInputManagementService, which has its own entry in this guide. Match the service name on your PC."}),
   service("wisvc","Windows Insider Service","optional","conditional","Can disable if this PC is not an Insider device.","Windows Insider Program functionality can stop working. Disabling the service does not convert an installed preview build into a stable release.","Consider disabling only on a stable, unenrolled PC. If you already receive preview builds, use Settings → Windows Update → Windows Insider Program to follow the supported opt-out process.","system",{"script": true, "description": "Provides supporting infrastructure for the Windows Insider Program and its preview-build experience."}),
   service("TermService","Remote Desktop Services","optional","conditional","If this PC never hosts Remote Desktop.","Incoming Remote Desktop sessions and related remote-session features become unavailable. This can disconnect your current session.","Prefer turning Remote Desktop off in Settings → System. If disabling services, run locally at the PC and keep them if any remote-session feature is needed. Host availability depends on edition.","network",{"script": true, "description": "Lets this PC host Remote Desktop sessions so another computer can connect to it."}),
   service("lfsvc","Geolocation Service","privacy","settings","Review location permissions first.","Location-aware apps, automatic location features, and Find my device can lose functionality. Apps may still infer location from an IP address.","Use Settings → Privacy & security → Location to manage the service and app permissions. Check Find my device before switching location off.","location",{"description": "Provides location information to Windows features and apps that have permission to use it."}),
@@ -721,7 +861,7 @@ const SERVICES = [
   service("CDPUserSvc","Connected Devices Platform User Service","privacy","settings","If nearby or cross-device experiences are unused.","Connected-device features in your user session may stop working.","Turn off unused sharing features in Settings rather than disabling the per-user service template.","user",{"perUser": true, "description": "Provides connected-device support within the signed-in user’s session."}),
   service("cbdhsvc","Clipboard User Service","privacy","settings","Review clipboard history and cloud sync.","Clipboard history or synchronization may fail.","Use Settings → System → Clipboard.","user",{"perUser": true, "description": "Supports clipboard history and clipboard synchronization across devices."}),
   service("OneSyncSvc","Sync Host","privacy","keep","Review account synchronization.","Apps that use this service may stop synchronizing mail, calendars, and contacts.","Use the account or synchronization controls in the affected app.","user",{"perUser": true, "recommendation": "Use account sync controls", "description": "Synchronizes mail, calendars, contacts, and other user data for apps that use this Windows service."}),
-  service("BcastDVRUserService","Game DVR and Broadcast User Service","performance","settings","If background game recording is unused.","Game capture becomes unavailable.","Use Settings → Gaming → Captures.","user",{"perUser": true, "description": "Supports Windows game recording and broadcasting features."}),
+  service("BcastDVRUserService","Game DVR and Broadcast User Service","performance","settings","If background game recording is unused.","Game capture becomes unavailable.","Use Settings → Gaming → Captures.","user",{"perUser": true, "description": "Supports Windows game recording and broadcasting features.", "aliases": ["GameDVR"]}),
   service("CaptureService","OneCore Capture Service","optional","keep","Keep available for screen capture.","Screen capture may fail in apps that use this Windows API.","Keep it available for screen capture and screen-sharing apps.","user",{"perUser": true, "description": "Supports screen capture for apps that use the Windows.Graphics.Capture API."}),
   service("BluetoothUserService","Bluetooth User Support Service","optional","settings","Review together with your Bluetooth devices.","Per-user Bluetooth features may fail.","Use Bluetooth settings first.","user",{"perUser": true, "description": "Supports Bluetooth functions specific to the signed-in user’s session."}),
   service("PimIndexMaintenanceSvc","Contact Data","optional","keep","Keep available for contact search.","Contacts may disappear from search.","Leave the default configuration.","user",{"perUser": true, "description": "Indexes contact data so supported apps can search it quickly."}),
@@ -736,8 +876,8 @@ const SERVICES = [
   service("vmicvss","Hyper-V Volume Shadow Copy Requestor","optional","keep","Keep for live VM backups.","Host-coordinated live backups can fail.","Review with your backup administrator.","hyperv",{"description": "Coordinates guest snapshots for backups initiated by the Hyper-V host while the VM is running."}),
   service("vmicguestinterface","Hyper-V Guest Service Interface","optional","keep","Leave at the VM’s configured default.","Host file-copy integration may fail.","If already disabled, no change is needed.","hyperv",{"description": "Lets the Hyper-V host copy files into a guest through the integration services."}),
   service("vmicvmsession","Hyper-V PowerShell Direct Service","optional","keep","Keep for host-to-guest PowerShell.","PowerShell Direct administration becomes unavailable.","Leave at the VM’s configured default.","hyperv",{"description": "Enables PowerShell Direct connections from the Hyper-V host to a Windows guest without a network connection."}),
-  service("WinDefend","Microsoft Defender Antivirus Service","essential","keep","Keep malware protection available.","Microsoft Defender Antivirus cannot provide its normal scanning and malware protection.","Do not disable.","system",{"description": "Runs Microsoft Defender Antivirus scanning and malware protection."}),
-  service("WdNisSvc","Microsoft Defender Antivirus Network Inspection","essential","keep","Keep Defender network inspection available.","Microsoft Defender’s network inspection for exploits is disrupted.","Do not disable.","system",{"description": "Inspects network traffic for exploits as part of Microsoft Defender Antivirus."}),
+  service("WinDefend","Microsoft Defender Antivirus Service","essential","keep","Keep malware protection available.","Microsoft Defender Antivirus cannot provide its normal scanning and malware protection.","Let Windows manage antivirus registration. Do not disable protection as a performance tweak or force the service on when a compatible security product manages protection.","defender",{"description": "Runs Microsoft Defender Antivirus scanning and malware protection.", "availability": "Windows can change Defender’s operating mode when another antivirus product is installed. The correct state depends on that security configuration."}),
+  service("WdNisSvc","Microsoft Defender Antivirus Network Inspection","essential","keep","Keep Defender network inspection available.","Microsoft Defender’s network inspection for exploits is disrupted.","Do not disable.","defender",{"description": "Inspects network traffic for exploits as part of Microsoft Defender Antivirus."}),
   service("MpsSvc","Windows Defender Firewall","essential","keep","Use firewall settings, not a service tweak.","Stopping the firewall service can disrupt security and Windows functionality.","Configure rules or profiles through supported firewall controls. Do not add this service to a performance script.","firewall",{"description": "Enforces Windows Firewall rules for incoming and outgoing network traffic."}),
   service("BFE","Base Filtering Engine","essential","keep","Keep network filtering available.","Firewall and IPsec functionality depend on the filtering infrastructure.","Keep it available and troubleshoot unwanted network behavior through supported settings.","firewall",{"description": "Manages the filtering infrastructure used by Windows Firewall and IPsec."}),
   service("wuauserv","Windows Update","essential","keep","Keep update servicing available.","Windows may be unable to check for, download, or install updates.","Use update settings.","system",{"description": "Enables detection, download, and installation of Windows updates."}),
@@ -749,7 +889,7 @@ const SERVICES = [
   service("DcomLaunch","DCOM Server Process Launcher","essential","keep","Core Windows component activation.","Windows components and apps that need COM/DCOM activation may fail to start.","Do not disable.","system",{"description": "Starts COM and DCOM components used by Windows and applications.", "bootRisk": {"reason": "Startup and sign-in rely on Windows components that use COM/DCOM activation. Disabling this service can prevent those components from starting.", "sources": ["system"]}}),
   service("EventLog","Windows Event Log","essential","keep","Keep diagnostic and audit records available.","Logging-dependent troubleshooting and administration can fail.","Control log retention instead of disabling the service.","network",{"description": "Records Windows events used for diagnostics, security auditing, and administration.", "bootRisk": {"condition": "When audit-failure shutdown policy is enabled", "reason": "Windows can halt if it cannot record security audits when the audit-failure shutdown policy is enabled. That policy is normally disabled.", "sources": ["audit"]}}),
   service("Schedule","Task Scheduler","essential","keep","Keep scheduled Windows work available.","Scheduled Windows maintenance and tasks created by apps or users stop running.","Do not disable.","system",{"description": "Runs scheduled tasks for Windows, installed software, and the user."}),
-  service("Winmgmt","Windows Management Instrumentation","essential","keep","Keep system-management information available.","Management tools and software relying on WMI can fail.","Keep enabled, including for local management tools.","network",{"description": "Provides the WMI interface that management tools and apps use to query and manage Windows."}),
+  service("Winmgmt","Windows Management Instrumentation","essential","keep","Keep system-management information available.","Management tools and software relying on WMI can fail.","Keep enabled for local and remote management tools. Removal of the older WMIC command-line tool does not remove WMI or make this service unnecessary.","network",{"description": "Provides the WMI interface that management tools and apps use to query and manage Windows."}),
   service("CryptSvc","Cryptographic Services","essential","keep","Keep certificate and signature functions available.","Signature checks, certificate updates, and installations that depend on them can fail.","Do not disable.","system",{"description": "Supports file-signature verification and manages trusted root certificates."}),
   service("BDESVC","BitLocker Drive Encryption Service","essential","keep","Keep drive-encryption management available.","BitLocker management and automatic drive unlocking may fail. Disabling the service does not decrypt an encrypted drive.","Do not disable.","system",{"description": "Supports BitLocker drive-encryption management, unlock prompts, and automatic unlocking."}),
   service("VSS","Volume Shadow Copy","essential","keep","Keep snapshot infrastructure available.","Backups and recovery workflows using snapshots can fail.","Leave it available even when it is currently stopped.","vss",{"description": "Coordinates snapshots of volumes for backup and recovery software, including while files are in use."}),
@@ -762,8 +902,95 @@ const SERVICES = [
   service("ProfSvc","User Profile Service","essential","keep","Required to load and unload user profiles.","Disabling it can prevent sign-in and sign-out.","Keep enabled so Windows can load and unload user profiles.","system",{"description": "Loads the user profile that Windows needs for a usable session.", "bootRisk": {"reason": "Microsoft explicitly warns that stopping or disabling this service can prevent users from signing in or out.", "sources": ["system"]}}),
   service("nsi","Network Store Interface Service","essential","keep","Keep Windows networking and its dependencies available.","Stopping it causes loss of network connectivity; dependent services can fail.","Keep enabled. Local and cached sign-in may still work, but sign-in that needs a domain controller may fail without a usable network.","system",{"description": "Supplies network-change notifications to Windows components.", "bootRisk": {"condition": "For sign-in that requires a live network", "reason": "Loss of networking can block domain sign-in when cached credentials are unavailable.", "sources": ["system", "cachedLogon"]}}),
   service("gpsvc","Group Policy Client","essential","keep","Keep policy processing available.","Policy application and dependent management workflows can fail.","Follow device management policy; do not disable.","network",{"description": "Applies Group Policy settings to the computer and its users."}),
+
+  // Coverage review: October 4, 2026.
+  service("TextInputManagementService","Text Input Management Service","essential","keep","Keep text input available with any keyboard.","Input methods and switching between typing languages can fail.","Keep the existing configuration, even on a desktop without a touchscreen. Use typing and language settings for unwanted input features.","input",{"description": "Supports Windows text input, including input method editors (IMEs).", "aliases": ["IME", "Ctfmon", "touch keyboard", "handwriting"], "availability": "Look for this name on current builds. TabletInputService is listed separately for installations using the older service name."}),
+  service("NgcSvc","Microsoft Passport","essential","keep","Keep PIN and key-based sign-in available.","Windows Hello and apps using these keys may be unable to sign you in.","Keep enabled. Change sign-in methods through Settings → Accounts → Sign-in options.","hello",{"description": "Isolates authentication keys used by Windows Hello and connected identities.", "bootRisk": {"condition": "When sign-in relies on Windows Hello", "reason": "Disabling key support can make a Hello sign-in method unavailable. An alternative sign-in method must already be configured to use it.", "sources": ["hello", "system"]}}),
+  service("NgcCtnrSvc","Microsoft Passport Container","essential","keep","Keep access to your sign-in keys.","Windows Hello keys and TPM virtual smart-card credentials can become unavailable.","Leave the service configuration intact. Manage your PIN and other sign-in methods in Settings.","hello",{"description": "Manages local identity keys used for Windows Hello authentication.", "bootRisk": {"condition": "When sign-in uses Hello or a TPM virtual smart card", "reason": "Disabling access to identity keys can block the sign-in method that depends on them.", "sources": ["hello", "system"]}}),
+  service("WbioSrvc","Windows Biometric Service","essential","keep","Keep biometric sign-in available.","Fingerprint or face sign-in may stop working; another configured sign-in method is then needed.","Remove an unwanted biometric sign-in method in Settings → Accounts → Sign-in options. Keep the service available.","hello",{"description": "Provides fingerprint and face-recognition support to Windows and compatible apps."}),
+  service("wlidsvc","Microsoft Account Sign-in Assistant","essential","keep","Keep Microsoft-account access available.","Microsoft-account sign-in and connected apps may fail.","Use Windows account settings to choose how you sign in. Do not disable an authentication service to reduce background activity.","system",{"description": "Supports Microsoft-account authentication for Windows and applications.", "bootRisk": {"condition": "When a sign-in flow requires a Microsoft account", "reason": "Disabling this service can prevent the Microsoft-account authentication required by that flow. Local accounts use a different authentication path.", "sources": ["system"]}}),
+  service("TokenBroker","Web Account Manager","essential","keep","Keep app account sign-in working.","Apps may fail to sign in or repeatedly request credentials.","Manage unwanted accounts through Settings → Accounts. Leave the token broker available.","system",{"description": "Brokers account tokens for single sign-on in Windows apps."}),
+  service("ClipSVC","Client License Service","essential","keep","Keep Store app license checks available.","Licensed Store apps may fail to run correctly.","Keep its existing startup mode. A service that starts only when requested need not run continuously.","system",{"description": "Supports licensing for Microsoft Store apps."}),
+  service("LicenseManager","Windows License Manager Service","essential","keep","Keep access to Store content.","Apps or content obtained from Microsoft Store may stop working.","Leave the service available, even if you rarely open the Store.","system",{"description": "Provides licensing infrastructure used by Microsoft Store content."}),
+  service("InstallService","Microsoft Store Install Service","essential","keep","Keep Store installation and updates available.","Store app installation or update operations can fail.","Manage unwanted apps in Installed apps. Keep Store infrastructure at its existing settings.","system",{"description": "Supports installation of Microsoft Store apps."}),
+  service("msiserver","Windows Installer","essential","keep","Keep desktop-app installation and repair available.","Installers, repairs, updates, and removals that use Windows Installer can fail.","Leave this service available to start on demand.","installer",{"description": "Installs and maintains software distributed as MSI and MSP packages."}),
+  service("sppsvc","Software Protection","essential","keep","Keep Windows activation and licensing available.","Windows or licensed apps can report activation problems.","Do not disable. Troubleshoot activation through Settings → System → Activation.","system",{"description": "Manages digital licenses for Windows and supported applications."}),
+  service("Appinfo","Application Information","essential","keep","Keep Run as administrator working.","Elevation of apps and administrative tools can fail.","Keep the service available. It is part of the normal Windows elevation workflow.","system",{"description": "Allows applications to start with approved administrator privileges."}),
+  service("StateRepository","State Repository Service","essential","keep","Keep Windows app infrastructure intact.","Packaged apps and Windows components can malfunction.","Leave at the existing default. Diagnose a misbehaving app directly.","system",{"description": "Maintains state used by the Windows app model."}),
+  service("UserManager","User Manager","essential","keep","Keep user-session support available.","Apps and user-session features can stop operating correctly.","Do not disable this core service.","system",{"description": "Provides runtime support for Windows user interactions."}),
+  service("LSM","Local Session Manager","essential","keep","Keep desktop sessions working.","Creating or managing user sessions can fail.","Do not disable, including on a PC that never uses Remote Desktop.","system",{"description": "Manages local Windows user sessions.", "bootRisk": {"reason": "Local Windows sign-in requires a usable user session. Disabling its session manager can disrupt sign-in and session creation.", "sources": ["system"]}}),
+  service("SamSs","Security Accounts Manager","essential","keep","Keep account infrastructure available.","Account-dependent services may fail to initialize.","Do not disable this core account service.","system",{"description": "Makes local account security information available to Windows services.", "bootRisk": {"reason": "Windows authentication and dependent services rely on the local account infrastructure. Disabling it can disrupt startup or sign-in.", "sources": ["system"]}}),
+  service("UsoSvc","Update Orchestrator Service","essential","keep","Manage update timing in Settings.","Updates may no longer be scheduled or installed correctly.","Use active hours or a supported temporary update pause. Keep the service available.","updates",{"description": "Coordinates Windows Update scanning, downloads, installation, and restarts."}),
+  service("TrustedInstaller","Windows Modules Installer","essential","keep","Keep Windows servicing available.","Windows updates and changes to optional features can fail.","Leave its configuration intact. Let servicing finish before restarting or shutting down.","system",{"description": "Installs and removes Windows updates and optional components."}),
+  service("WaaSMedicSvc","Windows Update Medic Service","essential","keep","Keep update repair available.","Windows may be unable to repair parts of its update infrastructure.","Do not change permissions or registry entries to force this service off. Use Windows Update troubleshooting.","system",{"description": "Supports recovery of Windows Update components.", "availability": "Its presence and configuration depend on the Windows build and servicing components."}),
+  service("SecurityHealthService","Windows Security Service","essential","keep","Keep security status and warnings accurate.","Windows Security may show incomplete or outdated information.","Keep available even if you use another antivirus product. This service is separate from the antivirus engine.","securityApp",{"description": "Supplies protection and device-health status to the Windows Security app."}),
+  service("wscsvc","Security Center","essential","keep","Keep security-provider monitoring available.","Security status can become inaccurate, including after antivirus changes.","Keep enabled. Removing this service is not a supported way to switch antivirus products.","securityApp",{"description": "Tracks the registered antivirus, firewall, and other security providers."}),
+  service("DPS","Diagnostic Policy Service","essential","keep","Keep Windows diagnostics available.","Diagnostics that rely on this service can stop working.","Do not treat every service with “diagnostic” in its name as DiagTrack. Leave this troubleshooting service available.","system",{"description": "Coordinates problem detection and troubleshooting for Windows components."}),
+  service("WdiServiceHost","Diagnostic Service Host","essential","keep","Keep troubleshooting tasks available.","Diagnostics that require this host can fail.","Leave the current startup mode. It can run only when a diagnostic task needs it.","system",{"description": "Hosts diagnostic tasks that run under the Local Service account."}),
+  service("WdiSystemHost","Diagnostic System Host","essential","keep","Keep system diagnostics available.","Diagnostics that require system-level access can fail.","Keep its existing configuration. This is distinct from optional diagnostic-data sharing.","system",{"description": "Hosts diagnostic tasks that need the Local System account."}),
+  service("W32Time","Windows Time","essential","keep","Keep the system clock synchronized.","Clock drift can interfere with authentication and time-sensitive applications.","Use Settings → Time & language → Date & time. Keep the time service available.","time",{"description": "Synchronizes the computer clock with a configured time source."}),
+  service("Power","Power","essential","keep","Keep power management working.","Windows power-management behavior can malfunction.","Change power mode and sleep settings in Settings → System → Power & battery.","system",{"description": "Applies power policies and notifies components about power changes."}),
+  service("WinHttpAutoProxySvc","WinHTTP Web Proxy Auto-Discovery Service","essential","keep","Keep system web requests working on managed networks.","Windows or apps that depend on automatic proxy configuration can lose connectivity.","Manage proxy configuration in Settings → Network & internet → Proxy. Leave the service available.","system",{"description": "Finds proxy settings for applications using WinHTTP."}),
+  service("iphlpsvc","IP Helper","essential","keep","Keep dependent network features available.","Features such as Teredo, IP-HTTPS, or configured port forwarding may fail.","Keep the existing configuration unless you are troubleshooting a specific network feature.","network",{"description": "Supports IP networking features, including transition tunnels and port forwarding."}),
+  service("LanmanWorkstation","Workstation","essential","keep","Keep access to shared folders and NAS devices.","Connections to SMB shares and dependent apps can fail.","Leave enabled. The name does not mean it is only needed on a business PC.","network",{"description": "Connects this PC to SMB file shares and other SMB resources."}),
+  service("LanmanServer","Server","essential","keep","Manage sharing through its own settings.","Other computers can lose access to this PC’s shares; apps using named pipes may also be affected.","Use Advanced sharing settings to control sharing. Do not assume a desktop PC never needs a service named Server.","network",{"description": "Hosts file, printer, and named-pipe sharing from this PC."}),
+  service("Netlogon","Netlogon","essential","keep","Keep domain authentication available.","Domain authentication and access to domain resources can fail.","Keep the configured state on a work PC. On an unjoined home PC, leave its dormant configuration alone.","network",{"description": "Maintains authentication communication with an Active Directory domain.", "bootRisk": {"condition": "For domain sign-in requiring a domain controller", "reason": "Disabling domain authentication can block sign-in when cached credentials cannot be used.", "sources": ["network", "cachedLogon"]}}),
+  service("RasMan","Remote Access Connection Manager","essential","keep","Keep VPN connection support available.","VPN connections using the Windows remote-access stack can fail.","Remove an unwanted VPN profile in Settings. Keep the service if any VPN or work connection may need it.","network",{"description": "Manages Windows VPN and dial-up connections."}),
+  service("EapHost","Extensible Authentication Protocol","essential","keep","Keep network authentication working.","Enterprise Wi-Fi, authenticated Ethernet, or VPN sign-in may fail.","Leave available, particularly on work or school networks. A saved network may still require this service.","network",{"description": "Provides authentication methods used by protected networks and VPNs."}),
+  service("Wcmsvc","Windows Connection Manager","essential","keep","Keep automatic network connection behavior.","Automatic connections and network-policy handling can be disrupted.","Manage Wi-Fi and network preferences in Settings. Keep the service available.","system",{"description": "Manages connection choices among available networks."}),
+  service("netprofm","Network List Service","essential","keep","Keep network identification working.","Apps can receive incorrect network status or miss connectivity changes.","Leave this service enabled. Troubleshoot the connection instead of disabling connectivity detection.","ncsi",{"description": "Tracks connected network profiles and hosts connectivity-status detection on Windows 11."}),
+  service("NlaSvc","Network Location Awareness","essential","keep","Keep network-awareness support available.","Dependent components can lose network-change information.","Keep the configuration supplied by your Windows build.","ncsi",{"description": "Supplies network configuration information to Windows components and applications.", "availability": "On Windows 11, Network Connectivity Status Indicator (NCSI) is hosted by Network List Manager, not this service. Do not copy older Windows tuning instructions without checking the build."}),
+  service("swprv","Microsoft Software Shadow Copy Provider","essential","keep","Keep snapshot-based backups available.","Backup or recovery operations needing this snapshot provider can fail.","Keep both this service and VSS available. A stopped on-demand provider is not evidence that it is unused.","vss",{"description": "Provides Windows software snapshots used through Volume Shadow Copy."}),
+  service("fhsvc","File History Service","essential","keep","Keep file version backups available.","File History backups can stop running.","Manage File History in Control Panel → System and Security → File History. Keep its service available for existing backups.","fileHistory",{"description": "Supports File History backups of personal files."}),
+  service("SDRSVC","Windows Backup","essential","keep","Keep existing backup and restore workflows working.","Backup or restore operations using this feature can fail.","Leave available if you use Backup and Restore. This is separate from the newer Windows Backup app and cloud settings backup.","system",{"description": "Supports the legacy Backup and Restore feature in Control Panel.", "availability": "A legacy backup component; do not assume it controls every Windows backup method."}),
+  service("wbengine","Block Level Backup Engine Service","essential","keep","Keep existing image backups usable.","An image backup or restore that depends on this engine can fail.","Keep available for Backup and Restore workflows. Manage backup schedules in the backup tool instead of disabling its engine.","system",{"description": "Runs block-level backup and recovery operations for Windows Backup."}),
+  service("PrintNotify","Printer Extensions and Notifications","optional","conditional","Can disable if you never use printing features.","Printer extensions, custom dialogs, and printing notifications can stop working.","Keep it for physical or virtual printing. Review together with Print Spooler if all printing is unused.","system",{"description": "Provides printer-specific dialogs and printing notifications.", "script": true}),
+  service("XboxGipSvc","Xbox Accessory Management Service","optional","conditional","Consider disabling only if Xbox accessories are unused.","Xbox accessory features or management may stop working.","Keep it for Xbox controllers or accessories used with any launcher, including Steam. No Xbox console is required to need this service.","system",{"description": "Manages connected Xbox accessories.", "script": true}),
+  service("XblAuthManager","Xbox Live Auth Manager","optional","conditional","Consider disabling only if no apps use Xbox sign-in.","Xbox-enabled games and apps may be unable to authenticate.","Keep it for Game Pass and any game using Xbox sign-in, including games installed outside the Xbox app.","system",{"description": "Authenticates apps and games that use Xbox network sign-in.", "script": true, "availability": "Installed components vary. A service missing from your PC is skipped by the builder’s script."}),
+  service("XblGameSave","Xbox Live Game Save","optional","conditional","Consider disabling only if Xbox cloud saves are unused.","Affected games stop uploading or downloading saves through this service.","Keep it if you use cloud saves or move between gaming devices. Disabling it is not a backup for your saved games.","system",{"description": "Synchronizes cloud saves for games using this Xbox save service.", "script": true}),
+  service("XboxNetApiSvc","Xbox Live Networking Service","optional","conditional","Consider disabling only if Xbox network features are unused.","Network or multiplayer features in affected games can fail.","Keep it for games using Xbox networking, regardless of where they were purchased.","system",{"description": "Supports apps using the Windows Xbox networking APIs.", "script": true}),
+  service("FontCache","Windows Font Cache Service","performance","keep","Keep the cache that helps text-heavy apps.","Apps may need to rebuild font data more often and become slower.","Leave enabled. Removing a cache service is not automatically a performance improvement.","system",{"description": "Caches commonly used font data for applications."}),
+  service("PcaSvc","Program Compatibility Assistant Service","essential","keep","Keep help for older applications available.","Compatibility detection and prompts can stop working.","Address a specific application’s compatibility settings instead of disabling the service globally.","system",{"description": "Detects known compatibility problems when desktop programs run."}),
+  service("camsvc","Capability Access Manager Service","privacy","settings","Control individual app permissions.","Disabling the broker can break app access rather than provide a dependable privacy control.","Review App permissions under Settings → Privacy & security. Keep the service that applies these access checks.","system",{"description": "Checks app access to capabilities such as the camera and microphone."}),
+  service("FrameServer","Windows Camera Frame Server","privacy","settings","Limit camera access through privacy settings.","Camera apps, video calls, or shared camera access may fail if the service is disabled.","Turn off camera access for unwanted apps in Settings → Privacy & security → Camera. Keep the service for apps you allow.","system",{"description": "Makes camera frames available to compatible applications."}),
+  service("hidserv","Human Interface Device Service","optional","keep","Keep hardware shortcuts available.","Volume keys, media buttons, or other device shortcuts can stop working.","Leave available even if ordinary typing and mouse movement still work without it.","system",{"description": "Supports special buttons on keyboards, remotes, and other input devices."}),
+  service("DeviceAssociationService","Device Association Service","optional","keep","Keep device pairing available.","Pairing or setting up devices can fail.","Remove unwanted devices in Settings → Bluetooth & devices. Keep device-association support intact.","system",{"description": "Associates wired and wireless devices with Windows."}),
+  service("DeviceInstall","Device Install Service","essential","keep","Keep device installation working.","New hardware or changed devices may not install correctly.","Keep available. An unchanged hardware setup does not make device installation unnecessary.","system",{"description": "Helps Windows recognize and install device changes."}),
+  service("WpnService","Windows Push Notifications System Service","essential","keep","Control unwanted notifications per app.","Apps may stop receiving push notifications.","Use Settings → System → Notifications. Keep this service and the per-user notification service available.","system",{"description": "Maintains the system connection used for Windows push notifications."}),
+  service("SCardSvr","Smart Card","essential","keep","Keep smart-card authentication available.","Smart-card sign-in, certificates, or apps can stop working.","Leave available on managed PCs and systems using smart cards. Do not disable based only on whether a card is inserted right now.","smartCard",{"description": "Manages communication with smart-card readers and cards.", "bootRisk": {"condition": "When sign-in requires a smart card", "reason": "A required smart card cannot be used if Windows cannot communicate with it.", "sources": ["smartCard"]}}),
+  service("ScDeviceEnum","Smart Card Device Enumeration Service","essential","keep","Keep smart-card reader discovery available.","Apps using this discovery path may no longer find readers.","Leave at the configured default, especially where an organization requires smart cards.","smartCard",{"description": "Makes smart-card readers available to supported Windows applications."}),
+  service("SCPolicySvc","Smart Card Removal Policy","essential","keep","Keep your organization’s session-lock policy.","The desktop may no longer lock or sign out as required when a card is removed.","Follow the configured smart-card policy. Do not disable a session-protection control.","smartCard",{"description": "Applies the configured action when a smart card is removed."}),
+  service("EFS","Encrypting File System","essential","keep","Keep access to encrypted files.","Applications may be unable to access EFS-encrypted files.","Keep the service and preserve your encryption certificate and private-key backup. EFS is separate from BitLocker drive encryption.","system",{"description": "Supports certificate-based encryption of individual NTFS files."}),
+  service("StorSvc","Storage Service","essential","keep","Keep storage controls available.","Storage settings and dependent features may not work correctly.","Manage cleanup in Settings → System → Storage. Leave its service available.","system",{"description": "Supports Windows storage settings and storage-management features."}),
+  service("DusmSvc","Data Usage","performance","keep","Keep network data controls working.","Usage reporting and dependent data-management features can stop working.","Use Settings → Network & internet to configure a metered connection or data limits. Keep the service available.","system",{"description": "Tracks network data use and supports data-limit and metered-network behavior."}),
+  service("icssvc","Windows Mobile Hotspot Service","optional","settings","Switch off an unused hotspot in Settings.","Other devices cannot use the PC’s hotspot when it is off.","Use Settings → Network & internet → Mobile hotspot. Keep the service available so you can turn the feature on later.","system",{"description": "Supports sharing this PC’s internet connection through Mobile hotspot."}),
+  service("AarSvc","Agent Activation Runtime","optional","keep","Keep available for apps that request it.","Dependent agent apps may stop activating.","Manage an unwanted app’s permissions or uninstall it instead of editing a per-user template.","user",{"description": "Activates supported conversational-agent applications.", "perUser": true}),
+  service("CloudBackupRestoreSvc","Cloud Backup and Restore Service","privacy","settings","Choose what Windows remembers.","Selected settings or app state may no longer be backed up.","Review Windows backup under Settings → Accounts. Keep the service template available for the backup choices you retain.","user",{"description": "Supports cloud backup of app and settings state.", "perUser": true}),
+  service("ConsentUxUserSvc","Consent UX User Service","privacy","keep","Keep permission prompts working.","App consent requests can fail.","Use individual app permissions. Disabling the consent interface is not a privacy setting.","user",{"description": "Presents consent requests for sensitive app resources.", "perUser": true}),
+  service("CredentialEnrollmentManagerUserSvc","Credential Enrollment Manager","essential","keep","Keep credential enrollment available.","Dependent authentication flows may fail.","Leave the per-user template intact.","user",{"description": "Supports secure storage and retrieval of credentials and tokens.", "perUser": true}),
+  service("DeviceAssociationBrokerSvc","Device Association Broker","optional","keep","Keep in-app pairing available.","Apps may fail to pair devices.","Manage paired devices through Bluetooth & devices rather than disabling this broker.","user",{"description": "Handles app requests to pair devices and check access.", "perUser": true}),
+  service("DevicePickerUserSvc","Device Picker","optional","keep","Keep device selection working.","Wireless display or media-device selection can fail.","Leave the per-user template available for casting and device selection.","user",{"description": "Supports picking wireless displays and media devices.", "perUser": true}),
+  service("DevicesFlowUserSvc","Devices Flow","optional","keep","Keep the connection interface available.","Bluetooth or wireless-display setup may fail.","Turn off unused hardware features in Settings.","user",{"description": "Supports the interface for connecting Bluetooth and wireless displays.", "perUser": true}),
+  service("MessagingService","Messaging Service","optional","keep","Keep available for apps using messaging.","Dependent messaging features can fail.","Manage permissions or remove unused messaging apps instead of changing a user-service template.","user",{"description": "Supports text messaging in compatible applications.", "perUser": true}),
+  service("NPSMSvc","Now Playing Session Manager","optional","keep","Keep media-session integration working.","Playback-session controls may malfunction.","Leave available for music, video, and other media apps.","user",{"description": "Manages active media sessions.", "perUser": true}),
+  service("P9RdrService","Plan 9 Redirector Service","optional","keep","Keep WSL file access working.","WSL file-sharing operations can fail.","Keep the template available if WSL is installed. Remove unused WSL components through supported feature controls.","user",{"description": "Starts Plan 9 file servers for Windows Subsystem for Linux.", "perUser": true}),
+  service("PenService","Pen Service","optional","keep","Keep pen shortcuts available.","Configured pen-button actions stop working.","Change shortcuts in Settings → Bluetooth & devices → Pen & Windows Ink.","user",{"description": "Handles a pen’s shortcut-button actions.", "perUser": true}),
+  service("UdkUserSvc","UDK User Service","essential","keep","Keep shell integration available.","Dependent Windows interfaces can malfunction.","Leave the per-user template at its existing configuration.","user",{"description": "Coordinates Windows shell experiences.", "perUser": true}),
+  service("webthreatdefusersvc","Web Threat Defense User Service","essential","keep","Keep credential-theft warnings available.","Credential-protection warnings can be lost.","Keep this security service available.","user",{"description": "Warns about attempts to obtain your credentials.", "perUser": true}),
+  // Scanner workflows are separate from printing.
+  service("stisvc","Windows Image Acquisition (WIA)","optional","conditional","Can disable if you never scan or import images through WIA.","WIA-compatible scanners and image-import apps may no longer acquire images or detect their devices.","Keep it for scanners, scanning on multifunction printers, and camera imports that use WIA. Choose the scanner option only if none of these workflows is used.","wia",{"script": true, "description": "Connects imaging applications to WIA-compatible scanners and cameras.", "aliases": ["scanner", "scanning", "image import", "camera import"]}),
+  service("WiaRpc","Still Image Acquisition Events","optional","conditional","Can disable if you do not use still-image device events.","Apps associated with scanner or camera events may no longer open automatically.","Keep it for image-acquisition workflows that launch apps from device events. Review it with Windows Image Acquisition if you never scan or import images.","system",{"script": true, "description": "Starts applications registered to handle still-image acquisition events.", "aliases": ["scanner events", "image acquisition", "camera import"]}),
+
 ];
 const SERVICE_SETTINGS = {
+  "CloudBackupRestoreSvc": {"uri": "ms-settings:sync", "path": "Settings → Accounts → Windows backup", "action": "Choose whether to remember apps and preferences. OneDrive folder backup has separate controls."},
+  "camsvc": {"uri": "ms-settings:privacy", "path": "Settings → Privacy & security → App permissions", "action": "Choose the resource you want to control, such as Camera or Microphone, and review the apps allowed to access it. Keep the permission broker available."},
+  "FrameServer": {"uri": "ms-settings:privacy-webcam", "path": "Settings → Privacy & security → Camera", "action": "Review camera permissions for apps. Keep access for video calls and other camera features you use."},
+  "icssvc": {"uri": "ms-settings:network-mobilehotspot", "path": "Settings → Network & internet → Mobile hotspot", "action": "Turn Mobile hotspot off when you do not want to share this PC’s connection."},
+  "TextInputManagementService": {"uri": "ms-settings:typing", "path": "Settings → Time & language → Typing", "action": "Adjust typing features here; keep the input service available for keyboards and input methods."},
+  "WbioSrvc": {"uri": "ms-settings:signinoptions", "path": "Settings → Accounts → Sign-in options", "action": "Manage fingerprint and face recognition here. Keep another configured sign-in method available."},
+  "WpnService": {"uri": "ms-settings:notifications", "path": "Settings → System → Notifications", "action": "Turn off alerts from individual apps while keeping notification infrastructure available."},
+  "WpnUserService": {"uri": "ms-settings:notifications", "path": "Settings → System → Notifications", "action": "Choose which apps can send you notifications instead of disabling the per-user template."},
   "DiagTrack": {
     "uri": "ms-settings:privacy-feedback",
     "path": "Settings → Privacy & security → Diagnostics & feedback",
@@ -817,11 +1044,13 @@ const FEATURE_GROUPS = [
   {id:'insider',icon:'monitor',title:'I’m not in the Windows Insider Program',description:'This PC runs a stable release and is not enrolled for preview builds. Regular Windows Update stays available.',services:['wisvc']},
   {id:'remote',icon:'monitor',title:'I don’t host Remote Desktop',description:'No incoming Remote Desktop sessions or device redirection. Make changes while sitting at the PC.',services:['UmRdpService','SessionEnv','TermService']},
   {id:'registry',icon:'terminal',title:'I don’t use remote registry tools',description:'No remote registry administration. Check first if this PC is managed by your employer.',services:['RemoteRegistry']},
-  {id:'printing',icon:'printer',title:'I never print anything',description:'Includes physical printers, fax, shared printers, Microsoft Print to PDF, and adding or configuring printers.',services:['Fax','Spooler','PrintDeviceConfigurationService']},
+  {id:'printing',icon:'printer',title:'I never print anything',description:'Includes physical printers, fax, shared printers, Microsoft Print to PDF, and adding or configuring printers.',services:['PrintNotify','Fax','Spooler','PrintDeviceConfigurationService']},
+  {id:'scanning',icon:'printer',title:'I don’t scan or import images from a camera',description:'No scanner, multifunction-printer scanning, or camera import through Windows image-acquisition features.',services:['WiaRpc','stisvc']},
   {id:'bluetooth',icon:'bluetooth',title:'I don’t use Bluetooth',description:'No Bluetooth keyboard, mouse, headphones, controller, or other peripheral.',services:['BTAGService','BthAvctpSvc','bthserv']},
   {id:'discovery',icon:'network',title:'I don’t use network discovery',description:'No automatic network device discovery, UPnP, or discoverable sharing from this PC.',services:['upnphost','SSDPSRV','fdPHost','FDResPub']},
   {id:'media',icon:'music',title:'I don’t share a media library',description:'No streaming from legacy Windows Media Player to other devices.',services:['WMPNetworkSvc']},
   {id:'fax',icon:'printer',title:'I don’t send or receive faxes',description:'The optional Windows fax feature is unused. Ordinary printing stays available.',services:['Fax']},
+  {id:'xbox',icon:'monitor',title:'I don’t use Xbox features or accessories',description:'No Xbox sign-in, cloud saves, networking, or accessories. Games from Steam and other stores can use these features too.',services:['XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc']},
   {id:'retail',icon:'store',title:'This isn’t a retail demo PC',description:'No in-store Windows demonstration experience. It may already be disabled.',services:['RetailDemo']}
 ].map(group => ({...group, services:group.services.filter(id=>isScriptEligible(SERVICES.find(service=>service.id===id)))})).filter(group=>group.services.length);
 const SCRIPT_IDS = SERVICES.filter(isScriptEligible).map(s=>s.id);
@@ -836,12 +1065,107 @@ function buildPowerShell(template, selectedIds) {
   return template.replace('__SERVICE_NAMES__', selected.map(id => "'" + id + "'").join(',')).replace(/\r?\n/g,'\r\n');
 }
 function filterServices(category, status, query, sort) {
-  const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  // Accept a per-user instance name copied from services.msc or the local inventory.
+  const normalizedQuery = query.replace(/_[0-9a-f]+(?=\s|$)/gi, '');
+  const terms = normalizedQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
   let result = SERVICES.filter(s => (category === 'all' || s.category === category) && (status === 'all' || s.status === status) && terms.every(term => [s.id,s.name,s.description||'',s.summary,s.tradeoff,s.category,s.advice,s.bootRisk ? 'Can break boot or sign-in '+s.bootRisk.reason+' '+(s.bootRisk.condition||'') : '',...(s.aliases||[])].join(' ').toLowerCase().includes(term)));
   if (sort === 'az') result.sort((a,b) => a.name.localeCompare(b.name));
   if (sort === 'za') result.sort((a,b) => b.name.localeCompare(a.name));
   return result;
 }
+</script>
+<script>'use strict';
+// One star field, palette, and projection for the welcome, reveal, and background.
+(() => {
+  const TAU = Math.PI * 2;
+  const smooth = value => {const t = Math.max(0,Math.min(value,1));return t * t * (3 - 2 * t);};
+  const darkPalette = [[1,.57,.16],[1,.82,.47],[.43,1,.81],[.70,.49,1],[.68,.88,1]];
+  const lightPalette = [[.53,.29,.075],[.57,.40,.16],[.075,.40,.32],[.39,.23,.62],[.17,.35,.46]];
+  const colors = [darkPalette,lightPalette].map(palette => palette.map(color => color.map(n => Math.round(n * 255)).join(',')));
+
+  function particles(count, seed = 47291) {
+    const random = () => {seed = (seed * 1664525 + 1013904223) >>> 0;return seed / 4294967296;};
+    const normal = () => Math.sqrt(-2 * Math.log(Math.max(.00001,random()))) * Math.cos(random() * TAU);
+    return Array.from({length:count}, (_,i) => {
+      const kind = random();
+      let r, angle, depth, size, alpha, tint;
+      if (kind < .27) {
+        r = .19 * Math.pow(random(),.82);
+        angle = random() * TAU;
+        depth = normal() * .045 * (1 - r / .25);
+        size = .32 + random() * .68;
+        alpha = .28 + random() * .40;
+        tint = random() < .77 ? 0 : 1;
+      } else {
+        r = .13 + Math.pow(random(),.92) * .91;
+        const dust = kind > .80;
+        angle = r * 8.6 + (i % 2) * Math.PI + normal() * (dust ? .70 : .19 + r * .13);
+        depth = normal() * (dust ? .045 : .012 + r * .018);
+        size = dust ? .22 + random() * .48 : .38 + Math.pow(random(),3) * 1.50;
+        alpha = dust ? .10 + random() * .23 : .36 + random() * .55;
+        tint = r < .29 && random() < .52 ? 1 : random() < .68 ? 2 : random() < .66 ? 3 : 4;
+      }
+      return {r,angle,depth,size,alpha,tint};
+    });
+  }
+
+  function camera(time,cx,cy,radius) {
+    const tilt = .38 + Math.sin(time * .10) * .018;
+    return {time,cx,cy,radius,ct:Math.cos(tilt),st:Math.sin(tilt)};
+  }
+  function project(p,view,out = {}) {
+    const angle = p.angle + view.time * (.055 + .034 * (1 - Math.min(p.r,1)));
+    const x = Math.cos(angle) * p.r, y = Math.sin(angle) * p.r * .54 + p.depth;
+    out.x = view.cx + (x * view.ct - y * view.st) * view.radius;
+    out.y = view.cy + (x * view.st + y * view.ct) * view.radius;
+    return out;
+  }
+  function opacity(p,time) {
+    return p.alpha * (1 - smooth((p.r - .81) / .24)) * (.90 + .10 * Math.sin(p.angle * 7 + time * .7));
+  }
+
+  function haze(context,cx,cy,radius,light,opacity = 1) {
+    if (!context) return;
+    const cloud = (dx,dy,rx,ry,color,alpha) => {
+      context.save();context.translate(cx + dx * radius,cy + dy * radius);context.rotate(.38);context.scale(rx * radius,ry * radius);
+      const gradient = context.createRadialGradient(0,0,0,0,0,1);
+      gradient.addColorStop(0,`rgba(${color},${alpha * opacity})`);
+      gradient.addColorStop(.36,`rgba(${color},${alpha * opacity * .45})`);
+      gradient.addColorStop(1,`rgba(${color},0)`);
+      context.fillStyle = gradient;context.fillRect(-1,-1,2,2);context.restore();
+    };
+    cloud(.24,-.13,.86,.67,light ? '110,86,146' : '99,51,165',light ? .11 : .18);
+    cloud(-.33,.12,.70,.50,light ? '78,134,129' : '37,125,153',light ? .10 : .17);
+    cloud(0,0,.39,.25,light ? '170,115,55' : '255,159,52',light ? .20 : .30);
+  }
+
+  // Round star cores are grouped by color/opacity; no glow filter per particle.
+  function painter(context) {
+    const buckets = Array.from({length:120},() => []);
+    let palette = colors[0];
+    return {
+      begin(light) {buckets.forEach(bucket => {bucket.length = 0;});palette = colors[light ? 1 : 0];},
+      dot(x,y,size,tint,alpha) {
+        const level = Math.max(0,Math.min(23,Math.round(alpha * 23)));
+        if (level && size > 0) buckets[tint * 24 + level].push(x,y,size);
+      },
+      flush(light) {
+        context.save();context.globalCompositeOperation = light ? 'source-over' : 'lighter';
+        buckets.forEach((points,index) => {
+          if (!points.length) return;
+          context.beginPath();
+          for (let i = 0; i < points.length; i += 3) {
+            context.moveTo(points[i] + points[i+2],points[i+1]);
+            context.arc(points[i],points[i+1],points[i+2],0,TAU);
+          }
+          context.fillStyle = `rgba(${palette[Math.floor(index / 24)]},${index % 24 / 23})`;context.fill();
+        });
+        context.restore();
+      }
+    };
+  }
+  window.WinwiseGalaxy = Object.freeze({particles,camera,project,opacity,haze,painter,smooth,darkPalette,lightPalette});
+})();
 </script>
 <script>'use strict';
 (() => {
@@ -857,6 +1181,16 @@ function filterServices(category, status, query, sort) {
   let phase = root.dataset.intro === 'waiting' ? 'waiting' : 'ready';
   let timer = 0, frame = 0, keyboardStart = false;
   let context = null;
+
+  function captureGalaxyCenter() {
+    // Measure before the welcome panel moves or disappears, including a scrolled start.
+    const box = welcome.querySelector('.launch-focus').getBoundingClientRect();
+    const state = window.WinwiseWelcomeGalaxy?.snapshot();
+    const center = box.width && box.height
+      ? {x:box.left + box.width / 2,y:box.top + box.height / 2}
+      : {x:root.clientWidth * .5,y:window.innerHeight * .44};
+    return {...center,time:state?.time || 0,radius:state?.radius || Math.min(root.clientWidth * .23,480)};
+  }
 
   function finish(focus = false) {
     if (phase === 'ready') return;
@@ -940,7 +1274,7 @@ function filterServices(category, status, query, sort) {
     return {x:x + r + Math.cos(a) * r,y:y + r + Math.sin(a) * r};
   }
 
-  function stardust(targets) {
+  function stardust(targets, galaxy) {
     try { context = canvas.getContext('2d', {alpha:true}); } catch { return; }
     if (!context) return;
     const width = root.clientWidth;
@@ -950,9 +1284,13 @@ function filterServices(category, status, query, sort) {
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio,0,0,ratio,0,0);
     canvas.hidden = false;
+    const model = window.WinwiseGalaxy;
+    const {smooth} = model;
+    const painter = model.painter(context);
     let seed = 70311;
-    const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-    const budget = width < 760 ? 620 : Math.min(2800,Math.round(1700 * Math.sqrt(width * height / 2073600)));
+    const random = () => {seed = (seed * 1664525 + 1013904223) >>> 0;return seed / 4294967296;};
+    const budget = width < 760 ? 2100 : Math.min(7200,Math.round(5200 * Math.sqrt(width * height / 2073600)));
+    const field = model.particles(budget);
     const totalWeight = targets.reduce((total,target) => total + target.length * target.weight,0);
     const particles = [];
     for (const target of targets) {
@@ -961,84 +1299,57 @@ function filterServices(category, status, query, sort) {
         const end = borderPoint(target,(index + .5) / count);
         if (end.x < 0 || end.x > width || end.y < 0 || end.y > height) continue;
         particles.push({
-          end,
-          arm:particles.length % 3, progress:random(), spread:(random() - .5) * .25,
+          ...field[particles.length % field.length],end,
           release:Math.max(450,target.assembleAt - 1150) + random() * 220,
           land:target.assembleAt + random() * 190,
-          size:.45 + random() * 1.25, alpha:.22 + random() * .5,
-          tint:particles.length % 4, phase:random() * Math.PI * 2,
-          curl:40 + random() * 120
+          phase:random() * Math.PI * 2,curl:40 + random() * 120
         });
       }
     }
     const started = performance.now();
-    const radius = Math.min(width * .48,1100);
-    // One shared center and rotation: a single galaxy opens across the viewport.
-    const galaxy = {x:width * .58, y:height * .42};
-    const tilt = -.48, cosTilt = Math.cos(tilt), sinTilt = Math.sin(tilt);
-    const project = (cx,cy,r,angle) => {
-      const u = Math.cos(angle) * r, v = Math.sin(angle) * r * .58;
-      return {x:cx + u * cosTilt - v * sinTilt, y:cy + u * sinTilt + v * cosTilt};
-    };
-    const smooth = value => {const t = Math.max(0,Math.min(value,1));return t * t * (3 - 2 * t);};
-    const orbit = (p,time) => {
-      const zoom = .82 + smooth(time / 1350) * .4;
-      const r = (p.progress * .91 + .07) * radius * zoom;
-      const angle = p.progress * Math.PI * 3.6 + p.arm * Math.PI * 2 / 3 + p.spread + time * .00115;
-      const point = project(galaxy.x,galaxy.y,r,angle);
-      point.y += Math.sin(time * .003 + p.phase) * 18;
-      return point;
-    };
-    particles.forEach(p => {p.departure = orbit(p,p.release);});
-    // Batch round dots by color and opacity: thousands of particles, only 64 fills per frame.
-    const buckets = Array.from({length:64},() => []);
-    const dot = (x,y,size,tint,alpha) => {
-      const level = Math.min(15,Math.round(alpha * 15));
-      if (level > 0 && x > -8 && x < width + 8 && y > -8 && y < height + 8) buckets[tint * 16 + level].push(x,y,size);
+    const expandedRadius = Math.max(galaxy.radius,Math.min(width * .48,1100));
+    const viewAt = time => model.camera(galaxy.time + time * .011,galaxy.x,galaxy.y,
+      galaxy.radius + (expandedRadius - galaxy.radius) * smooth(time / 1350));
+    // The same star field zooms out of the welcome scene, then assembles the UI.
+    particles.forEach(p => {p.departure = model.project(p,viewAt(p.release));});
+    const light = root.dataset.theme === 'light';
+    const nebula = document.createElement('canvas');nebula.width = nebula.height = 1024;
+    const haze = nebula.getContext('2d');
+    model.haze(haze,512,512,400,light);
+    const dot = (point,size,tint,alpha) => {
+      if (point.x > -8 && point.x < width + 8 && point.y > -8 && point.y < height + 8) painter.dot(point.x,point.y,size,tint,alpha);
     };
     function draw(now) {
       if (phase !== 'revealing') return;
-      const elapsed = now - started;
+      const elapsed = now - started, view = viewAt(elapsed);
       context.clearRect(0,0,width,height);
-      buckets.forEach(bucket => {bucket.length = 0;});
-      const dark = root.dataset.theme !== 'light';
-      const colors = dark ? ['218,229,244','198,211,255','150,194,209','231,208,184'] : ['24,32,43','36,43,54','45,54,64','57,62,70'];
-      context.globalCompositeOperation = 'source-over';
-      const fadeIn = smooth(elapsed / 250);
-      const openingScale = 1 + 2.5 * (1 - smooth(elapsed / 1350));
+      const fadeIn = smooth(elapsed / 160);
+      const openingScale = 1 + .45 * (1 - smooth(elapsed / 1350));
+      if (haze && elapsed < 1800) {
+        const extent = view.radius * 1.28;
+        context.save();context.globalAlpha = fadeIn * (1 - smooth((elapsed - 450) / 1350));
+        context.drawImage(nebula,galaxy.x - extent,galaxy.y - extent,extent * 2,extent * 2);context.restore();
+      }
+      painter.begin(light);
+      const point = {};
       for (const p of particles) {
         const progress = Math.max(0,Math.min(1,(elapsed - p.release) / (p.land - p.release)));
         const capture = smooth(progress);
-        let point;
-        if (elapsed < p.release) point = orbit(p,elapsed);
+        if (elapsed < p.release) model.project(p,view,point);
         else {
           const curl = Math.sin(progress * Math.PI) * Math.pow(1 - progress,2) * p.curl;
           const angle = p.phase + progress * Math.PI * 3;
-          point = {
-            x:p.departure.x + (p.end.x - p.departure.x) * capture + Math.cos(angle) * curl,
-            y:p.departure.y + (p.end.y - p.departure.y) * capture + Math.sin(angle) * curl * .58
-          };
+          point.x = p.departure.x + (p.end.x - p.departure.x) * capture + Math.cos(angle) * curl;
+          point.y = p.departure.y + (p.end.y - p.departure.y) * capture + Math.sin(angle) * curl * .54;
         }
-        const twinkle = .88 + Math.sin(p.phase + elapsed * .003) * .12;
-        // Each dot briefly touches its own border, then disappears without waiting for the others.
+        // Each star touches its own border and fades immediately after landing.
         const edgeFade = 1 - smooth((elapsed - p.land - 70) / 300);
-        const alpha = (p.alpha * (1 - capture) + .92 * capture) * fadeIn * edgeFade * twinkle * (dark ? 1 : .8);
-        const size = p.size * (openingScale * (1 - capture) + .72 * capture);
-        // Large foreground stars shrink to fine points as the expanding galaxy becomes the UI.
-        dot(point.x,point.y,size,p.tint,alpha);
-        if (dark && p.size > 1.58) dot(point.x,point.y,size * 3.2,p.tint,alpha * .085);
+        const alpha = (model.opacity(p,view.time) * (1 - capture) + .88 * capture) * fadeIn * edgeFade * (light ? .8 : .88);
+        const size = Math.min(p.size * .78,1.15) * (openingScale * (1 - capture) + .72 * capture);
+        dot(point,size,p.tint,alpha);
+        if (!light && p.size > 1.35) dot(point,size * 2.1,p.tint,alpha * .09);
       }
-      for (let index = 0; index < buckets.length; index++) {
-        const points = buckets[index];
-        if (!points.length) continue;
-        context.beginPath();
-        for (let i = 0; i < points.length; i += 3) {
-          context.moveTo(points[i] + points[i + 2],points[i + 1]);
-          context.arc(points[i],points[i + 1],points[i + 2],0,Math.PI * 2);
-        }
-        context.fillStyle = `rgba(${colors[Math.floor(index / 16)]},${(index % 16) / 15})`;
-        context.fill();
-      }
+      painter.flush(light);
       if (elapsed < DURATION) frame = requestAnimationFrame(draw);
     }
     frame = requestAnimationFrame(draw);
@@ -1051,6 +1362,7 @@ function filterServices(category, status, query, sort) {
       finish(keyboardStart);
       return;
     }
+    const galaxy = captureGalaxyCenter();
     phase = 'revealing';
     root.dataset.intro = 'revealing';
     welcome.inert = true;
@@ -1100,7 +1412,7 @@ function filterServices(category, status, query, sort) {
         move(row,'translate3d(65px,18px,0)',1510 + index * 50,560,.4,2620 + index * 25);
       });
       move(document.querySelector('.site-footer'),'translate3d(0,16px,0)',2050,600);
-      stardust(targets);
+      stardust(targets, galaxy);
     } catch {
       finish(keyboardStart);
     }
@@ -1121,6 +1433,328 @@ function filterServices(category, status, query, sort) {
   window.addEventListener('scroll', () => { if (phase === 'revealing') finish(); },{passive:true});
   window.addEventListener('pagehide', () => { if (phase === 'revealing') finish(); });
   window.WinwiseIntro = Object.freeze({dismiss:() => finish()});
+})();
+</script>
+<script>'use strict';
+// The START screen: a luminous particle galaxy with interlocking gears in the corner.
+(() => {
+  const root = document.documentElement;
+  const panel = document.getElementById('welcome');
+  const glow = document.getElementById('launch-glass');
+  const universe = document.getElementById('launch-universe');
+  let canvas = document.getElementById('launch-orbits');
+  const mechanics = document.getElementById('launch-gears');
+  if (!panel || !glow || !universe || !canvas || !mechanics || root.dataset.intro !== 'waiting') return;
+  const haze = glow.getContext('2d');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const opaque = window.matchMedia('(prefers-reduced-transparency: reduce)');
+  const TAU = Math.PI * 2;
+  const point = (r, a) => `${(Math.cos(a) * r).toFixed(3)} ${(Math.sin(a) * r).toFixed(3)}`;
+  const circle = r => `M ${r} 0 A ${r} ${r} 0 1 0 ${-r} 0 A ${r} ${r} 0 1 0 ${r} 0 Z`;
+  function gearPath(radius, teeth, spokes) {
+    const pitch = TAU / teeth;
+    let path = '';
+    // All wheels share the same tooth pitch. Tapered tips fit the neighbouring gaps.
+    for (let tooth = 0; tooth < teeth; tooth++) {
+      for (const [offset, r] of [[-.5,radius-10],[-.35,radius-10],[-.19,radius+10],[.19,radius+10],[.35,radius-10]]) {
+        path += `${path ? ' L ' : 'M '}${point(r, (tooth + offset) * pitch)}`;
+      }
+    }
+    path += ' Z ' + circle(radius * .12);
+    // Open spokes keep the assembly light and let the liquid reflections show through.
+    const inner = radius * .30, outer = radius * .76;
+    for (let spoke = 0; spoke < spokes; spoke++) {
+      const a = spoke * TAU / spokes + .13, b = (spoke + 1) * TAU / spokes - .13;
+      path += ` M ${point(inner,a)} L ${point(outer,a+.045)} A ${outer} ${outer} 0 0 1 ${point(outer,b-.045)} L ${point(inner,b)} A ${inner} ${inner} 0 0 0 ${point(inner,a)} Z`;
+    }
+    return path;
+  }
+  const gears = [
+    {x:280,y:300,r:150,teeth:30,spokes:6,ratio:1,phase:14},
+    {r:100,teeth:20,spokes:5,angle:-50},
+    {r:70,teeth:14,spokes:4,angle:52}
+  ];
+  for (const gear of gears.slice(1)) {
+    const angle = gear.angle * Math.PI / 180;
+    gear.x = 280 + Math.cos(angle) * (150 + gear.r);
+    gear.y = 300 + Math.sin(angle) * (150 + gear.r);
+    gear.ratio = -30 / gear.teeth;
+    gear.phase = gear.angle + 180 + 30 / gear.teeth * (gear.angle - 14) - 180 / gear.teeth;
+  }
+  mechanics.innerHTML = `<defs>
+    <linearGradient id="gear-metal" x1="0" y1="0" x2="1" y2="1">
+      <stop class="gear-stop-bright" offset="0"/><stop class="gear-stop-mid" offset=".32"/>
+      <stop class="gear-stop-dark" offset=".56"/><stop class="gear-stop-mid" offset=".78"/>
+      <stop class="gear-stop-bright" offset="1"/>
+    </linearGradient>
+    <linearGradient id="gear-bevel" x1="0" y1="0" x2=".85" y2="1">
+      <stop class="gear-stop-edge" offset="0"/><stop class="gear-stop-shadow" offset=".5"/>
+      <stop class="gear-stop-edge" offset="1"/>
+    </linearGradient>
+  </defs><g class="launch-gear-assembly" transform="rotate(90 340 275)">` + gears.map(gear => {
+    const path = gearPath(gear.r, gear.teeth, gear.spokes);
+    let marks = '', screws = '';
+    for (let i = 0; i < gear.teeth; i++) {
+      const a = i * TAU / gear.teeth;
+      marks += `M ${point(gear.r*.865,a)} L ${point(gear.r*.895,a)}`;
+    }
+    for (let i = 0; i < gear.spokes; i++) {
+      const a = i * TAU / gear.spokes, r = gear.r * .39;
+      screws += `<circle cx="${Math.cos(a)*r}" cy="${Math.sin(a)*r}" r="2.3"/>`;
+    }
+    return `<g transform="translate(${gear.x} ${gear.y})"><g class="launch-gear-rotor">
+      <path class="gear-depth" d="${path}" fill-rule="evenodd" transform="translate(0 3)"/>
+      <path class="gear-face" d="${path}" fill-rule="evenodd"/>
+      <circle class="gear-etch" r="${gear.r*.83}"/><circle class="gear-etch" r="${gear.r*.92}"/>
+      <circle class="gear-bearing" r="${gear.r*.205}"/><circle class="gear-bearing-inner" r="${gear.r*.145}"/>
+      <path class="gear-ticks" d="${marks}"/><g class="gear-screws">${screws}</g>
+    </g></g>`;
+  }).join('') + '</g>';
+  mechanics.querySelectorAll('.launch-gear-rotor').forEach((element, index) => gears[index].element = element);
+
+  const smooth = n => {const t = Math.max(0, Math.min(1, n)); return t * t * (3 - 2 * t);};
+  let scene, frame = 0, lastFrame = 0, elapsed = 0, inView = true, disposed = false;
+  let age = root.dataset.motion === 'paused' || reduced.matches || opaque.matches ? 3 : 0;
+  let gl, context, program, buffer;
+  const shaders = [], uniforms = {};
+  const galaxy = window.WinwiseGalaxy;
+  const particles = galaxy.particles(9000);
+  const {darkPalette,lightPalette} = galaxy;
+  // The reveal starts at the current welcome angle and radius, before cleanup.
+  window.WinwiseWelcomeGalaxy = Object.freeze({snapshot:() => scene ? {time:elapsed,radius:scene.radius} : null});
+
+  const vertexSource = `
+    attribute vec4 a_orbit;
+    attribute vec2 a_style;
+    uniform vec2 u_resolution, u_center;
+    uniform float u_radius, u_ratio, u_time, u_age, u_light, u_size;
+    uniform vec4 u_quiet[4];
+    varying vec3 v_color;
+    varying float v_alpha;
+    void main() {
+      float r = a_orbit.x;
+      float angle = a_orbit.y + u_time * (.055 + .034 * (1. - min(r, 1.)));
+      vec2 plane = vec2(cos(angle) * r, sin(angle) * r * .54 + a_orbit.z);
+      float tilt = .38 + sin(u_time * .10) * .018;
+      vec2 point = vec2(plane.x * cos(tilt) - plane.y * sin(tilt),
+        plane.x * sin(tilt) + plane.y * cos(tilt)) * u_radius + u_center;
+      gl_Position = vec4(point.x / u_resolution.x * 2. - 1., 1. - point.y / u_resolution.y * 2., 0., 1.);
+      gl_PointSize = max(2., a_orbit.w * 6. * u_ratio * u_size);
+      float entrance = smoothstep(.10 + r * .42, 1.60 + r * .42, u_age);
+      float quiet = 1.;
+      for (int i = 0; i < 4; i++) {
+        vec2 distance = max(max(u_quiet[i].xy - point, point - u_quiet[i].zw), vec2(0.));
+        quiet *= smoothstep(0., 38., length(distance));
+      }
+      float edge = 1. - smoothstep(.81, 1.05, r);
+      float twinkle = .90 + .10 * sin(a_orbit.y * 7. + u_time * .7);
+      v_alpha = a_style.x * entrance * edge * quiet * twinkle;
+      vec3 night, day;
+      if (a_style.y < .5) {night = vec3(1.,.57,.16); day = vec3(.53,.29,.075);}
+      else if (a_style.y < 1.5) {night = vec3(1.,.82,.47); day = vec3(.57,.40,.16);}
+      else if (a_style.y < 2.5) {night = vec3(.43,1.,.81); day = vec3(.075,.40,.32);}
+      else if (a_style.y < 3.5) {night = vec3(.70,.49,1.); day = vec3(.39,.23,.62);}
+      else {night = vec3(.68,.88,1.); day = vec3(.17,.35,.46);}
+      v_color = mix(night, day, u_light);
+      v_alpha *= mix(.84, .82, u_light);
+    }
+  `;
+  const fragmentSource = `
+    precision mediump float;
+    varying vec3 v_color;
+    varying float v_alpha;
+    void main() {
+      vec2 point = gl_PointCoord * 2. - 1.;
+      float d = dot(point, point);
+      if (d > 1.) discard;
+      float star = exp(-d * 18.) + .16 * exp(-d * 4.) * (1. - d);
+      float alpha = star * v_alpha;
+      gl_FragColor = vec4(v_color * alpha, alpha);
+    }
+  `;
+  function releaseGL() {
+    if (!gl) return;
+    if (buffer) gl.deleteBuffer(buffer);
+    if (program) gl.deleteProgram(program);
+    shaders.forEach(shader => gl.deleteShader(shader));
+    buffer = program = null;
+    shaders.length = 0;
+  }
+  function useFallback() {
+    releaseGL();
+    gl = null;
+    // A canvas with a WebGL context cannot become a 2D canvas.
+    const replacement = canvas.cloneNode(false);
+    canvas.removeEventListener('webglcontextlost', contextLost);
+    canvas.replaceWith(replacement);
+    canvas = replacement;
+    context = canvas.getContext('2d');
+  }
+  try {
+    gl = canvas.getContext('webgl', {alpha:true, premultipliedAlpha:true,
+      antialias:false, depth:false, stencil:false, powerPreference:'low-power'});
+    if (gl) {
+      const compile = (type, source) => {
+        const shader = gl.createShader(type); shaders.push(shader);
+        gl.shaderSource(shader, source); gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error('Galaxy shader unavailable');
+        return shader;
+      };
+      program = gl.createProgram();
+      gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSource));
+      gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSource));
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('Galaxy renderer unavailable');
+      gl.useProgram(program);
+      buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(particles.flatMap(p => [p.r,p.angle,p.depth,p.size,p.alpha,p.tint])), gl.STATIC_DRAW);
+      for (const [name, count, offset] of [['a_orbit',4,0],['a_style',2,16]]) {
+        const location = gl.getAttribLocation(program, name);
+        gl.enableVertexAttribArray(location); gl.vertexAttribPointer(location, count, gl.FLOAT, false, 24, offset);
+      }
+      for (const name of ['resolution','center','radius','ratio','time','age','light','size']) uniforms[name] = gl.getUniformLocation(program, 'u_' + name);
+      uniforms.quiet = gl.getUniformLocation(program, 'u_quiet[0]');
+      gl.enable(gl.BLEND); gl.disable(gl.DEPTH_TEST);
+      canvas.addEventListener('webglcontextlost', contextLost);
+    } else useFallback();
+  } catch { useFallback(); }
+
+  function drawHaze() {
+    if (!scene || !haze) return;
+    const light = root.dataset.theme === 'light';
+    const {localX:x, localY:y, radius:r, panelWidth:w, panelHeight:h} = scene;
+    haze.clearRect(0, 0, w, h);
+    galaxy.haze(haze,x,y,r,light);
+    glow.classList.add('is-ready');
+  }
+  const buckets = Array.from({length:120}, () => []);
+  function drawFallback(revealAge) {
+    if (!context) return;
+    const {width,height,cx,cy,radius,quiet,mobile} = scene;
+    context.clearRect(0,0,width,height);
+    const light = root.dataset.theme === 'light';
+    const palette = light ? lightPalette : darkPalette;
+    buckets.forEach(bucket => {bucket.length = 0;});
+    const tilt = .38 + Math.sin(elapsed * .10) * .018, ct = Math.cos(tilt), st = Math.sin(tilt);
+    const limit = mobile ? 2600 : 4800;
+    for (let i = 0; i < limit; i++) {
+      const p = particles[i], angle = p.angle + elapsed * (.055 + .034 * (1 - Math.min(p.r,1)));
+      const px = Math.cos(angle) * p.r, py = Math.sin(angle) * p.r * .54 + p.depth;
+      const x = cx + (px * ct - py * st) * radius, y = cy + (px * st + py * ct) * radius;
+      let alpha = p.alpha * smooth((revealAge - .10 - p.r * .42) / 1.5) * (1 - smooth((p.r - .81) / .24));
+      for (const box of quiet) alpha *= smooth(Math.hypot(Math.max(box[0] - x,0,x - box[2]),Math.max(box[1] - y,0,y - box[3])) / 38);
+      const level = Math.min(23, Math.round(alpha * 23));
+      if (level) buckets[p.tint * 24 + level].push(x,y,p.size * (mobile ? .75 : 1));
+    }
+    context.globalCompositeOperation = light ? 'source-over' : 'lighter';
+    buckets.forEach((points,index) => {
+      if (!points.length) return;
+      context.beginPath();
+      for (let i = 0; i < points.length; i += 3) {context.moveTo(points[i] + points[i+2],points[i+1]);context.arc(points[i],points[i+1],points[i+2],0,TAU);}
+      const color = palette[Math.floor(index / 24)].map(n => Math.round(n * 255));
+      context.fillStyle = `rgba(${color.join(',')},${index % 24 / 23})`; context.fill();
+    });
+  }
+  function draw() {
+    if (!scene || disposed) return;
+    gears.forEach(gear => gear.element.setAttribute('transform', `rotate(${gear.phase + elapsed * 4.4 * gear.ratio})`));
+    const revealAge = reduced.matches || opaque.matches ? 3 : age;
+    if (!gl) {drawFallback(revealAge); return;}
+    const light = root.dataset.theme === 'light';
+    gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.blendFuncSeparate(gl.ONE, light ? gl.ONE_MINUS_SRC_ALPHA : gl.ONE, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.uniform2f(uniforms.resolution, scene.width, scene.height);
+    gl.uniform2f(uniforms.center, scene.cx, scene.cy);
+    gl.uniform1f(uniforms.radius, scene.radius); gl.uniform1f(uniforms.ratio, scene.ratio);
+    gl.uniform1f(uniforms.time, elapsed); gl.uniform1f(uniforms.age, revealAge);
+    gl.uniform1f(uniforms.light, light ? 1 : 0); gl.uniform1f(uniforms.size, scene.mobile ? .78 : 1);
+    gl.uniform4fv(uniforms.quiet, new Float32Array(scene.quiet.flat()));
+    gl.drawArrays(gl.POINTS, 0, scene.mobile ? 3800 : particles.length);
+  }
+  function size() {
+    if (disposed || root.dataset.intro !== 'waiting') return;
+    const width = panel.clientWidth, height = panel.clientHeight;
+    if (!width || !height) return;
+    const box = panel.getBoundingClientRect(), focus = panel.querySelector('.launch-focus').getBoundingClientRect();
+    const localX = focus.left - box.left - panel.clientLeft + focus.width / 2;
+    const localY = focus.top - box.top - panel.clientTop + focus.height / 2;
+    const mobile = window.innerWidth <= 760;
+    const radius = mobile ? Math.min(focus.width * 1.12, 190)
+      : Math.min(focus.width * 1.10, Math.max(focus.height * .80,280), window.innerHeight * .39,540);
+    const left = Math.max(0, Math.min(box.left, radius * 1.12 - localX + 20));
+    const right = Math.max(0, Math.min(window.innerWidth - box.right, localX + radius * 1.12 - width + 20));
+    const top = Math.max(0, Math.min(85, box.top - 90));
+    const bottom = Math.max(0, Math.min(85, window.innerHeight - box.bottom));
+    const sceneWidth = width + left + right, sceneHeight = height + top + bottom;
+    universe.style.left = `${-left}px`; universe.style.top = `${-top}px`;
+    universe.style.width = `${sceneWidth}px`; universe.style.height = `${sceneHeight}px`;
+    const quiet = ['.launch-copy','.launch-action','.launch-bottom'].map(selector => {
+      const r = panel.querySelector(selector).getBoundingClientRect();
+      return [r.left-box.left+left-8,r.top-box.top+top-8,r.right-box.left+left+8,r.bottom-box.top+top+8];
+    });
+    const heading = document.querySelector('.intro').getBoundingClientRect();
+    quiet.push([heading.left-box.left+left,heading.top-box.top+top,heading.right-box.left+left,heading.bottom-box.top+top+14]);
+    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+    scene = {width:sceneWidth,height:sceneHeight,cx:localX+left,cy:localY+top,localX,localY,
+      panelWidth:width,panelHeight:height,radius,mobile,ratio,quiet};
+    canvas.width = Math.round(sceneWidth * ratio); canvas.height = Math.round(sceneHeight * ratio);
+    if (gl) gl.viewport(0,0,canvas.width,canvas.height);
+    else context?.setTransform(ratio,0,0,ratio,0,0);
+    const scale = Math.min(1, 1200 / width, 650 / height);
+    glow.width = Math.round(width * scale); glow.height = Math.round(height * scale);
+    haze?.setTransform(scale,0,0,scale,0,0);
+    drawHaze(); draw();
+  }
+  function canAnimate() {
+    return !disposed && !document.hidden && inView && root.dataset.intro === 'waiting'
+      && root.dataset.motion !== 'paused' && !reduced.matches && !opaque.matches;
+  }
+  function tick(now) {
+    frame = 0;
+    if (!canAnimate()) {lastFrame = 0; return;}
+    if (!lastFrame || now - lastFrame >= 1000 / 30) {
+      if (lastFrame) {const dt = (now-lastFrame)/1000; elapsed += Math.min(dt,.12); age += dt;}
+      lastFrame = now; draw();
+    }
+    frame = requestAnimationFrame(tick);
+  }
+  function sync() {
+    if (disposed) return;
+    cancelAnimationFrame(frame); frame = 0; lastFrame = 0;
+    if (root.dataset.intro !== 'waiting') {dispose(); return;}
+    drawHaze(); draw();
+    if (canAnimate()) frame = requestAnimationFrame(tick);
+  }
+  function contextLost(event) {
+    event.preventDefault();
+    if (disposed) return;
+    useFallback(); size(); sync();
+  }
+  function dispose() {
+    if (disposed) return;
+    disposed = true; cancelAnimationFrame(frame); frame = 0;
+    mutation.disconnect(); resize?.disconnect(); visibility?.disconnect();
+    document.removeEventListener('visibilitychange',sync);
+    reduced.removeEventListener('change',sync); opaque.removeEventListener('change',sync);
+    window.removeEventListener('resize',size);
+    window.removeEventListener('pagehide',sync); window.removeEventListener('pageshow',sync);
+    canvas.removeEventListener('webglcontextlost',contextLost);
+    releaseGL(); canvas.width = canvas.height = glow.width = glow.height = 0;
+    universe.hidden = true;
+  }
+  const mutation = new MutationObserver(sync);
+  mutation.observe(root,{attributes:true,attributeFilter:['data-intro','data-theme','data-motion']});
+  const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(size) : null;
+  resize?.observe(panel);
+  const visibility = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+    inView = entries[0].isIntersecting; sync();
+  }) : null;
+  visibility?.observe(panel);
+  reduced.addEventListener('change',sync); opaque.addEventListener('change',sync);
+  document.addEventListener('visibilitychange',sync);
+  window.addEventListener('resize',size,{passive:true});
+  window.addEventListener('pagehide',sync); window.addEventListener('pageshow',sync);
+  size(); sync();
 })();
 </script>
 <script>'use strict';
@@ -1180,7 +1814,7 @@ function settingsPanel(s){
   const setting=SERVICE_SETTINGS[s.id];if(!setting)return '';
   return `<div class="settings-callout"><h3>Change the feature in Windows Settings</h3><p>${escapeHTML(setting.action)}</p><p class="settings-path">${escapeHTML(setting.path)}</p><a class="secondary-button" href="${setting.uri}">${icon('sliders')}Open Windows Settings</a><p class="small-note">Open this link on your Windows PC. If the browser does not open Settings, follow the path above; labels vary by Windows build.</p>${isScriptEligible(s)?'<p class="small-note">A service-level change is also available as an explicit opt-in in the builder. Review its wider effects first.</p>':''}</div>`;
 }
-function serviceIcon(s){if(s.id==='SysMain')return 'gauge';if(s.id==='WSearch')return 'search';if(s.id==='TabletInputService')return 'keyboard';if(/spool|fax|print/i.test(s.id))return 'printer';if(/bluetooth|bth|btag/i.test(s.id))return 'bluetooth';if(/remote|rdp|termservice|sessionenv/i.test(s.id))return 'monitor';return CATEGORIES.find(c=>c.id===s.category)?.icon||'cube';}
+function serviceIcon(s){if(s.id==='SysMain')return 'gauge';if(s.id==='WSearch')return 'search';if(s.id==='TabletInputService'||s.id==='TextInputManagementService')return 'keyboard';if(/spool|fax|print/i.test(s.id))return 'printer';if(/bluetooth|bth|btag/i.test(s.id))return 'bluetooth';if(/remote|rdp|termservice|sessionenv/i.test(s.id))return 'monitor';return CATEGORIES.find(c=>c.id===s.category)?.icon||'cube';}
 function renderDirectory(){
   const cat=CATEGORIES.find(c=>c.id===state.category);
   $('#categories').innerHTML=CATEGORIES.map(c=>`<button class="${state.category===c.id?'selected':''}" data-category="${c.id}" aria-pressed="${state.category===c.id}">${icon(c.icon)}${c.name}<span>${SERVICES.filter(s=>c.id==='all'||s.category===c.id).length}</span></button>`).join('');
@@ -1189,7 +1823,7 @@ function renderDirectory(){
   $$('[data-status]').forEach(b=>{b.classList.toggle('selected',b.dataset.status===state.status);b.setAttribute('aria-pressed',String(b.dataset.status===state.status));});
   const results=filterServices(state.category,state.status,state.query,state.sort);
   $('#result-count').innerHTML=`Showing <b>${results.length}</b> of ${SERVICES.length} services`;
-  $('#service-list').innerHTML=results.map(s=>`<button class="service-row" data-service="${s.id}" aria-label="${escapeHTML(s.name)} — ${escapeHTML(recommendationText(s))}.${s.bootRisk?' Can break boot or sign-in.':''} View details"><span class="service-identity"><span class="service-icon">${icon(serviceIcon(s))}</span><span><h3>${escapeHTML(s.name)}</h3><span class="service-code">${escapeHTML(s.id)}${s.perUser?'_…':''}</span></span></span><span class="recommendation-stack">${badge(s)}${riskBadge(s)}${s.bootRisk?.condition?`<span class="risk-condition">${escapeHTML(s.bootRisk.condition)}</span>`:''}</span><span class="row-reason">${escapeHTML(s.description||s.summary)}</span><span class="row-arrow">${icon('arrow')}</span></button>`).join('');
+  $('#service-list').innerHTML=results.map(s=>`<button class="service-row" data-service="${s.id}" aria-label="${escapeHTML(s.name)} — ${escapeHTML(recommendationText(s))}.${s.bootRisk?' Can break boot or sign-in.':''} View details"><span class="service-identity"><span class="service-icon service-icon-${s.category}">${icon(serviceIcon(s))}</span><span><h3>${escapeHTML(s.name)}</h3><span class="service-code">${escapeHTML(s.id)}${s.perUser?'_…':''}</span></span></span><span class="recommendation-stack">${badge(s)}${riskBadge(s)}${s.bootRisk?.condition?`<span class="risk-condition">${escapeHTML(s.bootRisk.condition)}</span>`:''}</span><span class="row-reason">${escapeHTML(s.description||s.summary)}</span><span class="row-arrow">${icon('arrow')}</span></button>`).join('');
   $('.service-table').hidden=!results.length;$('#empty-state').hidden=!!results.length;
 }
 function setView(view){
@@ -1214,7 +1848,7 @@ function openDialog(html,eyebrow='SERVICE DETAILS'){
 function serviceDetails(id){
   const s=SERVICES.find(s=>s.id===id);if(!s)return;
   const src=SOURCES[s.source];
-  openDialog(`<div class="dialog-title-row"><span class="service-icon">${icon(serviceIcon(s))}</span><div><h2 id="dialog-title">${escapeHTML(s.name)}</h2><div class="detail-code">${escapeHTML(s.id)}${s.perUser?'_…':''}<button data-copy-name="${s.id}" aria-label="Copy service name">${icon('copy')}</button></div></div></div><div class="detail-tags">${badge(s)}${riskBadge(s)}<span class="category-tag">${CATEGORIES.find(c=>c.id===s.category).name}</span></div>${riskDetails(s)}${s.description?`<p class="service-explainer">${escapeHTML(s.description)}</p>`:''}${s.availability?`<div class="service-availability"><strong>Check your Windows build</strong>${escapeHTML(s.availability)}</div>`:''}${settingsPanel(s)}<div class="detail-section"><h3>When to consider a change</h3><p>${escapeHTML(s.summary)}</p></div><div class="detail-section"><h3>What changes</h3><p>${escapeHTML(s.tradeoff)}</p></div><div class="detail-section"><h3>Our recommendation</h3><p>${escapeHTML(s.advice)}</p></div><div class="detail-callout"><h3>${s.perUser?'This is a per-user service':'Check your PC’s current configuration'}</h3><p>${s.perUser?'Windows adds a session suffix to this service name. These services are not included in generated scripts; use the feature settings instead.':'Startup defaults vary by build and installed features. “Manual” may mean Windows starts it on demand. Check its Dependencies tab before changing anything.'}</p></div>${isScriptEligible(s)?`<button class="primary-button add-script-button" data-add-script="${s.id}">${icon('terminal')}${state.selected.has(s.id)?'Selected — open builder':'Add to my script'}</button>`:''}<div class="detail-bottom"><a class="source-link" href="${src.url}" target="_blank" rel="noopener noreferrer">Microsoft reference ${icon('external')}</a><button class="text-button" data-dialog="guide">How to change &amp; restore</button></div>`);
+  openDialog(`<div class="dialog-title-row"><span class="service-icon service-icon-${s.category}">${icon(serviceIcon(s))}</span><div><h2 id="dialog-title">${escapeHTML(s.name)}</h2><div class="detail-code">${escapeHTML(s.id)}${s.perUser?'_…':''}<button data-copy-name="${s.id}" aria-label="Copy service name">${icon('copy')}</button></div></div></div><div class="detail-tags">${badge(s)}${riskBadge(s)}<span class="category-tag">${CATEGORIES.find(c=>c.id===s.category).name}</span></div>${riskDetails(s)}${s.description?`<p class="service-explainer">${escapeHTML(s.description)}</p>`:''}${s.availability?`<div class="service-availability"><strong>Check your Windows build</strong>${escapeHTML(s.availability)}</div>`:''}${settingsPanel(s)}<div class="detail-section"><h3>When to consider a change</h3><p>${escapeHTML(s.summary)}</p></div><div class="detail-section"><h3>What changes</h3><p>${escapeHTML(s.tradeoff)}</p></div><div class="detail-section"><h3>Our recommendation</h3><p>${escapeHTML(s.advice)}</p></div><div class="detail-callout"><h3>${s.perUser?'This is a per-user service':'Check your PC’s current configuration'}</h3><p>${s.perUser?'Windows adds a session suffix to this service name. These services are not included in generated scripts; use the feature settings instead.':'Startup defaults vary by build and installed features. “Manual” may mean Windows starts it on demand. Check its Dependencies tab before changing anything.'}</p></div>${isScriptEligible(s)?`<button class="primary-button add-script-button" data-add-script="${s.id}">${icon('terminal')}${state.selected.has(s.id)?'Selected — open builder':'Add to my script'}</button>`:''}<div class="detail-bottom"><a class="source-link" href="${src.url}" target="_blank" rel="noopener noreferrer">Microsoft reference ${icon('external')}</a><button class="text-button" data-dialog="guide">How to change &amp; restore</button></div>`);
 }
 const inventoryCommand='Get-CimInstance Win32_Service |\n  Sort-Object DisplayName |\n  Select-Object DisplayName, Name, State, StartMode |\n  Format-Table -AutoSize';
 function codeBlock(text,id){return `<div class="code-block"><pre id="${id}">${escapeHTML(text)}</pre><button class="copy-button" data-copy-block="${id}">${icon('copy')}Copy command</button></div>`;}
@@ -1242,9 +1876,15 @@ function builderIndividualChoice(s){
   const settings=builderSettingsFirst(s,'individual');
   return `<div class="individual-choice">${settings}<div class="individual-service"><label><input type="checkbox" data-individual="${s.id}"${settings?` aria-describedby="individual-settings-${s.id}"`:''}><span>${settings?'Disable service instead: ':''}${escapeHTML(s.name)}<code>${s.id}</code></span></label><button class="builder-read-more" data-service="${s.id}">Read more</button></div></div>`;
 }
+function builderIndividualChoices(){
+  const eligible=SERVICES.filter(isScriptEligible);
+  const settingsChoices=eligible.filter(s=>s.status==='settings'&&SERVICE_SETTINGS[s.id]);
+  const otherChoices=eligible.filter(s=>!settingsChoices.includes(s));
+  return `${settingsChoices.length?`<div class="individual-settings-grid" role="group" aria-label="Services with recommended Windows Settings">${settingsChoices.map(builderIndividualChoice).join('')}</div>`:''}<div class="individual-service-grid">${otherChoices.map(builderIndividualChoice).join('')}</div>`;
+}
 function renderBuilderOnce(){
   if($('#builder').children.length)return;
-  $('#builder').innerHTML=`<div class="builder-heading"><div><p class="section-label">YOUR PC. YOUR CHOICES.</p><h2 id="builder-title">Build your PowerShell script<span>.</span></h2><p>Choose a configuration with simple clicks, review every service, then download a reversible PowerShell script.</p><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p></div><button class="back-link" data-back-directory>← Back to directory</button></div><div class="builder-layout"><div class="builder-options"><div class="preset-card"><span class="preset-icon">${icon('sliders')}</span><div><h3>A conservative starting point</h3><p>Remote registry, fax, and retail demo. Review these assumptions first; they may already be off.</p></div><button id="use-preset">Use preset ${icon('arrow')}</button></div><div class="step-heading"><span>01</span><div><h3>What don’t you use?</h3><p>Click the options that match this PC. Winwise selects the related services for your script.</p></div></div><div class="feature-grid">${FEATURE_GROUPS.map(g=>`<label class="feature-card"><input type="checkbox" data-feature="${g.id}"><span class="feature-card-top">${icon(g.icon)}<span class="custom-checkbox" aria-hidden="true">${icon('check')}</span></span><strong>${escapeHTML(g.title)}</strong><span class="feature-description">${escapeHTML(g.description)}</span><span class="feature-count">${g.services.length} service${g.services.length!==1?'s':''}</span></label>`).join('')}</div><div class="step-heading advanced-heading"><span>02</span><div><h3>Consider the tradeoffs</h3><p>Try the recommended Settings route first. Disabling a service is an explicit opt-in, outside the conservative preset.</p></div></div><div class="advanced-choices">${['SysMain','WSearch','DiagTrack'].filter(id=>SCRIPT_IDS.includes(id)).map(builderAdvancedChoice).join('')}</div><details class="individual-picker"><summary>Choose individual services <span>${SCRIPT_IDS.length} available</span></summary><p>Fine-tune the selection. Click Read more to see the same tradeoffs and recommendation shown in the service directory.</p><div>${SERVICES.filter(isScriptEligible).map(builderIndividualChoice).join('')}</div></details><div class="builder-boundary">${icon('shield')}<p>Services marked “Can break boot or sign-in” are not included in this script builder. Security, updates, other core Windows services, and per-user service templates are also excluded.</p></div></div><aside class="builder-summary" aria-labelledby="selection-title"><div class="summary-title"><span>03 · REVIEW & DOWNLOAD</span>${icon('terminal')}</div><div class="summary-body"><div class="summary-count"><h3 id="selection-title">Your selection</h3><button id="clear-selection">Clear</button></div><p id="selected-count" role="status" aria-live="polite"></p><div id="selected-services"></div><div class="script-properties"><span>${icon('eye')}<strong>Dry run with <code>-WhatIf</code></strong></span><span>${icon('copy')}<strong>Original settings saved first</strong></span><span>${icon('undo')}<strong>Restore from your backup</strong></span></div><button id="download-script" class="primary-button">${icon('download')}Download PowerShell</button><button id="preview-script" class="secondary-button">${icon('terminal')}Preview the script</button><p id="template-status" class="small-note"></p><button data-dialog="run" class="run-instructions-link">How to run & undo ${icon('external')}</button><p class="builder-expectation">The script skips missing or already-disabled services and avoids force-stopping dependent services.</p></div></aside></div>`;
+  $('#builder').innerHTML=`<div class="builder-heading"><div><p class="section-label">YOUR PC. YOUR CHOICES.</p><h2 id="builder-title">Build your PowerShell script<span>.</span></h2><p>Choose a configuration with simple clicks, review every service, then download a reversible PowerShell script.</p><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p></div><button class="back-link" data-back-directory>← Back to directory</button></div><div class="builder-layout"><div class="builder-options"><div class="preset-card"><span class="preset-icon">${icon('sliders')}</span><div><h3>A conservative starting point</h3><p>Remote registry, fax, and retail demo. Review these assumptions first; they may already be off.</p></div><button id="use-preset">Use preset ${icon('arrow')}</button></div><div class="step-heading"><span>01</span><div><h3>What don’t you use?</h3><p>Click the options that match this PC. Winwise selects the related services for your script.</p></div></div><div class="feature-grid">${FEATURE_GROUPS.map(g=>`<label class="feature-card"><input type="checkbox" data-feature="${g.id}"><span class="feature-card-top">${icon(g.icon)}<span class="custom-checkbox" aria-hidden="true">${icon('check')}</span></span><strong>${escapeHTML(g.title)}</strong><span class="feature-description">${escapeHTML(g.description)}</span><span class="feature-count">${g.services.length} service${g.services.length!==1?'s':''}</span></label>`).join('')}</div><div class="step-heading advanced-heading"><span>02</span><div><h3>Consider the tradeoffs</h3><p>Try the recommended Settings route first. Disabling a service is an explicit opt-in, outside the conservative preset.</p></div></div><div class="advanced-choices">${['SysMain','WSearch','DiagTrack'].filter(id=>SCRIPT_IDS.includes(id)).map(builderAdvancedChoice).join('')}</div><details class="individual-picker"><summary>Choose individual services <span>${SCRIPT_IDS.length} available</span></summary><p>Fine-tune the selection. Click Read more to see the same tradeoffs and recommendation shown in the service directory.</p>${builderIndividualChoices()}</details><div class="builder-boundary">${icon('shield')}<p>Services marked “Can break boot or sign-in” are not included in this script builder. Security, updates, other core Windows services, and per-user service templates are also excluded.</p></div></div><aside class="builder-summary" aria-labelledby="selection-title"><div class="summary-title"><span>03 · REVIEW & DOWNLOAD</span>${icon('terminal')}</div><div class="summary-body"><div class="summary-count"><h3 id="selection-title">Your selection</h3><button id="clear-selection">Clear</button></div><p id="selected-count" role="status" aria-live="polite"></p><div id="selected-services"></div><div class="script-properties"><span>${icon('eye')}<strong>Dry run with <code>-WhatIf</code></strong></span><span>${icon('copy')}<strong>Original settings saved first</strong></span><span>${icon('undo')}<strong>Restore from your backup</strong></span></div><button id="download-script" class="primary-button">${icon('download')}Download PowerShell</button><button id="preview-script" class="secondary-button">${icon('terminal')}Preview the script</button><p id="template-status" class="small-note"></p><button data-dialog="run" class="run-instructions-link">How to run & undo ${icon('external')}</button><p class="builder-expectation">The script skips missing or already-disabled services and avoids force-stopping dependent services.</p></div></aside></div>`;
   $$('.feature-count').forEach((count,index)=>{const group=FEATURE_GROUPS[index];count.dataset.featureInfo=group.id;count.tabIndex=0;count.setAttribute('role','button');count.setAttribute('aria-label',`View the ${group.services.length} services included in ${group.title}`);count.textContent=`${group.services.length} service${group.services.length!==1?'s':''} · View`;});
   const intro=document.createElement('div');intro.className='script-features-intro';intro.textContent='Every generated script has these safety features built in:';$('.script-properties').before(intro);
 }
@@ -1310,6 +1950,11 @@ const embeddedTemplate=document.getElementById('winwise-template');(embeddedTemp
   const motionButton = document.getElementById('motion-toggle');
   const canvas = document.getElementById('ambient-particles');
   const context = canvas.getContext('2d');
+  const galaxy = window.WinwiseGalaxy;
+  const stars = context && galaxy.painter(context);
+  const nebula = document.createElement('canvas');
+  const haze = nebula.getContext('2d');
+  let cloudKey = '';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let manualPause = false;
   try { manualPause = localStorage.getItem('winwise.motion') === 'paused'; } catch {}
@@ -1329,66 +1974,42 @@ const embeddedTemplate=document.getElementById('winwise-template');(embeddedTemp
   }
 
   function makeParticles() {
-    // Fixed seed: stable, original abstract spiral, including its static fallback.
-    let seed = 11971;
-    const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-    const count = width < 720 ? 250 : 680;
-    particles = Array.from({length:count}, (_, i) => ({
-      progress: random(), arm: i % 3, spread: (random() - .5) * .13,
-      size: .45 + random() * 1.25, alpha: .16 + random() * .64,
-      tint: Math.floor(random() * 4), phase: random() * Math.PI * 2
-    }));
+    particles = galaxy.particles(width < 720 ? 2600 : 6400);
   }
 
   function draw(time) {
     if (!context || !width || !height) return;
     context.clearRect(0,0,width,height);
-    const dark = root.dataset.theme === 'dark';
-    const colors = dark ? ['218,229,244','198,211,255','150,194,209','231,208,184'] : ['24,32,43','36,43,54','45,54,64','57,62,70'];
-    const radius = Math.min(width * .47, 650);
-    const cx = width * .77, cy = Math.min(height * .3, 285);
-    const tilt = -.48;
-    // Charcoal threads keep the spiral visible on the light background.
-    // Share the particles' motion clock so pause and reduced motion stop both.
-    if (!dark) {
-      context.strokeStyle = 'rgba(24,32,43,.12)';
-      context.lineWidth = .85;
-      for (let arm = 0; arm < 3; arm++) {
-        context.beginPath();
-        for (let step = 0; step <= 120; step++) {
-          const progress = step / 120;
-          const r = (progress * .91 + .07) * radius;
-          const angle = progress * Math.PI * 3.6 + arm * Math.PI * 2 / 3 + time * .021;
-          const u = Math.cos(angle) * r;
-          const v = Math.sin(angle) * r * .58;
-          const x = cx + u * Math.cos(tilt) - v * Math.sin(tilt);
-          const y = cy + u * Math.sin(tilt) + v * Math.cos(tilt);
-          if (step === 0) context.moveTo(x,y); else context.lineTo(x,y);
-        }
-        context.stroke();
-      }
+    const light = root.dataset.theme === 'light';
+    const radius = Math.min(width * .47,650);
+    // Keep the established page background position; only its visual style changes.
+    const cx = width * .77, cy = Math.min(height * .3,285);
+    const key = `${width}:${height}:${light}`;
+    if (key !== cloudKey && haze) {
+      const scale = Math.min(1,1200 / width,800 / height);
+      nebula.width = Math.round(width * scale);nebula.height = Math.round(height * scale);
+      haze.setTransform(scale,0,0,scale,0,0);
+      galaxy.haze(haze,cx,cy,radius,light,.68);
+      cloudKey = key;
     }
+    if (haze) context.drawImage(nebula,0,0,width,height);
+    const view = galaxy.camera(time,cx,cy,radius), point = {};
+    stars.begin(light);
     for (const p of particles) {
-      const r = (p.progress * .91 + .07) * radius;
-      const angle = p.progress * Math.PI * 3.6 + p.arm * Math.PI * 2 / 3 + p.spread + time * .021;
-      const u = Math.cos(angle) * r;
-      const v = Math.sin(angle) * r * .58;
-      const x = cx + u * Math.cos(tilt) - v * Math.sin(tilt);
-      const y = cy + u * Math.sin(tilt) + v * Math.cos(tilt) + Math.sin(p.phase + time * .15) * 3;
-      const opacity = p.alpha * (dark ? .47 : .58);
-      if (p.size > 1.5 && dark) {
-        context.beginPath();context.arc(x,y,p.size * 3.2,0,Math.PI*2);
-        context.fillStyle = `rgba(${colors[p.tint]},${opacity * .06})`;context.fill();
-      }
-      context.beginPath();context.arc(x,y,p.size,0,Math.PI*2);
-      context.fillStyle = `rgba(${colors[p.tint]},${opacity})`;context.fill();
+      galaxy.project(p,view,point);
+      if (point.x < -5 || point.x > width + 5 || point.y < -5 || point.y > height + 5) continue;
+      const alpha = galaxy.opacity(p,time) * (light ? .62 : .53);
+      const size = p.size * (width < 720 ? .60 : .72);
+      stars.dot(point.x,point.y,size,p.tint,alpha);
+      if (!light && p.size > 1.35) stars.dot(point.x,point.y,size * 2.1,p.tint,alpha * .09);
     }
+    stars.flush(light);
   }
 
   function animate(timestamp) {
     frame = 0;
-    if (document.hidden || root.dataset.motion === 'paused' || !context) return;
-    // Cap drawing at 24 fps; no pointer tracking, WebGL, or external animation library.
+    if (document.hidden || root.dataset.motion === 'paused' || root.dataset.intro !== 'ready' || !context) return;
+    // Keep the ambient scene quiet at 24 fps; the nebula is cached between resizes and theme changes.
     if (!lastFrame || timestamp - lastFrame >= 1000 / 24) {
       if (lastFrame) elapsed += Math.min((timestamp - lastFrame) / 1000, .1);
       lastFrame = timestamp;
@@ -1404,7 +2025,7 @@ const embeddedTemplate=document.getElementById('winwise-template');(embeddedTemp
     updateControls();
     if (document.hidden) return;
     draw(elapsed);
-    if (context && root.dataset.motion === 'running') frame = requestAnimationFrame(animate);
+    if (context && root.dataset.motion === 'running' && root.dataset.intro === 'ready') frame = requestAnimationFrame(animate);
   }
 
   function resize() {
@@ -1418,8 +2039,8 @@ const embeddedTemplate=document.getElementById('winwise-template');(embeddedTemp
 
   themeButton.addEventListener('click', () => {
     const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = theme;save('winwise.theme',theme);
-    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0b0d10' : '#eef1f5';
+    root.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0a101b' : '#e8eef6';
     updateControls();draw(elapsed);
   });
   motionButton.addEventListener('click', () => {
@@ -1431,6 +2052,7 @@ const embeddedTemplate=document.getElementById('winwise-template');(embeddedTemp
   window.addEventListener('resize', resize, {passive:true});
   window.addEventListener('pagehide', () => {cancelAnimationFrame(frame);frame=0;});
   window.addEventListener('pageshow', syncAnimation);
+  new MutationObserver(syncAnimation).observe(root, {attributes:true, attributeFilter:['data-intro']});
   resize();syncAnimation();
 })();
 </script>

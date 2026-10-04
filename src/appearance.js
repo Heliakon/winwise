@@ -5,6 +5,11 @@
   const motionButton = document.getElementById('motion-toggle');
   const canvas = document.getElementById('ambient-particles');
   const context = canvas.getContext('2d');
+  const galaxy = window.WinwiseGalaxy;
+  const stars = context && galaxy.painter(context);
+  const nebula = document.createElement('canvas');
+  const haze = nebula.getContext('2d');
+  let cloudKey = '';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let manualPause = false;
   try { manualPause = localStorage.getItem('winwise.motion') === 'paused'; } catch {}
@@ -24,66 +29,42 @@
   }
 
   function makeParticles() {
-    // Fixed seed: stable, original abstract spiral, including its static fallback.
-    let seed = 11971;
-    const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-    const count = width < 720 ? 250 : 680;
-    particles = Array.from({length:count}, (_, i) => ({
-      progress: random(), arm: i % 3, spread: (random() - .5) * .13,
-      size: .45 + random() * 1.25, alpha: .16 + random() * .64,
-      tint: Math.floor(random() * 4), phase: random() * Math.PI * 2
-    }));
+    particles = galaxy.particles(width < 720 ? 2600 : 6400);
   }
 
   function draw(time) {
     if (!context || !width || !height) return;
     context.clearRect(0,0,width,height);
-    const dark = root.dataset.theme === 'dark';
-    const colors = dark ? ['218,229,244','198,211,255','150,194,209','231,208,184'] : ['24,32,43','36,43,54','45,54,64','57,62,70'];
-    const radius = Math.min(width * .47, 650);
-    const cx = width * .77, cy = Math.min(height * .3, 285);
-    const tilt = -.48;
-    // Charcoal threads keep the spiral visible on the light background.
-    // Share the particles' motion clock so pause and reduced motion stop both.
-    if (!dark) {
-      context.strokeStyle = 'rgba(24,32,43,.12)';
-      context.lineWidth = .85;
-      for (let arm = 0; arm < 3; arm++) {
-        context.beginPath();
-        for (let step = 0; step <= 120; step++) {
-          const progress = step / 120;
-          const r = (progress * .91 + .07) * radius;
-          const angle = progress * Math.PI * 3.6 + arm * Math.PI * 2 / 3 + time * .021;
-          const u = Math.cos(angle) * r;
-          const v = Math.sin(angle) * r * .58;
-          const x = cx + u * Math.cos(tilt) - v * Math.sin(tilt);
-          const y = cy + u * Math.sin(tilt) + v * Math.cos(tilt);
-          if (step === 0) context.moveTo(x,y); else context.lineTo(x,y);
-        }
-        context.stroke();
-      }
+    const light = root.dataset.theme === 'light';
+    const radius = Math.min(width * .47,650);
+    // Keep the established page background position; only its visual style changes.
+    const cx = width * .77, cy = Math.min(height * .3,285);
+    const key = `${width}:${height}:${light}`;
+    if (key !== cloudKey && haze) {
+      const scale = Math.min(1,1200 / width,800 / height);
+      nebula.width = Math.round(width * scale);nebula.height = Math.round(height * scale);
+      haze.setTransform(scale,0,0,scale,0,0);
+      galaxy.haze(haze,cx,cy,radius,light,.68);
+      cloudKey = key;
     }
+    if (haze) context.drawImage(nebula,0,0,width,height);
+    const view = galaxy.camera(time,cx,cy,radius), point = {};
+    stars.begin(light);
     for (const p of particles) {
-      const r = (p.progress * .91 + .07) * radius;
-      const angle = p.progress * Math.PI * 3.6 + p.arm * Math.PI * 2 / 3 + p.spread + time * .021;
-      const u = Math.cos(angle) * r;
-      const v = Math.sin(angle) * r * .58;
-      const x = cx + u * Math.cos(tilt) - v * Math.sin(tilt);
-      const y = cy + u * Math.sin(tilt) + v * Math.cos(tilt) + Math.sin(p.phase + time * .15) * 3;
-      const opacity = p.alpha * (dark ? .47 : .58);
-      if (p.size > 1.5 && dark) {
-        context.beginPath();context.arc(x,y,p.size * 3.2,0,Math.PI*2);
-        context.fillStyle = `rgba(${colors[p.tint]},${opacity * .06})`;context.fill();
-      }
-      context.beginPath();context.arc(x,y,p.size,0,Math.PI*2);
-      context.fillStyle = `rgba(${colors[p.tint]},${opacity})`;context.fill();
+      galaxy.project(p,view,point);
+      if (point.x < -5 || point.x > width + 5 || point.y < -5 || point.y > height + 5) continue;
+      const alpha = galaxy.opacity(p,time) * (light ? .62 : .53);
+      const size = p.size * (width < 720 ? .60 : .72);
+      stars.dot(point.x,point.y,size,p.tint,alpha);
+      if (!light && p.size > 1.35) stars.dot(point.x,point.y,size * 2.1,p.tint,alpha * .09);
     }
+    stars.flush(light);
   }
 
   function animate(timestamp) {
     frame = 0;
-    if (document.hidden || root.dataset.motion === 'paused' || !context) return;
-    // Cap drawing at 24 fps; no pointer tracking, WebGL, or external animation library.
+    if (document.hidden || root.dataset.motion === 'paused' || root.dataset.intro !== 'ready' || !context) return;
+    // Keep the ambient scene quiet at 24 fps; the nebula is cached between resizes and theme changes.
     if (!lastFrame || timestamp - lastFrame >= 1000 / 24) {
       if (lastFrame) elapsed += Math.min((timestamp - lastFrame) / 1000, .1);
       lastFrame = timestamp;
@@ -99,7 +80,7 @@
     updateControls();
     if (document.hidden) return;
     draw(elapsed);
-    if (context && root.dataset.motion === 'running') frame = requestAnimationFrame(animate);
+    if (context && root.dataset.motion === 'running' && root.dataset.intro === 'ready') frame = requestAnimationFrame(animate);
   }
 
   function resize() {
@@ -113,8 +94,8 @@
 
   themeButton.addEventListener('click', () => {
     const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = theme;save('winwise.theme',theme);
-    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0b0d10' : '#eef1f5';
+    root.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0a101b' : '#e8eef6';
     updateControls();draw(elapsed);
   });
   motionButton.addEventListener('click', () => {
@@ -126,5 +107,6 @@
   window.addEventListener('resize', resize, {passive:true});
   window.addEventListener('pagehide', () => {cancelAnimationFrame(frame);frame=0;});
   window.addEventListener('pageshow', syncAnimation);
+  new MutationObserver(syncAnimation).observe(root, {attributes:true, attributeFilter:['data-intro']});
   resize();syncAnimation();
 })();

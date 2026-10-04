@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b0d10">
+  <meta name="theme-color" content="#0a101b">
   <meta name="color-scheme" content="dark light">
   <meta name="description" content="Explore Windows 11 services and useful tools, understand privacy and performance tradeoffs, and build a PowerShell script with backup and restore instructions.">
   <title>Winwise — Windows 11 service guide</title>
@@ -14,7 +14,9 @@
   <link rel="stylesheet" href="intro.css">
   <script src="services.js" defer></script>
   <script src="script-builder.js" defer></script>
+  <script src="galaxy.js" defer></script>
   <script src="intro.js" defer></script>
+  <script src="launch-glass.js" defer></script>
   <script src="app.js" defer></script>
   <script src="appearance.js" defer></script>
 </head>
@@ -28,23 +30,26 @@
     <div class="header-utilities"><span class="os-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z" fill="currentColor"/></svg>Windows 11</span><nav class="header-resources" aria-label="Tools and recovery"><a href="#tools" data-view="tools">Useful tools</a><a href="#backup" data-view="backup">How to back up your OS</a></nav><div class="appearance-controls"><button id="motion-toggle" class="appearance-button" aria-label="Pause background animation" title="Pause background animation"><svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button id="theme-toggle" class="appearance-button theme-toggle" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5 9 9 0 1 0 20.5 14.2Z"/></svg><span class="theme-toggle-label">Light mode</span></button></div></div>
   </div></header>
   <main class="page-shell">
-    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Choose services in a few clicks, then download your script.</span><span>Updated September 27, 2026</span></div></section>
+    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-04">October 4, 2026</time></span></div></section>
     <div class="directory-stage">
     <section id="welcome" class="launch-panel" aria-labelledby="launch-title" hidden>
-      <div class="launch-grid" aria-hidden="true"></div>
+      <canvas class="launch-glass" id="launch-glass" aria-hidden="true"></canvas>
+      <div class="launch-universe" id="launch-universe" aria-hidden="true">
+        <canvas class="launch-orbits" id="launch-orbits"></canvas>
+      </div>
+      <div class="launch-focus" aria-hidden="true"></div>
       <div class="launch-copy">
         <p class="launch-eyebrow"><span></span>THE WINDOWS 11 SERVICE GUIDE</p>
         <h2 id="launch-title">Know what’s running.<br><span>Choose what stays.</span></h2>
-        <p class="launch-description">Explore the services behind your PC. Understand what each one does, what you can turn off, and which features depend on it.</p>
-        <p class="launch-settings"><span data-icon="sliders"></span><span>Find links to Windows settings (where available) and instructions for locating and changing services.</span></p>
+        <p class="launch-description">Take control of background services. See what they do, which you can disable if unused, and which features rely on them.</p>
+        <p class="launch-settings"><span data-icon="sliders"></span><span>Use Windows settings shortcuts where available, with clear steps to turn services on or off.</span></p>
       </div>
       <div class="launch-action">
-        <div class="launch-planes" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="launch-count"><strong id="launch-count">70</strong><span>services, explained</span></div>
+        <div class="launch-count"><strong id="launch-count">145</strong><span>services, explained</span></div>
         <button id="start-directory" class="launch-start" type="button" aria-controls="directory"><span>START</span><span class="launch-start-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></span></button>
         <span class="launch-button-note">Explore the service directory</span>
       </div>
-      <div class="launch-bottom" aria-hidden="true"><span>UNDERSTAND · CHOOSE · CONTROL</span><span class="launch-track"><i></i><i></i><i></i></span></div>
+      <div class="launch-bottom" aria-hidden="true"><span>UNDERSTAND · CHOOSE · CONTROL</span><svg class="launch-gears" id="launch-gears" viewBox="45 15 590 520" focusable="false"></svg></div>
     </section>
     <section class="overview" aria-label="Guide overview">
       <button class="overview-total" type="button" data-category="all" aria-label="Show all services"><span class="overview-icon" data-icon="grid"></span><span class="overview-total-copy"><strong id="total-stat">—</strong><span>services explained</span></span><span class="stat-annotation">One place to understand<br>what’s running.</span></button>
@@ -111,8 +116,29 @@
           <p class="tool-detail">Use Hide Signed Microsoft Entries to focus on third-party items. Review each entry before disabling it.</p>
           <div class="tool-links"><a class="tool-download" href="https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns" target="_blank" rel="noopener noreferrer">Get Autoruns <span data-icon="external"></span></a></div>
         </article>
+        <article class="tool-card" aria-labelledby="tool-warp">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="terminal"></span><span class="tool-category">Work in the terminal</span></div>
+          <h3 id="tool-warp">Warp</h3><p class="tool-publisher">Warp</p>
+          <p>Run PowerShell commands in a modern terminal with tabs, split panes, and command output grouped into blocks. Built-in AI can help with command-line tasks.</p>
+          <p class="tool-detail">Supports both Windows PowerShell and PowerShell 7. Choose your preferred shell in Settings.</p>
+          <div class="tool-links"><a class="tool-download" href="https://www.warp.dev/download" target="_blank" rel="noopener noreferrer">Get Warp <span data-icon="external"></span></a><a href="https://docs.warp.dev/getting-started/migrate-to-warp/migrate-to-warp-from-windows-terminal" target="_blank" rel="noopener noreferrer">Windows guide</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-zed">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="keyboard"></span><span class="tool-category">Edit code</span></div>
+          <h3 id="tool-zed">Zed</h3><p class="tool-publisher">Zed Industries</p>
+          <p>A native code editor built for responsive editing and collaboration. Work with language extensions, navigate projects, and use coding agents in the editor.</p>
+          <p class="tool-detail">Built-in WSL support lets you edit projects inside a Linux environment from Windows.</p>
+          <div class="tool-links"><a class="tool-download" href="https://zed.dev/download" target="_blank" rel="noopener noreferrer">Get Zed <span data-icon="external"></span></a><a href="https://zed.dev/windows" target="_blank" rel="noopener noreferrer">Zed on Windows</a></div>
+        </article>
+        <article class="tool-card" aria-labelledby="tool-localsend">
+          <div class="tool-card-top"><span class="tool-icon" data-icon="network"></span><span class="tool-category">Share between devices</span></div>
+          <h3 id="tool-localsend">LocalSend</h3><p class="tool-publisher">LocalSend · Free &amp; open source</p>
+          <p>Send photos, files, and text between your PC and nearby phones or computers over your local network. No cloud upload or account needed.</p>
+          <p class="tool-detail">Install it on both devices and connect them to the same local network. Works across Windows, macOS, Linux, Android, and iOS.</p>
+          <div class="tool-links"><a class="tool-download" href="https://localsend.org/download" target="_blank" rel="noopener noreferrer">Get LocalSend <span data-icon="external"></span></a><a href="https://localsend.org/" target="_blank" rel="noopener noreferrer">How it works</a></div>
+        </article>
       </div>
-      <p class="tools-reviewed">Official publisher and project sources checked <time datetime="2026-09-25">September 25, 2026</time>.</p>
+      <p class="tools-reviewed">Original selection checked <time datetime="2026-09-25">September 25, 2026</time>. Warp, Zed, and LocalSend checked against official sources <time datetime="2026-10-04">October 4, 2026</time>.</p>
     </section>
     <section id="backup" class="backup-view" aria-labelledby="backup-title" hidden>
       <div class="backup-heading"><p class="eyebrow"><span class="tiny-line"></span>BEFORE YOU MAKE A CHANGE</p><h1 id="backup-title" tabindex="-1">How to back up your OS<span>.</span></h1><p class="backup-lead">Before changing any service, create a Windows System Restore point. It can help you recover system settings if a change prevents normal startup or sign-in.</p></div>

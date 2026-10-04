@@ -13,6 +13,16 @@
   let timer = 0, frame = 0, keyboardStart = false;
   let context = null;
 
+  function captureGalaxyCenter() {
+    // Measure before the welcome panel moves or disappears, including a scrolled start.
+    const box = welcome.querySelector('.launch-focus').getBoundingClientRect();
+    const state = window.WinwiseWelcomeGalaxy?.snapshot();
+    const center = box.width && box.height
+      ? {x:box.left + box.width / 2,y:box.top + box.height / 2}
+      : {x:root.clientWidth * .5,y:window.innerHeight * .44};
+    return {...center,time:state?.time || 0,radius:state?.radius || Math.min(root.clientWidth * .23,480)};
+  }
+
   function finish(focus = false) {
     if (phase === 'ready') return;
     phase = 'ready';
@@ -95,7 +105,7 @@
     return {x:x + r + Math.cos(a) * r,y:y + r + Math.sin(a) * r};
   }
 
-  function stardust(targets) {
+  function stardust(targets, galaxy) {
     try { context = canvas.getContext('2d', {alpha:true}); } catch { return; }
     if (!context) return;
     const width = root.clientWidth;
@@ -105,9 +115,13 @@
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio,0,0,ratio,0,0);
     canvas.hidden = false;
+    const model = window.WinwiseGalaxy;
+    const {smooth} = model;
+    const painter = model.painter(context);
     let seed = 70311;
-    const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-    const budget = width < 760 ? 620 : Math.min(2800,Math.round(1700 * Math.sqrt(width * height / 2073600)));
+    const random = () => {seed = (seed * 1664525 + 1013904223) >>> 0;return seed / 4294967296;};
+    const budget = width < 760 ? 2100 : Math.min(7200,Math.round(5200 * Math.sqrt(width * height / 2073600)));
+    const field = model.particles(budget);
     const totalWeight = targets.reduce((total,target) => total + target.length * target.weight,0);
     const particles = [];
     for (const target of targets) {
@@ -116,84 +130,57 @@
         const end = borderPoint(target,(index + .5) / count);
         if (end.x < 0 || end.x > width || end.y < 0 || end.y > height) continue;
         particles.push({
-          end,
-          arm:particles.length % 3, progress:random(), spread:(random() - .5) * .25,
+          ...field[particles.length % field.length],end,
           release:Math.max(450,target.assembleAt - 1150) + random() * 220,
           land:target.assembleAt + random() * 190,
-          size:.45 + random() * 1.25, alpha:.22 + random() * .5,
-          tint:particles.length % 4, phase:random() * Math.PI * 2,
-          curl:40 + random() * 120
+          phase:random() * Math.PI * 2,curl:40 + random() * 120
         });
       }
     }
     const started = performance.now();
-    const radius = Math.min(width * .48,1100);
-    // One shared center and rotation: a single galaxy opens across the viewport.
-    const galaxy = {x:width * .58, y:height * .42};
-    const tilt = -.48, cosTilt = Math.cos(tilt), sinTilt = Math.sin(tilt);
-    const project = (cx,cy,r,angle) => {
-      const u = Math.cos(angle) * r, v = Math.sin(angle) * r * .58;
-      return {x:cx + u * cosTilt - v * sinTilt, y:cy + u * sinTilt + v * cosTilt};
-    };
-    const smooth = value => {const t = Math.max(0,Math.min(value,1));return t * t * (3 - 2 * t);};
-    const orbit = (p,time) => {
-      const zoom = .82 + smooth(time / 1350) * .4;
-      const r = (p.progress * .91 + .07) * radius * zoom;
-      const angle = p.progress * Math.PI * 3.6 + p.arm * Math.PI * 2 / 3 + p.spread + time * .00115;
-      const point = project(galaxy.x,galaxy.y,r,angle);
-      point.y += Math.sin(time * .003 + p.phase) * 18;
-      return point;
-    };
-    particles.forEach(p => {p.departure = orbit(p,p.release);});
-    // Batch round dots by color and opacity: thousands of particles, only 64 fills per frame.
-    const buckets = Array.from({length:64},() => []);
-    const dot = (x,y,size,tint,alpha) => {
-      const level = Math.min(15,Math.round(alpha * 15));
-      if (level > 0 && x > -8 && x < width + 8 && y > -8 && y < height + 8) buckets[tint * 16 + level].push(x,y,size);
+    const expandedRadius = Math.max(galaxy.radius,Math.min(width * .48,1100));
+    const viewAt = time => model.camera(galaxy.time + time * .011,galaxy.x,galaxy.y,
+      galaxy.radius + (expandedRadius - galaxy.radius) * smooth(time / 1350));
+    // The same star field zooms out of the welcome scene, then assembles the UI.
+    particles.forEach(p => {p.departure = model.project(p,viewAt(p.release));});
+    const light = root.dataset.theme === 'light';
+    const nebula = document.createElement('canvas');nebula.width = nebula.height = 1024;
+    const haze = nebula.getContext('2d');
+    model.haze(haze,512,512,400,light);
+    const dot = (point,size,tint,alpha) => {
+      if (point.x > -8 && point.x < width + 8 && point.y > -8 && point.y < height + 8) painter.dot(point.x,point.y,size,tint,alpha);
     };
     function draw(now) {
       if (phase !== 'revealing') return;
-      const elapsed = now - started;
+      const elapsed = now - started, view = viewAt(elapsed);
       context.clearRect(0,0,width,height);
-      buckets.forEach(bucket => {bucket.length = 0;});
-      const dark = root.dataset.theme !== 'light';
-      const colors = dark ? ['218,229,244','198,211,255','150,194,209','231,208,184'] : ['24,32,43','36,43,54','45,54,64','57,62,70'];
-      context.globalCompositeOperation = 'source-over';
-      const fadeIn = smooth(elapsed / 250);
-      const openingScale = 1 + 2.5 * (1 - smooth(elapsed / 1350));
+      const fadeIn = smooth(elapsed / 160);
+      const openingScale = 1 + .45 * (1 - smooth(elapsed / 1350));
+      if (haze && elapsed < 1800) {
+        const extent = view.radius * 1.28;
+        context.save();context.globalAlpha = fadeIn * (1 - smooth((elapsed - 450) / 1350));
+        context.drawImage(nebula,galaxy.x - extent,galaxy.y - extent,extent * 2,extent * 2);context.restore();
+      }
+      painter.begin(light);
+      const point = {};
       for (const p of particles) {
         const progress = Math.max(0,Math.min(1,(elapsed - p.release) / (p.land - p.release)));
         const capture = smooth(progress);
-        let point;
-        if (elapsed < p.release) point = orbit(p,elapsed);
+        if (elapsed < p.release) model.project(p,view,point);
         else {
           const curl = Math.sin(progress * Math.PI) * Math.pow(1 - progress,2) * p.curl;
           const angle = p.phase + progress * Math.PI * 3;
-          point = {
-            x:p.departure.x + (p.end.x - p.departure.x) * capture + Math.cos(angle) * curl,
-            y:p.departure.y + (p.end.y - p.departure.y) * capture + Math.sin(angle) * curl * .58
-          };
+          point.x = p.departure.x + (p.end.x - p.departure.x) * capture + Math.cos(angle) * curl;
+          point.y = p.departure.y + (p.end.y - p.departure.y) * capture + Math.sin(angle) * curl * .54;
         }
-        const twinkle = .88 + Math.sin(p.phase + elapsed * .003) * .12;
-        // Each dot briefly touches its own border, then disappears without waiting for the others.
+        // Each star touches its own border and fades immediately after landing.
         const edgeFade = 1 - smooth((elapsed - p.land - 70) / 300);
-        const alpha = (p.alpha * (1 - capture) + .92 * capture) * fadeIn * edgeFade * twinkle * (dark ? 1 : .8);
-        const size = p.size * (openingScale * (1 - capture) + .72 * capture);
-        // Large foreground stars shrink to fine points as the expanding galaxy becomes the UI.
-        dot(point.x,point.y,size,p.tint,alpha);
-        if (dark && p.size > 1.58) dot(point.x,point.y,size * 3.2,p.tint,alpha * .085);
+        const alpha = (model.opacity(p,view.time) * (1 - capture) + .88 * capture) * fadeIn * edgeFade * (light ? .8 : .88);
+        const size = Math.min(p.size * .78,1.15) * (openingScale * (1 - capture) + .72 * capture);
+        dot(point,size,p.tint,alpha);
+        if (!light && p.size > 1.35) dot(point,size * 2.1,p.tint,alpha * .09);
       }
-      for (let index = 0; index < buckets.length; index++) {
-        const points = buckets[index];
-        if (!points.length) continue;
-        context.beginPath();
-        for (let i = 0; i < points.length; i += 3) {
-          context.moveTo(points[i] + points[i + 2],points[i + 1]);
-          context.arc(points[i],points[i + 1],points[i + 2],0,Math.PI * 2);
-        }
-        context.fillStyle = `rgba(${colors[Math.floor(index / 16)]},${(index % 16) / 15})`;
-        context.fill();
-      }
+      painter.flush(light);
       if (elapsed < DURATION) frame = requestAnimationFrame(draw);
     }
     frame = requestAnimationFrame(draw);
@@ -206,6 +193,7 @@
       finish(keyboardStart);
       return;
     }
+    const galaxy = captureGalaxyCenter();
     phase = 'revealing';
     root.dataset.intro = 'revealing';
     welcome.inert = true;
@@ -255,7 +243,7 @@
         move(row,'translate3d(65px,18px,0)',1510 + index * 50,560,.4,2620 + index * 25);
       });
       move(document.querySelector('.site-footer'),'translate3d(0,16px,0)',2050,600);
-      stardust(targets);
+      stardust(targets, galaxy);
     } catch {
       finish(keyboardStart);
     }
