@@ -3,6 +3,7 @@
 <#
 Winwise - selected Windows 11 services
 Review the selected names and tradeoffs before running on your own PC.
+Selecting Windows Search in the builder also selects Work Folders; its file sync stops.
 Preview: .\Winwise-Services.ps1 -WhatIf
 Apply:   .\Winwise-Services.ps1
 Undo:    .\Winwise-Services.ps1 -RestoreFrom '.\Winwise-backup-....json'
@@ -21,7 +22,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if ([string]::IsNullOrWhiteSpace($PSScriptRoot)) { throw 'Save and run this as a .ps1 file (for example: .\Winwise-Services.ps1).' }
 $SelectedServices = @(__SERVICE_NAMES__)
-$AllowedServices = @('DiagTrack','RemoteRegistry','SysMain','WSearch','Spooler','PrintDeviceConfigurationService','Fax','wisvc','TermService','bthserv','BTAGService','BthAvctpSvc','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','PrintNotify','XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc','WiaRpc','stisvc')
+$AllowedServices = @('DiagTrack','RemoteRegistry','SysMain','WSearch','workfolderssvc','Spooler','PrintDeviceConfigurationService','Fax','wisvc','TermService','bthserv','BTAGService','BthAvctpSvc','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','PrintNotify','XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc','WiaRpc','stisvc')
 $MachineId = (Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Cryptography' -Name MachineGuid).MachineGuid
 
 function Get-ServiceKey([string]$Name) {

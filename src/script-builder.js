@@ -1,6 +1,20 @@
 'use strict';
+function resolveScriptSelection(selectedIds) {
+  const visited = new Set(), selected = [];
+  function include(id) {
+    if (visited.has(id)) return;
+    const service = SERVICES.find(service=>service.id===id);
+    if (!SCRIPT_IDS.includes(id) || !isScriptEligible(service)) throw new Error('Unsupported service selection.');
+    visited.add(id);
+    // Add visible companion selections first; PowerShell also checks live dependencies.
+    (service.alsoDisable || []).forEach(include);
+    selected.push(id);
+  }
+  [...selectedIds].forEach(include);
+  return selected;
+}
 function buildPowerShell(template, selectedIds) {
-  const selected = [...new Set(selectedIds)];
+  const selected = resolveScriptSelection(selectedIds);
   if (!selected.length) throw new Error('Select at least one service first.');
   if (selected.some(id => !SCRIPT_IDS.includes(id) || !isScriptEligible(SERVICES.find(service=>service.id===id)))) throw new Error('Unsupported service selection.');
   if (template.split('__SERVICE_NAMES__').length !== 2) throw new Error('The PowerShell template could not be loaded correctly.');

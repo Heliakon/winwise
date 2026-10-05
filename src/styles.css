@@ -64,6 +64,15 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 .individual-service-grid>.individual-choice:last-child:nth-child(odd),.feature-grid>.feature-card:last-child:nth-child(odd){grid-column:1/-1}
 @supports(grid-template-rows:subgrid){.individual-settings-grid>.individual-choice{display:grid;grid-template-rows:subgrid;grid-row:span 2}}
 .context-note p+p{margin-top:8px}
+.run-instructions-link{min-height:50px;padding:12px 16px;font-size:1.125rem;color:var(--tag-purple-text);background:var(--tag-purple-bg);border-color:var(--tag-purple-border)}
+.run-instructions-link:hover{background:var(--tag-purple-bg);border-color:var(--tag-purple-text);box-shadow:0 0 0 1px var(--tag-purple-border)}
+.guide-actions{display:flex;flex-wrap:wrap;align-items:stretch;gap:12px;margin:20px 0}
+.guide-actions .run-instructions-link{width:auto}
+.selection-inclusion{display:block;margin-top:7px;color:var(--tag-purple-text);font-size:.8125rem;line-height:1.55}
+.selected-service>button:disabled{color:var(--text-muted);opacity:.65}
+.execution-policy-note{padding:14px 16px;border:1px solid var(--tag-purple-border);border-radius:8px;background:var(--tag-purple-bg)}
+.execution-policy-note kbd{display:inline-block;padding:1px 6px;border:1px solid var(--tag-purple-border);border-radius:4px;background:var(--surface);font:inherit;font-weight:650;color:var(--tag-purple-text)}
+@media(max-width:680px){.guide-actions>button,.guide-actions .run-instructions-link{width:100%}}
 
 /* Practical utilities, with PowerToys featured and publishers made explicit. */
 .tools-section{max-width:1240px;margin:0 auto 32px;scroll-margin-top:24px}

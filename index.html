@@ -185,6 +185,15 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 .individual-service-grid>.individual-choice:last-child:nth-child(odd),.feature-grid>.feature-card:last-child:nth-child(odd){grid-column:1/-1}
 @supports(grid-template-rows:subgrid){.individual-settings-grid>.individual-choice{display:grid;grid-template-rows:subgrid;grid-row:span 2}}
 .context-note p+p{margin-top:8px}
+.run-instructions-link{min-height:50px;padding:12px 16px;font-size:1.125rem;color:var(--tag-purple-text);background:var(--tag-purple-bg);border-color:var(--tag-purple-border)}
+.run-instructions-link:hover{background:var(--tag-purple-bg);border-color:var(--tag-purple-text);box-shadow:0 0 0 1px var(--tag-purple-border)}
+.guide-actions{display:flex;flex-wrap:wrap;align-items:stretch;gap:12px;margin:20px 0}
+.guide-actions .run-instructions-link{width:auto}
+.selection-inclusion{display:block;margin-top:7px;color:var(--tag-purple-text);font-size:.8125rem;line-height:1.55}
+.selected-service>button:disabled{color:var(--text-muted);opacity:.65}
+.execution-policy-note{padding:14px 16px;border:1px solid var(--tag-purple-border);border-radius:8px;background:var(--tag-purple-bg)}
+.execution-policy-note kbd{display:inline-block;padding:1px 6px;border:1px solid var(--tag-purple-border);border-radius:4px;background:var(--surface);font:inherit;font-weight:650;color:var(--tag-purple-text)}
+@media(max-width:680px){.guide-actions>button,.guide-actions .run-instructions-link{width:100%}}
 
 /* Practical utilities, with PowerToys featured and publishers made explicit. */
 .tools-section{max-width:1240px;margin:0 auto 32px;scroll-margin-top:24px}
@@ -273,6 +282,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 .launch-button-note{font-size:.875rem;color:var(--text-muted);margin-top:20px}
 .launch-bottom{position:absolute;z-index:2;bottom:18px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--line-soft);padding-top:8px;font-size:.6875rem;letter-spacing:1.9px;color:var(--text-muted)}
 #launch-effects{position:fixed;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;contain:strict}
+.intro-edge-glow.intro-edge-glow{all:initial;position:absolute;inset:0;z-index:2;display:block;box-sizing:border-box;margin:0;padding:0;border:1px solid transparent;pointer-events:none;opacity:0}
 #ambient-particles{transition:opacity .45s ease-out}
 [data-intro="revealing"] #ambient-particles{opacity:0;transition:none}
 [data-intro="waiting"] #ambient-particles{opacity:0;transition:none}
@@ -396,7 +406,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
     <div class="header-utilities"><span class="os-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z" fill="currentColor"/></svg>Windows 11</span><nav class="header-resources" aria-label="Tools and recovery"><a href="#tools" data-view="tools">Useful tools</a><a href="#backup" data-view="backup">How to back up your OS</a></nav><div class="appearance-controls"><button id="motion-toggle" class="appearance-button" aria-label="Pause background animation" title="Pause background animation"><svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button id="theme-toggle" class="appearance-button theme-toggle" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5 9 9 0 1 0 20.5 14.2Z"/></svg><span class="theme-toggle-label">Light mode</span></button></div></div>
   </div></header>
   <main class="page-shell">
-    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-04">October 4, 2026</time></span></div></section>
+    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-05">October 5, 2026</time></span></div></section>
     <div class="directory-stage">
     <section id="welcome" class="launch-panel" aria-labelledby="launch-title" hidden>
       <canvas class="launch-glass" id="launch-glass" aria-hidden="true"></canvas>
@@ -411,7 +421,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
         <p class="launch-settings"><span data-icon="sliders"></span><span>Use Windows settings shortcuts where available, with clear steps to turn services on or off.</span></p>
       </div>
       <div class="launch-action">
-        <div class="launch-count"><strong id="launch-count">145</strong><span>services, explained</span></div>
+        <div class="launch-count"><strong id="launch-count">146</strong><span>services, explained</span></div>
         <button id="start-directory" class="launch-start" type="button" aria-controls="directory"><span>START</span><span class="launch-start-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></span></button>
         <span class="launch-button-note">Explore the service directory</span>
       </div>
@@ -550,6 +560,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 <#
 Winwise - selected Windows 11 services
 Review the selected names and tradeoffs before running on your own PC.
+Selecting Windows Search in the builder also selects Work Folders; its file sync stops.
 Preview: .\Winwise-Services.ps1 -WhatIf
 Apply:   .\Winwise-Services.ps1
 Undo:    .\Winwise-Services.ps1 -RestoreFrom '.\Winwise-backup-....json'
@@ -568,7 +579,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if ([string]::IsNullOrWhiteSpace($PSScriptRoot)) { throw 'Save and run this as a .ps1 file (for example: .\Winwise-Services.ps1).' }
 $SelectedServices = @(__SERVICE_NAMES__)
-$AllowedServices = @('DiagTrack','RemoteRegistry','SysMain','WSearch','Spooler','PrintDeviceConfigurationService','Fax','wisvc','TermService','bthserv','BTAGService','BthAvctpSvc','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','PrintNotify','XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc','WiaRpc','stisvc')
+$AllowedServices = @('DiagTrack','RemoteRegistry','SysMain','WSearch','workfolderssvc','Spooler','PrintDeviceConfigurationService','Fax','wisvc','TermService','bthserv','BTAGService','BthAvctpSvc','RetailDemo','UmRdpService','SessionEnv','SSDPSRV','upnphost','fdPHost','FDResPub','WMPNetworkSvc','PrintNotify','XboxGipSvc','XblAuthManager','XblGameSave','XboxNetApiSvc','WiaRpc','stisvc')
 $MachineId = (Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Cryptography' -Name MachineGuid).MachineGuid
 
 function Get-ServiceKey([string]$Name) {
@@ -789,6 +800,8 @@ if ($failed -gt 0) { throw "$failed service change(s) failed. Review warnings an
 // Service definitions are factual references. Recommendations are Winwise's
 // conditional editorial judgments for general-purpose Windows 11 PCs.
 const SOURCES = {
+  workFolders:{title:'Microsoft: Work Folders overview',url:'https://learn.microsoft.com/en-us/windows-server/storage/work-folders/work-folders-overview',note:'Work Folders synchronizes files between Windows clients and an organization’s file server. It is separate from OneDrive.'},
+  executionPolicy:{title:'Microsoft: PowerShell execution policies',url:'https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies',note:'Process scope applies to the current PowerShell session and does not override organization policy.'},
   wia:{title:'Microsoft: Windows Image Acquisition architecture',url:'https://learn.microsoft.com/en-us/windows-hardware/drivers/image/wia-architecture-overview',note:'How imaging applications use the WIA service to communicate with scanners and compatible cameras.'},
   hello:{"title": "Microsoft: How Windows Hello works", "url": "https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/how-it-works", "note": "Keys, PINs, and biometric authentication used by Windows Hello."},
   securityApp:{"title": "Microsoft: Windows Security services", "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/system-security/windows-defender-security-center/windows-defender-security-center", "note": "The separate roles of SecurityHealthService, Security Center, and antivirus protection."},
@@ -837,7 +850,8 @@ const SERVICES = [
   service("WerSvc","Windows Error Reporting Service","privacy","keep","Review report settings before disabling diagnostics.","Crash reports, diagnostic logs, and suggested fixes may become unavailable, making recurring failures harder to investigate.","Use Windows Error Reporting policies where supported to control report submission. Reports follow the applicable consent and policy settings.","errors",{"description": "Collects information about crashes and unresponsive applications for troubleshooting and error reports.", "recommendation": "Use reporting policy"}),
   service("RemoteRegistry","Remote Registry","privacy","conditional","Can disable if remote registry administration is unused.","Remote registry management tools stop working with this PC. Local Registry Editor remains available.","On your own PC, disable it if no remote administration tool needs it. Keep it when required by your IT team or management software. If it is already disabled, leave it alone.","registry",{"script": true, "description": "Lets authorized remote administration tools read and change the Windows registry, subject to account permissions and device configuration."}),
   service("SysMain","SysMain (Superfetch)","performance","conditional","Consider a change when SysMain causes persistent disk or CPU activity.","Preloading stops, so frequently used applications may take longer to open.","Keep the default unless persistent background activity has been traced to this service. If you disable it and app launches become slower, restore the previous setting.","system",{"script": true, "description": "Learns usage patterns and preloads application data into memory to help frequently used apps launch faster.", "recommendation": "Only for troubleshooting"}),
-  service("WSearch","Windows Search","performance","settings","Try fewer indexed locations before turning it off.","File Explorer and apps that use the Windows index, including classic Outlook, may return slower or incomplete search results.","Choose Classic indexing or exclude busy folders in Settings → Privacy & security → Search or Searching Windows. Disable only if you accept the effect on all apps using the index.","search",{"script": true, "description": "Builds and updates a local index so Windows and compatible apps can quickly find files, properties, and file contents."}),
+  service("WSearch","Windows Search","performance","settings","Try fewer indexed locations before turning it off.","File Explorer and apps that use the Windows index, including classic Outlook, may return slower or incomplete search results. The builder also disables Work Folders, so its organizational file sync stops.","Choose Classic indexing or exclude busy folders in Settings → Privacy & security → Search or Searching Windows. Select the disable option only if you accept the search tradeoffs and do not use Work Folders. Its service can depend on Windows Search.","search",{"script": true, "alsoDisable": ["workfolderssvc"], "description": "Builds and updates a local index so Windows and compatible apps can quickly find files, properties, and file contents."}),
+  service("workfolderssvc","Work Folders","optional","conditional","Can disable if you do not use Work Folders.","Files stop synchronizing with your organization’s Work Folders server. Changes made on different devices will no longer sync through this feature.","Keep it if you or your organization use Work Folders. Check Control Panel → System and Security → Work Folders. The builder includes this service when you select Windows Search, and the script processes selected dependents first.","workFolders",{"script": true, "description": "Synchronizes files between this PC and an organization’s Work Folders server.", "aliases": ["work folders sync", "work files", "corporate file sync"]}),
   service("Spooler","Print Spooler","optional","conditional","Can disable if you never print, including to PDF.","Local printers, shared printers, and virtual printing such as Microsoft Print to PDF can stop working.","Keep it for any print workflow, even without a physical printer. If you never print, review its dependencies and disable it with a backup of the original settings.","print",{"script": true, "description": "Queues print jobs and connects applications to local, network, and virtual printers."}),
   service("PrintDeviceConfigurationService","Print Device Configuration Service","optional","conditional","Can disable only if you never print or add a printer.","Adding or configuring printers may fail.","Keep it if you print or add printers. Check its local description and dependencies because printing components differ between builds. The script skips it if it is absent.","print",{"script": true, "description": "Handles print-device configuration.", "availability": "Build-dependent printing component. The linked reference explains the printing stack; check services.msc for this component’s local description and dependencies."}),
   service("Fax","Fax","optional","conditional","Can disable when Windows fax features are unused.","Sending or receiving faxes through Windows becomes unavailable. Other fax software may have different requirements.","Disable if you do not use Windows faxing. If the service is absent or already disabled, no action is needed; the script skips it.","network",{"script": true, "description": "Provides Windows fax sending and receiving when the optional fax components are installed.", "availability": "Optional feature. The Fax service may not exist on your Windows 11 installation."}),
@@ -1044,6 +1058,7 @@ const FEATURE_GROUPS = [
   {id:'insider',icon:'monitor',title:'I’m not in the Windows Insider Program',description:'This PC runs a stable release and is not enrolled for preview builds. Regular Windows Update stays available.',services:['wisvc']},
   {id:'remote',icon:'monitor',title:'I don’t host Remote Desktop',description:'No incoming Remote Desktop sessions or device redirection. Make changes while sitting at the PC.',services:['UmRdpService','SessionEnv','TermService']},
   {id:'registry',icon:'terminal',title:'I don’t use remote registry tools',description:'No remote registry administration. Check first if this PC is managed by your employer.',services:['RemoteRegistry']},
+  {id:'workfolders',icon:'network',title:'I don’t use Work Folders',description:'No Work Folders sync with an organization’s file server. OneDrive is a separate feature.',services:['workfolderssvc']},
   {id:'printing',icon:'printer',title:'I never print anything',description:'Includes physical printers, fax, shared printers, Microsoft Print to PDF, and adding or configuring printers.',services:['PrintNotify','Fax','Spooler','PrintDeviceConfigurationService']},
   {id:'scanning',icon:'printer',title:'I don’t scan or import images from a camera',description:'No scanner, multifunction-printer scanning, or camera import through Windows image-acquisition features.',services:['WiaRpc','stisvc']},
   {id:'bluetooth',icon:'bluetooth',title:'I don’t use Bluetooth',description:'No Bluetooth keyboard, mouse, headphones, controller, or other peripheral.',services:['BTAGService','BthAvctpSvc','bthserv']},
@@ -1057,8 +1072,22 @@ const SCRIPT_IDS = SERVICES.filter(isScriptEligible).map(s=>s.id);
 const CONSERVATIVE_PRESET = ['RemoteRegistry','Fax','RetailDemo'].filter(id=>SCRIPT_IDS.includes(id));
 </script>
 <script>'use strict';
+function resolveScriptSelection(selectedIds) {
+  const visited = new Set(), selected = [];
+  function include(id) {
+    if (visited.has(id)) return;
+    const service = SERVICES.find(service=>service.id===id);
+    if (!SCRIPT_IDS.includes(id) || !isScriptEligible(service)) throw new Error('Unsupported service selection.');
+    visited.add(id);
+    // Add visible companion selections first; PowerShell also checks live dependencies.
+    (service.alsoDisable || []).forEach(include);
+    selected.push(id);
+  }
+  [...selectedIds].forEach(include);
+  return selected;
+}
 function buildPowerShell(template, selectedIds) {
-  const selected = [...new Set(selectedIds)];
+  const selected = resolveScriptSelection(selectedIds);
   if (!selected.length) throw new Error('Select at least one service first.');
   if (selected.some(id => !SCRIPT_IDS.includes(id) || !isScriptEligible(SERVICES.find(service=>service.id===id)))) throw new Error('Unsupported service selection.');
   if (template.split('__SERVICE_NAMES__').length !== 2) throw new Error('The PowerShell template could not be loaded correctly.');
@@ -1178,6 +1207,8 @@ function filterServices(category, status, query, sort) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const DURATION = 3800;
   const animations = [];
+  const edgeLights = [];
+  let clippedTable = null;
   let phase = root.dataset.intro === 'waiting' ? 'waiting' : 'ready';
   let timer = 0, frame = 0, keyboardStart = false;
   let context = null;
@@ -1198,6 +1229,10 @@ function filterServices(category, status, query, sort) {
     clearTimeout(timer);
     cancelAnimationFrame(frame);
     animations.splice(0).forEach(animation => animation.cancel());
+    edgeLights.splice(0).forEach(({light,host,position}) => {
+      light.remove();
+      host.style.position = position;
+    });
     root.dataset.intro = 'ready';
     welcome.hidden = true;
     welcome.inert = true;
@@ -1206,6 +1241,7 @@ function filterServices(category, status, query, sort) {
     canvas.width = canvas.height = 0;
     overview.inert = directory.inert = false;
     directory.style.maxHeight = '';
+    if (clippedTable) {clippedTable.style.maxHeight = '';clippedTable = null;}
     directory.removeAttribute('aria-busy');
     if (focus) {
       const heading = document.getElementById('directory-title');
@@ -1220,14 +1256,27 @@ function filterServices(category, status, query, sort) {
     const dark = root.dataset.theme !== 'light';
     const border = dark ? `rgba(215,233,243,${.95 * strength})` : 'rgba(255,255,255,1)';
     const glow = dark ? `rgba(171,205,235,${.2 * strength})` : `rgba(94,122,148,${.23 * strength})`;
-    const lit = {borderColor:border, boxShadow:`0 0 0 1px ${glow}, 0 0 ${28 * strength}px ${glow}, inset 0 0 ${16 * strength}px ${glow}`};
+    // Rasterize the border glow once, then animate only its composited opacity.
+    // Native select controls cannot contain an overlay, so use their existing wrapper.
+    const host = element.tagName === 'SELECT' ? element.parentElement : element;
+    const position = host.style.position;
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    // Use a neutral decorative element, separate from the buttons' count spans.
+    const light = document.createElement('i');
+    light.className = 'intro-edge-glow';
+    light.setAttribute('aria-hidden','true');
+    light.style.borderColor = border;
+    light.style.borderRadius = normal.borderRadius;
+    light.style.boxShadow = `0 0 0 1px ${glow}, 0 0 ${28 * strength}px ${glow}, inset 0 0 ${16 * strength}px ${glow}`;
+    host.append(light);
+    edgeLights.push({light,host,position});
     const lightDuration = Math.min(3650,assembleAt + 650) - delay;
     const peak = Math.min(.8,(assembleAt - delay) / lightDuration);
-    animations.push(element.animate([
-      {borderColor:'transparent', boxShadow:normal.boxShadow, offset:0},
-      {borderColor:'transparent', boxShadow:normal.boxShadow, offset:peak * .55},
-      {...lit, offset:peak},
-      {borderColor:normal.borderColor, boxShadow:normal.boxShadow, offset:1}
+    animations.push(light.animate([
+      {opacity:0, offset:0},
+      {opacity:0, offset:peak * .55},
+      {opacity:1, offset:peak},
+      {opacity:0, offset:1}
     ], {delay, duration:lightDuration, easing:'ease-in-out', fill:'backwards'}));
   }
 
@@ -1279,7 +1328,9 @@ function filterServices(category, status, query, sort) {
     if (!context) return;
     const width = root.clientWidth;
     const height = window.innerHeight;
-    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+    // Bound the temporary effects buffer independently of monitor resolution.
+    // DOM text and controls retain their native resolution.
+    const ratio = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3686400 / (width * height)));
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio,0,0,ratio,0,0);
@@ -1289,7 +1340,8 @@ function filterServices(category, status, query, sort) {
     const painter = model.painter(context);
     let seed = 70311;
     const random = () => {seed = (seed * 1664525 + 1013904223) >>> 0;return seed / 4294967296;};
-    const budget = width < 760 ? 2100 : Math.min(7200,Math.round(5200 * Math.sqrt(width * height / 2073600)));
+    // Keep smaller-screen budgets, but extra monitor area needs no extra particles.
+    const budget = width < 760 ? 2100 : Math.min(5200,Math.round(5200 * Math.sqrt(width * height / 2073600)));
     const field = model.particles(budget);
     const totalWeight = targets.reduce((total,target) => total + target.length * target.weight,0);
     const particles = [];
@@ -1333,6 +1385,7 @@ function filterServices(category, status, query, sort) {
       painter.begin(light);
       const point = {};
       for (const p of particles) {
+        if (elapsed >= p.land + 370) continue;
         const progress = Math.max(0,Math.min(1,(elapsed - p.release) / (p.land - p.release)));
         const capture = smooth(progress);
         if (elapsed < p.release) model.project(p,view,point);
@@ -1373,6 +1426,13 @@ function filterServices(category, status, query, sort) {
       // Measure once at the final layout, before transforms. Never read layout in a drawing frame.
       const top = directory.getBoundingClientRect().top;
       directory.style.maxHeight = `${Math.max(600, window.innerHeight - top + 160)}px`;
+      // Clip the table itself as well: clipping only its parent still leaves a
+      // many-thousand-pixel table and stretched sidebar to rasterize and animate.
+      clippedTable = directory.querySelector('.service-table');
+      if (clippedTable) {
+        const tableTop = clippedTable.getBoundingClientRect().top;
+        clippedTable.style.maxHeight = `${Math.max(160,window.innerHeight - tableTop + 160)}px`;
+      }
       const cards = [...overview.children];
       const rows = [...directory.querySelectorAll('.service-row')].filter(row => row.getBoundingClientRect().top < window.innerHeight).slice(0,12);
       const categories = [...directory.querySelectorAll('.category-nav button')];
@@ -1387,9 +1447,9 @@ function filterServices(category, status, query, sort) {
         ...rows.map((row,index) => borderTarget(row,.55,2620 + index * 25,true))
       ].filter(Boolean);
       animations.push(welcome.animate([
-        {opacity:1, transform:'translateY(0) scale(1)', filter:'blur(0px)'},
-        {opacity:.25, transform:'translateY(-20px) scale(.98,.65)', filter:'blur(3px)', offset:.6},
-        {opacity:0, transform:'translateY(-40px) scale(.94,.06)', filter:'blur(7px)'}
+        {opacity:1, transform:'translateY(0) scale(1)'},
+        {opacity:.25, transform:'translateY(-20px) scale(.98,.65)', offset:.6},
+        {opacity:0, transform:'translateY(-40px) scale(.94,.06)'}
       ], {duration:340, easing:'cubic-bezier(.65,0,.35,1)', fill:'forwards'}));
       move(document.querySelector('.intro-action'),'translate3d(0,-14px,0)',550,700);
       cards.forEach((card,index) => {
@@ -1397,7 +1457,7 @@ function filterServices(category, status, query, sort) {
         const x = index === 0 ? -box.right - 36 : index === 2 ? root.clientWidth - box.left + 36 : 0;
         move(card,`translate3d(${x}px,${index === 1 ? 135 : 40}px,0) scale(.87) rotate(${index === 0 ? -5 : index === 2 ? 5 : -3}deg)`,600 + index * 120,900,1,1780 + index * 100);
       });
-      // Clip to the first screen during compositing rather than moving a 70-row texture.
+      // Animate only the first screen; restore the complete directory in finish().
       move(directory,'translate3d(0,85px,0) scale(.97)',930,900,1,2340);
       move(directory.querySelector('.sidebar'),`translate3d(${-Math.min(root.clientWidth * .26,520)}px,0,0)`,1060,800,.6,2440);
       ['.directory-heading','.directory-toolbar','.filter-row','.context-note','.results-meta','.table-head'].forEach((selector,index) => {
@@ -1800,7 +1860,7 @@ const CATEGORIES = [
   {id:'essential',name:'Essentials',icon:'lock',description:'Preserve security, updates, connectivity, and the core Windows experience.'}
 ];
 const STATUS = {conditional:'Can disable if unused',settings:'Use Windows Settings',keep:'Keep enabled'};
-const state={category:'all',status:'all',query:'',sort:'recommended',view:'directory',selected:new Set(),template:null,templateError:false};
+const state={category:'all',status:'all',query:'',sort:'recommended',view:'directory',requested:new Set(),selected:new Set(),template:null,templateError:false};
 let toastTimer;
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3200);}
 function recommendationText(s){return s.recommendation||STATUS[s.status];}
@@ -1852,10 +1912,10 @@ function serviceDetails(id){
 }
 const inventoryCommand='Get-CimInstance Win32_Service |\n  Sort-Object DisplayName |\n  Select-Object DisplayName, Name, State, StartMode |\n  Format-Table -AutoSize';
 function codeBlock(text,id){return `<div class="code-block"><pre id="${id}">${escapeHTML(text)}</pre><button class="copy-button" data-copy-block="${id}">${icon('copy')}Copy command</button></div>`;}
-function showGuide(){openDialog(`<h2 id="dialog-title">Make a change you can undo.</h2><p class="lead">Use the Script builder to choose services and download a PowerShell script that applies your changes automatically when you run it. The script saves the original settings and includes a restore option.</p><button class="primary-button" data-open-builder>${icon('terminal')}Open the script builder</button><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p><h3 class="guide-manual-heading">Prefer to make changes manually?</h3><ol class="guide-steps"><li><h3>Record your starting point</h3><p>Press Win + R, enter <code>services.msc</code>, and open the service. Record its startup type, delayed-start setting, and running state. Check the Dependencies tab. Back up important files before troubleshooting.</p></li><li><h3>Prefer the feature’s own setting</h3><p>Use Windows Settings for diagnostic data, location, indexing scope, and game captures. A stopped service may already be using no meaningful resources.</p></li><li><h3>Disable an unused optional service</h3><p>Choose Disabled and stop the service. Keep essential services at their existing defaults.</p></li><li><h3>Use your PC normally</h3><p>See whether your usual apps and devices work as expected. If a feature you need stops working, restore the startup type you recorded, start the service if it was running, and restart Windows if needed.</p></li></ol><div class="guide-legend"><div><h3>Automatic</h3><p>Starts with Windows, sometimes after a delay.</p></div><div><h3>Manual</h3><p>Can start when Windows or an app needs it.</p></div><div><h3>Disabled</h3><p>Cannot start until the setting is changed.</p></div></div><div class="detail-callout"><h3>On a managed work PC</h3><p>Follow your organization’s device policy. The generator is intended for changes you are authorized to make.</p></div>`, 'CHANGE GUIDE');}
+function showGuide(){openDialog(`<h2 id="dialog-title">Make a change you can undo.</h2><p class="lead">Use the Script builder to choose services and download a PowerShell script that applies your changes automatically when you run it. The script saves the original settings and includes a restore option.</p><div class="guide-actions"><button class="primary-button" data-open-builder>${icon('terminal')}Open the script builder</button><button class="run-instructions-link" data-dialog="run">${icon('book')}How to run & undo</button></div><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p><h3 class="guide-manual-heading">Prefer to make changes manually?</h3><ol class="guide-steps"><li><h3>Record your starting point</h3><p>Press Win + R, enter <code>services.msc</code>, and open the service. Record its startup type, delayed-start setting, and running state. Check the Dependencies tab. Back up important files before troubleshooting.</p></li><li><h3>Prefer the feature’s own setting</h3><p>Use Windows Settings for diagnostic data, location, indexing scope, and game captures. A stopped service may already be using no meaningful resources.</p></li><li><h3>Disable an unused optional service</h3><p>Choose Disabled and stop the service. Keep essential services at their existing defaults.</p></li><li><h3>Use your PC normally</h3><p>See whether your usual apps and devices work as expected. If a feature you need stops working, restore the startup type you recorded, start the service if it was running, and restart Windows if needed.</p></li></ol><div class="guide-legend"><div><h3>Automatic</h3><p>Starts with Windows, sometimes after a delay.</p></div><div><h3>Manual</h3><p>Can start when Windows or an app needs it.</p></div><div><h3>Disabled</h3><p>Cannot start until the setting is changed.</p></div></div><div class="detail-callout"><h3>On a managed work PC</h3><p>Follow your organization’s device policy. The generator is intended for changes you are authorized to make.</p></div>`, 'CHANGE GUIDE');}
 function showSources(){openDialog(`<h2 id="dialog-title">The scope behind the advice.</h2><p class="lead">${SERVICES.length} reviewed service entries, including common disable candidates and essential services. This is a curated guide, not an exhaustive inventory of every Windows installation.</p><ul class="source-list">${Object.values(SOURCES).map(s=>`<li><a href="${s.url}" target="_blank" rel="noopener noreferrer">${escapeHTML(s.title)} ↗</a><p>${escapeHTML(s.note)}</p></li>`).join('')}</ul>`, 'SCOPE & SOURCES');}
 function showInventory(){openDialog(`<h2 id="dialog-title">See what’s on your PC.</h2><p class="lead">Open Windows PowerShell and run this read-only command to list your installed services and current startup modes.</p>${codeBlock(inventoryCommand,'inventory-command')}<div class="detail-section"><h3>Match the service name</h3><p>Use the Name column to search this directory. Per-user instances add a suffix. Services not covered here should remain at their existing defaults until you identify their role and dependencies.</p></div><p class="small-note">This command displays information locally. It changes no settings and uploads nothing.</p>`, 'LOCAL SERVICE INVENTORY');}
-function showRunInstructions(){openDialog(`<h2 id="dialog-title">Run, review, and undo.</h2><p class="lead">The download is a readable script for Windows PowerShell 5.1 or later. Inspect it and start with a dry run on your PC.</p><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p><ol class="guide-steps"><li><h3>Save and inspect the script</h3><p>Download <code>Winwise-Services.ps1</code>. Open it in a text editor and review <code>$SelectedServices</code>. Keep the file in a folder you can find again.</p></li><li><h3>Open PowerShell as administrator</h3><p>Search for Windows PowerShell, right-click, and select Run as administrator. Go to the folder where you saved it. If that was Downloads:</p>${codeBlock('Set-Location "$env:USERPROFILE\\Downloads"','run-folder')}</li><li><h3>Allow the reviewed file in this session</h3><p>If Windows blocks the downloaded file, unblock this file after reviewing it. RemoteSigned below applies only to the current PowerShell process. It cannot override organization policy.</p>${codeBlock('Unblock-File -LiteralPath ".\\Winwise-Services.ps1"\nSet-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned','run-policy')}</li><li><h3>Preview before applying</h3><p>The preview reports intended changes without stopping services or writing a backup. Missing, disabled, or blocked services may be skipped.</p>${codeBlock('.\\Winwise-Services.ps1 -WhatIf','run-preview')}</li><li><h3>Apply, then test</h3><p>Run locally at the PC, especially for Remote Desktop selections. The script writes a new backup beside itself before any changes. Read warnings and keep the printed backup path. Restart and test your normal apps.</p>${codeBlock('.\\Winwise-Services.ps1','run-apply')}</li><li><h3>Restore your previous settings</h3><p>Use the same script and the exact backup filename printed by your run. Replace the example below. Startup settings are restored first; the script then attempts the previous running or stopped state. Read warnings and restart if needed.</p>${codeBlock('.\\Winwise-Services.ps1 -RestoreFrom ".\\Winwise-backup-YOUR-RUN.json"','run-restore')}</li></ol><div class="detail-callout"><h3>Keep the first backup</h3><p>Each apply run writes a separate backup. A later backup can contain settings already changed by an earlier run. The JSON is a service-settings snapshot, not a full system backup. Do not edit it or use a file from another PC.</p></div><a class="source-link" href="${SOURCES.powershell.url}" target="_blank" rel="noopener noreferrer">PowerShell service documentation ${icon('external')}</a>`, 'POWERSHELL INSTRUCTIONS');}
+function showRunInstructions(){openDialog(`<h2 id="dialog-title">Run, review, and undo.</h2><p class="lead">The download is a readable script for Windows PowerShell 5.1 or later. Inspect it and start with a dry run on your PC.</p><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p><ol class="guide-steps"><li><h3>Save and inspect the script</h3><p>Download <code>Winwise-Services.ps1</code>. Open it in a text editor and review <code>$SelectedServices</code>. Keep the file in a folder you can find again.</p></li><li><h3>Open PowerShell as administrator</h3><p>Search for Windows PowerShell, right-click, and select Run as administrator. Go to the folder where you saved it. If that was Downloads:</p>${codeBlock('Set-Location "$env:USERPROFILE\\Downloads"','run-folder')}</li><li><h3>Allow the reviewed file in this session</h3><p>If Windows blocks the downloaded file, unblock this file after reviewing it. RemoteSigned below applies only to the current PowerShell process. It cannot override organization policy.</p>${codeBlock('Unblock-File -LiteralPath ".\\Winwise-Services.ps1"\nSet-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned','run-policy')}<p class="execution-policy-note">If the <strong>Execution Policy Change</strong> confirmation appears, type <kbd>Y</kbd> and press <kbd>Enter</kbd>. This allows the policy change for the current PowerShell session, until you close this window. You can preview, apply, and undo in the same session; a new window may need these commands again.</p></li><li><h3>Preview before applying</h3><p>The preview reports intended changes without stopping services or writing a backup. Missing, disabled, or blocked services may be skipped.</p>${codeBlock('.\\Winwise-Services.ps1 -WhatIf','run-preview')}</li><li><h3>Apply, then test</h3><p>Run locally at the PC, especially for Remote Desktop selections. The script writes a new backup beside itself before any changes. Read warnings and keep the printed backup path. Restart and test your normal apps.</p>${codeBlock('.\\Winwise-Services.ps1','run-apply')}</li><li><h3>Restore your previous settings</h3><p>Use the same script and the exact backup filename printed by your run. Replace the example below. Startup settings are restored first; the script then attempts the previous running or stopped state. Read warnings and restart if needed.</p>${codeBlock('.\\Winwise-Services.ps1 -RestoreFrom ".\\Winwise-backup-YOUR-RUN.json"','run-restore')}</li></ol><div class="detail-callout"><h3>Keep the first backup</h3><p>Each apply run writes a separate backup. A later backup can contain settings already changed by an earlier run. The JSON is a service-settings snapshot, not a full system backup. Do not edit it or use a file from another PC.</p></div><a class="source-link" href="${SOURCES.powershell.url}" target="_blank" rel="noopener noreferrer">PowerShell service documentation ${icon('external')}</a>`, 'POWERSHELL INSTRUCTIONS');}
 function showFeatureServices(id){
   const group=FEATURE_GROUPS.find(group=>group.id===id);if(!group)return;
   const services=group.services.map(id=>SERVICES.find(service=>service.id===id)).filter(Boolean);
@@ -1868,13 +1928,14 @@ function builderSettingsFirst(s, context){
 }
 function builderAdvancedChoice(id){
   const s=SERVICES.find(service=>service.id===id);
-  const copy={SysMain:['Try disabling SysMain','For troubleshooting persistent SysMain activity. App launches may become slower.'],WSearch:['Disable Windows Search instead','I accept slower or incomplete indexed file and classic Outlook searches.'],DiagTrack:['Disable DiagTrack instead','I accept disabling this diagnostic component. Error reporting and apps have separate controls.']}[id];
+  const copy={SysMain:['Try disabling SysMain','For troubleshooting persistent SysMain activity. App launches may become slower.'],WSearch:['Disable Windows Search and Work Folders','I accept slower or incomplete indexed file and classic Outlook searches. Work Folders is also selected and its organizational file sync stops; choose this only if you do not use it.'],DiagTrack:['Disable DiagTrack instead','I accept disabling this diagnostic component. Error reporting and apps have separate controls.']}[id];
   const settings=builderSettingsFirst(s,'advanced');
   return `<div class="advanced-choice">${settings}<div class="advanced-option"><label><input type="checkbox" data-individual="${id}"${settings?` aria-describedby="advanced-settings-${id}"`:''}><span><strong>${copy[0]}</strong><span>${copy[1]}</span></span></label><button class="builder-read-more" data-service="${id}">Read more</button><code>${id}</code></div></div>`;
 }
 function builderIndividualChoice(s){
   const settings=builderSettingsFirst(s,'individual');
-  return `<div class="individual-choice">${settings}<div class="individual-service"><label><input type="checkbox" data-individual="${s.id}"${settings?` aria-describedby="individual-settings-${s.id}"`:''}><span>${settings?'Disable service instead: ':''}${escapeHTML(s.name)}<code>${s.id}</code></span></label><button class="builder-read-more" data-service="${s.id}">Read more</button></div></div>`;
+  const companionNote=s.alsoDisable?.length?`<small class="selection-inclusion">Also selects ${s.alsoDisable.map(id=>escapeHTML(SERVICES.find(service=>service.id===id).name)).join(', ')}; its organizational file sync stops.</small>`:'';
+  return `<div class="individual-choice">${settings}<div class="individual-service"><label><input type="checkbox" data-individual="${s.id}"${settings?` aria-describedby="individual-settings-${s.id}"`:''}><span>${settings?'Disable service instead: ':''}${escapeHTML(s.name)}<code>${s.id}</code>${companionNote}<small class="selection-inclusion" data-inclusion-for="${s.id}" hidden></small></span></label><button class="builder-read-more" data-service="${s.id}">Read more</button></div></div>`;
 }
 function builderIndividualChoices(){
   const eligible=SERVICES.filter(isScriptEligible);
@@ -1884,18 +1945,38 @@ function builderIndividualChoices(){
 }
 function renderBuilderOnce(){
   if($('#builder').children.length)return;
-  $('#builder').innerHTML=`<div class="builder-heading"><div><p class="section-label">YOUR PC. YOUR CHOICES.</p><h2 id="builder-title">Build your PowerShell script<span>.</span></h2><p>Choose a configuration with simple clicks, review every service, then download a reversible PowerShell script.</p><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p></div><button class="back-link" data-back-directory>← Back to directory</button></div><div class="builder-layout"><div class="builder-options"><div class="preset-card"><span class="preset-icon">${icon('sliders')}</span><div><h3>A conservative starting point</h3><p>Remote registry, fax, and retail demo. Review these assumptions first; they may already be off.</p></div><button id="use-preset">Use preset ${icon('arrow')}</button></div><div class="step-heading"><span>01</span><div><h3>What don’t you use?</h3><p>Click the options that match this PC. Winwise selects the related services for your script.</p></div></div><div class="feature-grid">${FEATURE_GROUPS.map(g=>`<label class="feature-card"><input type="checkbox" data-feature="${g.id}"><span class="feature-card-top">${icon(g.icon)}<span class="custom-checkbox" aria-hidden="true">${icon('check')}</span></span><strong>${escapeHTML(g.title)}</strong><span class="feature-description">${escapeHTML(g.description)}</span><span class="feature-count">${g.services.length} service${g.services.length!==1?'s':''}</span></label>`).join('')}</div><div class="step-heading advanced-heading"><span>02</span><div><h3>Consider the tradeoffs</h3><p>Try the recommended Settings route first. Disabling a service is an explicit opt-in, outside the conservative preset.</p></div></div><div class="advanced-choices">${['SysMain','WSearch','DiagTrack'].filter(id=>SCRIPT_IDS.includes(id)).map(builderAdvancedChoice).join('')}</div><details class="individual-picker"><summary>Choose individual services <span>${SCRIPT_IDS.length} available</span></summary><p>Fine-tune the selection. Click Read more to see the same tradeoffs and recommendation shown in the service directory.</p>${builderIndividualChoices()}</details><div class="builder-boundary">${icon('shield')}<p>Services marked “Can break boot or sign-in” are not included in this script builder. Security, updates, other core Windows services, and per-user service templates are also excluded.</p></div></div><aside class="builder-summary" aria-labelledby="selection-title"><div class="summary-title"><span>03 · REVIEW & DOWNLOAD</span>${icon('terminal')}</div><div class="summary-body"><div class="summary-count"><h3 id="selection-title">Your selection</h3><button id="clear-selection">Clear</button></div><p id="selected-count" role="status" aria-live="polite"></p><div id="selected-services"></div><div class="script-properties"><span>${icon('eye')}<strong>Dry run with <code>-WhatIf</code></strong></span><span>${icon('copy')}<strong>Original settings saved first</strong></span><span>${icon('undo')}<strong>Restore from your backup</strong></span></div><button id="download-script" class="primary-button">${icon('download')}Download PowerShell</button><button id="preview-script" class="secondary-button">${icon('terminal')}Preview the script</button><p id="template-status" class="small-note"></p><button data-dialog="run" class="run-instructions-link">How to run & undo ${icon('external')}</button><p class="builder-expectation">The script skips missing or already-disabled services and avoids force-stopping dependent services.</p></div></aside></div>`;
+  $('#builder').innerHTML=`<div class="builder-heading"><div><p class="section-label">YOUR PC. YOUR CHOICES.</p><h2 id="builder-title">Build your PowerShell script<span>.</span></h2><p>Choose a configuration with simple clicks, review every service, then download a reversible PowerShell script.</p><p class="backup-inline-link">Create a restore point first → <a href="#backup" data-view="backup">How to back up your OS</a>.</p></div><button class="back-link" data-back-directory>← Back to directory</button></div><div class="builder-layout"><div class="builder-options"><div class="preset-card"><span class="preset-icon">${icon('sliders')}</span><div><h3>A conservative starting point</h3><p>Remote registry, fax, and retail demo. Review these assumptions first; they may already be off.</p></div><button id="use-preset">Use preset ${icon('arrow')}</button></div><div class="step-heading"><span>01</span><div><h3>What don’t you use?</h3><p>Click the options that match this PC. Winwise selects the related services for your script.</p></div></div><div class="feature-grid">${FEATURE_GROUPS.map(g=>`<label class="feature-card"><input type="checkbox" data-feature="${g.id}"><span class="feature-card-top">${icon(g.icon)}<span class="custom-checkbox" aria-hidden="true">${icon('check')}</span></span><strong>${escapeHTML(g.title)}</strong><span class="feature-description">${escapeHTML(g.description)}</span><span class="feature-count">${g.services.length} service${g.services.length!==1?'s':''}</span><span class="selection-inclusion" data-feature-inclusion="${g.id}" hidden></span></label>`).join('')}</div><div class="step-heading advanced-heading"><span>02</span><div><h3>Consider the tradeoffs</h3><p>Try the recommended Settings route first. Disabling a service is an explicit opt-in, outside the conservative preset.</p></div></div><div class="advanced-choices">${['SysMain','WSearch','DiagTrack'].filter(id=>SCRIPT_IDS.includes(id)).map(builderAdvancedChoice).join('')}</div><details class="individual-picker"><summary>Choose individual services <span>${SCRIPT_IDS.length} available</span></summary><p>Fine-tune the selection. Click Read more to see the same tradeoffs and recommendation shown in the service directory.</p>${builderIndividualChoices()}</details><div class="builder-boundary">${icon('shield')}<p>Services marked “Can break boot or sign-in” are not included in this script builder. Security, updates, other core Windows services, and per-user service templates are also excluded.</p></div></div><aside class="builder-summary" aria-labelledby="selection-title"><div class="summary-title"><span>03 · REVIEW & DOWNLOAD</span>${icon('terminal')}</div><div class="summary-body"><div class="summary-count"><h3 id="selection-title">Your selection</h3><button id="clear-selection">Clear</button></div><p id="selected-count" role="status" aria-live="polite"></p><div id="selected-services"></div><div class="script-properties"><span>${icon('eye')}<strong>Dry run with <code>-WhatIf</code></strong></span><span>${icon('copy')}<strong>Original settings saved first</strong></span><span>${icon('undo')}<strong>Restore from your backup</strong></span></div><button id="download-script" class="primary-button">${icon('download')}Download PowerShell</button><button id="preview-script" class="secondary-button">${icon('terminal')}Preview the script</button><p id="template-status" class="small-note"></p><button data-dialog="run" class="run-instructions-link">How to run & undo ${icon('external')}</button><p class="builder-expectation">The script skips missing or already-disabled services and avoids force-stopping dependent services.</p></div></aside></div>`;
   $$('.feature-count').forEach((count,index)=>{const group=FEATURE_GROUPS[index];count.dataset.featureInfo=group.id;count.tabIndex=0;count.setAttribute('role','button');count.setAttribute('aria-label',`View the ${group.services.length} services included in ${group.title}`);count.textContent=`${group.services.length} service${group.services.length!==1?'s':''} · View`;});
   const intro=document.createElement('div');intro.className='script-features-intro';intro.textContent='Every generated script has these safety features built in:';$('.script-properties').before(intro);
 }
+function companionParents(id){
+  return [...state.requested].filter(parent=>parent!==id&&resolveScriptSelection([parent]).includes(id)).map(parent=>SERVICES.find(s=>s.id===parent).name);
+}
 function updateBuilder(){
-  state.selected=new Set([...state.selected].filter(id=>SCRIPT_IDS.includes(id)&&isScriptEligible(SERVICES.find(service=>service.id===id))));
+  state.requested=new Set([...state.requested].filter(id=>SCRIPT_IDS.includes(id)&&isScriptEligible(SERVICES.find(service=>service.id===id))));
+  state.selected=new Set(resolveScriptSelection(state.requested));
   if(!$('#builder').children.length)return;
-  $$('[data-feature]').forEach(input=>{const group=FEATURE_GROUPS.find(g=>g.id===input.dataset.feature);const count=group.services.filter(id=>state.selected.has(id)).length;input.checked=count===group.services.length;input.indeterminate=count>0&&count<group.services.length;input.closest('.feature-card').classList.toggle('chosen',count>0);});
-  $$('[data-individual]').forEach(input=>{input.checked=state.selected.has(input.dataset.individual);});
+  $$('[data-feature]').forEach(input=>{
+    const group=FEATURE_GROUPS.find(g=>g.id===input.dataset.feature);
+    const count=group.services.filter(id=>state.selected.has(id)).length;
+    const parents=[...new Set(group.services.flatMap(companionParents))];
+    input.checked=count===group.services.length;input.indeterminate=count>0&&count<group.services.length;
+    input.disabled=group.services.every(id=>companionParents(id).length>0);
+    const card=input.closest('.feature-card');card.classList.toggle('chosen',count>0);
+    const note=card.querySelector('[data-feature-inclusion]');note.hidden=!input.disabled;note.textContent=input.disabled?`Included with ${parents.join(', ')}. Remove that selection first to keep this service.`:'';
+  });
+  $$('[data-individual]').forEach(input=>{
+    const parents=companionParents(input.dataset.individual);
+    input.checked=state.selected.has(input.dataset.individual);input.disabled=parents.length>0;
+    const note=input.closest('label').querySelector('[data-inclusion-for]');
+    if(note){note.hidden=!parents.length;note.textContent=parents.length?`Included with ${parents.join(', ')}. Remove that selection first to keep this service.`:'';}
+  });
   const selected=SERVICES.filter(s=>state.selected.has(s.id));
   $('#selected-count').innerHTML=`<strong>${selected.length}</strong> service${selected.length!==1?'s':''} selected`;
-  $('#selected-services').innerHTML=selected.length?selected.map(s=>`<div class="selected-service"><div><strong>${escapeHTML(s.name)}</strong><code>${s.id}</code><button class="builder-read-more" data-service="${s.id}">Read more</button></div><button data-remove-service="${s.id}" aria-label="Remove ${escapeHTML(s.name)}">${icon('close')}</button></div>`).join(''):`<div class="selection-empty">${icon('sliders')}<p>Start with the features you don’t use, or choose the conservative preset.</p></div>`;
+  $('#selected-services').innerHTML=selected.length?selected.map(s=>{
+    const parents=companionParents(s.id);
+    return `<div class="selected-service"><div><strong>${escapeHTML(s.name)}</strong><code>${s.id}</code>${parents.length?`<span class="selection-inclusion">Included with ${parents.map(escapeHTML).join(', ')}</span>`:''}<button class="builder-read-more" data-service="${s.id}">Read more</button></div><button data-remove-service="${s.id}"${parents.length?' disabled':''} aria-label="${parents.length?`Remove ${parents.map(escapeHTML).join(', ')} first to keep ${escapeHTML(s.name)}`:`Remove ${escapeHTML(s.name)}`}">${icon(parents.length?'lock':'close')}</button></div>`;
+  }).join(''):`<div class="selection-empty">${icon('sliders')}<p>Start with the features you don’t use, or choose the conservative preset.</p></div>`;
   $('#download-script').disabled=!selected.length||!state.template;$('#preview-script').disabled=!selected.length||!state.template;$('#clear-selection').disabled=!selected.length;
   $('#template-status').textContent=state.templateError?'The script could not be loaded. Reload the page to try again.':!state.template?'Loading PowerShell template…':'Windows PowerShell 5.1+ · .ps1 file';
 }
@@ -1910,14 +1991,14 @@ document.addEventListener('click',event=>{
   const status=event.target.closest('[data-status]');if(status){state.status=status.dataset.status;renderDirectory();return;}
   const serviceButton=event.target.closest('[data-service]');if(serviceButton){serviceDetails(serviceButton.dataset.service);return;}
   const modal=event.target.closest('[data-dialog]');if(modal){({guide:showGuide,sources:showSources,inventory:showInventory,run:showRunInstructions})[modal.dataset.dialog]?.();return;}
-  const add=event.target.closest('[data-add-script]');if(add){if(SCRIPT_IDS.includes(add.dataset.addScript))state.selected.add(add.dataset.addScript);$('#detail-dialog').close();navigate('builder');return;}
+  const add=event.target.closest('[data-add-script]');if(add){if(SCRIPT_IDS.includes(add.dataset.addScript)&&!state.selected.has(add.dataset.addScript))state.requested.add(add.dataset.addScript);$('#detail-dialog').close();navigate('builder');return;}
   if(event.target.closest('[data-open-builder]')){$('#detail-dialog').close();navigate('builder');return;}
   if(event.target.closest('[data-back-directory]')){navigate('directory');return;}
-  const remove=event.target.closest('[data-remove-service]');if(remove){state.selected.delete(remove.dataset.removeService);updateBuilder();return;}
+  const remove=event.target.closest('[data-remove-service]');if(remove){if(!companionParents(remove.dataset.removeService).length)state.requested.delete(remove.dataset.removeService);updateBuilder();return;}
   const copy=event.target.closest('[data-copy-block]');if(copy){const block=document.getElementById(copy.dataset.copyBlock);if(block)copyText(block.textContent,copy);return;}
   const copyName=event.target.closest('[data-copy-name]');if(copyName){copyText(copyName.dataset.copyName,copyName);return;}
-  if(event.target.closest('#use-preset')){state.selected=new Set(CONSERVATIVE_PRESET);updateBuilder();toast('Preset selected: remote registry, fax, and retail demo.');return;}
-  if(event.target.closest('#clear-selection')){state.selected.clear();updateBuilder();return;}
+  if(event.target.closest('#use-preset')){state.requested=new Set(CONSERVATIVE_PRESET);updateBuilder();toast('Preset selected: remote registry, fax, and retail demo.');return;}
+  if(event.target.closest('#clear-selection')){state.requested.clear();updateBuilder();return;}
   if(event.target.closest('#download-script, #download-script-dialog')){downloadScript();return;}
   if(event.target.closest('#preview-script')){previewScript();return;}
   if(event.target.closest('#close-dialog')){$('#detail-dialog').close();return;}
@@ -1925,8 +2006,8 @@ document.addEventListener('click',event=>{
 });
 document.addEventListener('change',event=>{
   const el=event.target;
-  if(el.matches('[data-feature]')){FEATURE_GROUPS.find(g=>g.id===el.dataset.feature).services.forEach(id=>{if(el.checked)state.selected.add(id);else state.selected.delete(id);});updateBuilder();}
-  if(el.matches('[data-individual]')){if(el.checked&&SCRIPT_IDS.includes(el.dataset.individual)&&isScriptEligible(SERVICES.find(service=>service.id===el.dataset.individual)))state.selected.add(el.dataset.individual);else state.selected.delete(el.dataset.individual);updateBuilder();}
+  if(el.matches('[data-feature]')){FEATURE_GROUPS.find(g=>g.id===el.dataset.feature).services.forEach(id=>{if(el.checked)state.requested.add(id);else state.requested.delete(id);});updateBuilder();}
+  if(el.matches('[data-individual]')){if(el.checked&&SCRIPT_IDS.includes(el.dataset.individual)&&isScriptEligible(SERVICES.find(service=>service.id===el.dataset.individual)))state.requested.add(el.dataset.individual);else state.requested.delete(el.dataset.individual);updateBuilder();}
 });
 const settingsTooltip=$('.filter-tooltip');
 settingsTooltip.addEventListener('pointerenter',()=>settingsTooltip.classList.remove('tooltip-dismissed'));

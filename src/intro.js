@@ -9,6 +9,8 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const DURATION = 3800;
   const animations = [];
+  const edgeLights = [];
+  let clippedTable = null;
   let phase = root.dataset.intro === 'waiting' ? 'waiting' : 'ready';
   let timer = 0, frame = 0, keyboardStart = false;
   let context = null;
@@ -29,6 +31,10 @@
     clearTimeout(timer);
     cancelAnimationFrame(frame);
     animations.splice(0).forEach(animation => animation.cancel());
+    edgeLights.splice(0).forEach(({light,host,position}) => {
+      light.remove();
+      host.style.position = position;
+    });
     root.dataset.intro = 'ready';
     welcome.hidden = true;
     welcome.inert = true;
@@ -37,6 +43,7 @@
     canvas.width = canvas.height = 0;
     overview.inert = directory.inert = false;
     directory.style.maxHeight = '';
+    if (clippedTable) {clippedTable.style.maxHeight = '';clippedTable = null;}
     directory.removeAttribute('aria-busy');
     if (focus) {
       const heading = document.getElementById('directory-title');
@@ -51,14 +58,27 @@
     const dark = root.dataset.theme !== 'light';
     const border = dark ? `rgba(215,233,243,${.95 * strength})` : 'rgba(255,255,255,1)';
     const glow = dark ? `rgba(171,205,235,${.2 * strength})` : `rgba(94,122,148,${.23 * strength})`;
-    const lit = {borderColor:border, boxShadow:`0 0 0 1px ${glow}, 0 0 ${28 * strength}px ${glow}, inset 0 0 ${16 * strength}px ${glow}`};
+    // Rasterize the border glow once, then animate only its composited opacity.
+    // Native select controls cannot contain an overlay, so use their existing wrapper.
+    const host = element.tagName === 'SELECT' ? element.parentElement : element;
+    const position = host.style.position;
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+    // Use a neutral decorative element, separate from the buttons' count spans.
+    const light = document.createElement('i');
+    light.className = 'intro-edge-glow';
+    light.setAttribute('aria-hidden','true');
+    light.style.borderColor = border;
+    light.style.borderRadius = normal.borderRadius;
+    light.style.boxShadow = `0 0 0 1px ${glow}, 0 0 ${28 * strength}px ${glow}, inset 0 0 ${16 * strength}px ${glow}`;
+    host.append(light);
+    edgeLights.push({light,host,position});
     const lightDuration = Math.min(3650,assembleAt + 650) - delay;
     const peak = Math.min(.8,(assembleAt - delay) / lightDuration);
-    animations.push(element.animate([
-      {borderColor:'transparent', boxShadow:normal.boxShadow, offset:0},
-      {borderColor:'transparent', boxShadow:normal.boxShadow, offset:peak * .55},
-      {...lit, offset:peak},
-      {borderColor:normal.borderColor, boxShadow:normal.boxShadow, offset:1}
+    animations.push(light.animate([
+      {opacity:0, offset:0},
+      {opacity:0, offset:peak * .55},
+      {opacity:1, offset:peak},
+      {opacity:0, offset:1}
     ], {delay, duration:lightDuration, easing:'ease-in-out', fill:'backwards'}));
   }
 
@@ -110,7 +130,9 @@
     if (!context) return;
     const width = root.clientWidth;
     const height = window.innerHeight;
-    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+    // Bound the temporary effects buffer independently of monitor resolution.
+    // DOM text and controls retain their native resolution.
+    const ratio = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3686400 / (width * height)));
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio,0,0,ratio,0,0);
@@ -120,7 +142,8 @@
     const painter = model.painter(context);
     let seed = 70311;
     const random = () => {seed = (seed * 1664525 + 1013904223) >>> 0;return seed / 4294967296;};
-    const budget = width < 760 ? 2100 : Math.min(7200,Math.round(5200 * Math.sqrt(width * height / 2073600)));
+    // Keep smaller-screen budgets, but extra monitor area needs no extra particles.
+    const budget = width < 760 ? 2100 : Math.min(5200,Math.round(5200 * Math.sqrt(width * height / 2073600)));
     const field = model.particles(budget);
     const totalWeight = targets.reduce((total,target) => total + target.length * target.weight,0);
     const particles = [];
@@ -164,6 +187,7 @@
       painter.begin(light);
       const point = {};
       for (const p of particles) {
+        if (elapsed >= p.land + 370) continue;
         const progress = Math.max(0,Math.min(1,(elapsed - p.release) / (p.land - p.release)));
         const capture = smooth(progress);
         if (elapsed < p.release) model.project(p,view,point);
@@ -204,6 +228,13 @@
       // Measure once at the final layout, before transforms. Never read layout in a drawing frame.
       const top = directory.getBoundingClientRect().top;
       directory.style.maxHeight = `${Math.max(600, window.innerHeight - top + 160)}px`;
+      // Clip the table itself as well: clipping only its parent still leaves a
+      // many-thousand-pixel table and stretched sidebar to rasterize and animate.
+      clippedTable = directory.querySelector('.service-table');
+      if (clippedTable) {
+        const tableTop = clippedTable.getBoundingClientRect().top;
+        clippedTable.style.maxHeight = `${Math.max(160,window.innerHeight - tableTop + 160)}px`;
+      }
       const cards = [...overview.children];
       const rows = [...directory.querySelectorAll('.service-row')].filter(row => row.getBoundingClientRect().top < window.innerHeight).slice(0,12);
       const categories = [...directory.querySelectorAll('.category-nav button')];
@@ -218,9 +249,9 @@
         ...rows.map((row,index) => borderTarget(row,.55,2620 + index * 25,true))
       ].filter(Boolean);
       animations.push(welcome.animate([
-        {opacity:1, transform:'translateY(0) scale(1)', filter:'blur(0px)'},
-        {opacity:.25, transform:'translateY(-20px) scale(.98,.65)', filter:'blur(3px)', offset:.6},
-        {opacity:0, transform:'translateY(-40px) scale(.94,.06)', filter:'blur(7px)'}
+        {opacity:1, transform:'translateY(0) scale(1)'},
+        {opacity:.25, transform:'translateY(-20px) scale(.98,.65)', offset:.6},
+        {opacity:0, transform:'translateY(-40px) scale(.94,.06)'}
       ], {duration:340, easing:'cubic-bezier(.65,0,.35,1)', fill:'forwards'}));
       move(document.querySelector('.intro-action'),'translate3d(0,-14px,0)',550,700);
       cards.forEach((card,index) => {
@@ -228,7 +259,7 @@
         const x = index === 0 ? -box.right - 36 : index === 2 ? root.clientWidth - box.left + 36 : 0;
         move(card,`translate3d(${x}px,${index === 1 ? 135 : 40}px,0) scale(.87) rotate(${index === 0 ? -5 : index === 2 ? 5 : -3}deg)`,600 + index * 120,900,1,1780 + index * 100);
       });
-      // Clip to the first screen during compositing rather than moving a 70-row texture.
+      // Animate only the first screen; restore the complete directory in finish().
       move(directory,'translate3d(0,85px,0) scale(.97)',930,900,1,2340);
       move(directory.querySelector('.sidebar'),`translate3d(${-Math.min(root.clientWidth * .26,520)}px,0,0)`,1060,800,.6,2440);
       ['.directory-heading','.directory-toolbar','.filter-row','.context-note','.results-meta','.table-head'].forEach((selector,index) => {

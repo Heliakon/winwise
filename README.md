@@ -15,13 +15,13 @@ Get-FileHash .\winwise.html -Algorithm SHA256
 
 ## What's inside
 
-- **145 Windows 11 service entries** explained in plain language, with privacy and performance tradeoffs, search, filters and sorting.
+- **146 Windows 11 service entries** explained in plain language, with privacy and performance tradeoffs, search, filters and sorting.
 - **Script builder:** pick the features you don't use and Winwise selects the related services for your script.
 - **Safety built in:** every script supports a `-WhatIf` dry run, saves the original settings to a JSON backup before changing anything, and restores them with `-RestoreFrom`. Services that can break boot or sign-in are excluded.
 - **Backup guide** for creating a System Restore point first, plus a short list of useful Windows tools.
 - Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion preference stays in your browser.
 
-Service coverage reviewed **October 4, 2026**. See [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for the coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
+Service coverage reviewed **October 4, 2026**, with Work Folders and script-selection updates on **October 5, 2026**. See [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for the coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
 
 ## Using a generated script
 
