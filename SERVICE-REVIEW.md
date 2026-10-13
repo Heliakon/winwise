@@ -1,6 +1,6 @@
-# Service review — October 4, 2026; updated October 5
+# Service review — October 4, 2026; updated October 10 (v1.4)
 
-The 70 existing entries were reviewed for service identity, purpose, consequences of disabling, recommended controls, and script eligibility. With the Work Folders follow-up, the directory now contains **146 entries**, including **76 additions**. This is a documentation and application review; it is not a new Windows execution test or a claim that every service is installed on every PC.
+The 70 original entries were reviewed for service identity, purpose, consequences of disabling, recommended controls, and script eligibility. With the follow-ups below, the directory now contains **157 entries**, including **87 additions**. This is a documentation and application review; it is not a new Windows execution test or a claim that every service is installed on every PC.
 
 ## Coverage added
 
@@ -24,7 +24,7 @@ Some older features still occur on upgraded installations. Fax, legacy printing,
 - New network entries distinguish Windows 11 connectivity detection in Network List Manager from older NLA arrangements.
 - `PrintDeviceConfigurationService` explicitly notes that its reference covers the printing stack; its local description and dependencies need to be checked on the installed build.
 - Per-user instance names copied from Windows, such as `CloudBackupRestoreSvc_4f9ac`, now find their base entry in search.
-- The displayed update date is October 5, 2026, and all displayed counts reflect the current directory.
+- The displayed update date is October 10, 2026, and all displayed counts reflect the current directory.
 
 ## Script boundary
 
@@ -87,3 +87,53 @@ The generated selection lists Work Folders before Windows Search. The existing P
 The run instructions explain that, if **Execution Policy Change** appears, the user can type **Y** and press **Enter**. `-Scope Process` applies until that PowerShell session closes, rather than to a single script invocation; it does not override organization policy. See [Microsoft's execution-policy documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies). The **How to run & undo** button is purple with larger text, and the change guide now links to these instructions beside **Open the script builder**.
 
 Validation passed for all 146 unique entries, all 28 eligible script choices, the matching PowerShell allowlist, and rejection of all 118 excluded entries. Browser checks covered automatic and explicit Work Folders selections, removal and clear behavior, the unchanged preset, service-detail routes, a two-service preview and downloaded script, recommended Settings paths before checkboxes, and the new instruction link and styling in both themes. The 390-pixel layout had no horizontal overflow and no JavaScript page errors occurred. Existing Clipboard and GameDVR suffixed-name searches still passed. The standalone build matches its sources. Windows service changes were not executed during this follow-up.
+
+
+## Version 1.4 — October 10, 2026
+
+The Windows 11 26H2 documentation review adds 11 entries, bringing the directory from 146 to **157**. Sysmon and Windows MIDI Services are relevant 2026 additions, including for earlier Windows 11 releases that received them through monthly servicing. The other nine entries close older coverage gaps; they are not described as services introduced in 26H2.
+
+| Added entry | Coverage |
+| --- | --- |
+| `Sysmon` | Optional security-event logging; off by default, preserve an existing monitoring setup |
+| `MidiSrv` | MIDI applications, instruments and virtual connections |
+| `AppReadiness` | Preparing apps for first use |
+| `AppIDSvc` | Application identity and AppLocker enforcement |
+| `BrokerInfrastructure` | Shared background-task infrastructure |
+| `CoreMessagingRegistrar` | Communication between Windows components |
+| `SystemEventsBroker`, `TimeBrokerSvc` | Background work for Windows Runtime apps |
+| `KeyIso` | Isolated private-key operations |
+| `NcbService` | App connectivity and the documented `CDPUserSvc` dependency |
+| `Wecsvc` | Collecting events from remote sources |
+
+All additions preserve existing service configuration and are excluded from generated scripts. The builder remains at **28 choices** and **12 feature groups**, with the existing Windows Search/Work Folders pairing and three-service conservative preset. The Sysmon entry distinguishes optional-feature availability from installation of its service and notes that built-in and standalone Sysmon cannot coexist. MIDI guidance includes software-only virtual connections, not just physical instruments.
+
+Windows Search's recommended Settings route now includes automatic indexing of frequently used folders where available. The connected-device entries explicitly name the `CDPUserSvc`/`NcbService` relationship. The run guide and README use a folder path copied from Explorer rather than assuming the elevated profile's Downloads folder is the user's download location. This addresses Administrator protection's separate-profile behavior without changing elevation or execution-policy requirements.
+
+### Dependency preview correction
+
+The old `-WhatIf` predicate ignored any selected dependent found in the snapshot, even when that dependent had already been blocked by an unselected service. The preview now records a service as cleared only after its own dependency check passes. A blocked service remains a blocker for every selected parent above it. Disabled-but-running, enabled-but-stopped, and transitioning services retain their existing protection. Apply still checks current service state; it does not use the preview's simulated results.
+
+The pre-change backup, restore logic, allowed service names, and use of `Stop-Service` without `-Force` are unchanged. No fixed list of 26H2 dependencies has replaced the local dependency queries.
+
+### References
+
+- [Windows 11 26H2 changes](https://learn.microsoft.com/en-us/windows/whats-new/whats-new-windows-11-version-26h2)
+- [Built-in Sysmon](https://learn.microsoft.com/en-us/windows/security/operating-system-security/sysmon/overview) and [installation guidance](https://learn.microsoft.com/en-us/windows/security/operating-system-security/sysmon/how-to-enable-sysmon)
+- [Windows MIDI Services overview](https://microsoft.github.io/MIDI/overview/) and [MIDI service identity](https://microsoft.github.io/MIDI/kb/endpoint-ids/)
+- [Application Identity and AppLocker](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/applocker/configure-the-application-identity-service)
+- [CNG key storage and isolation](https://learn.microsoft.com/en-us/windows/win32/seccng/key-storage-and-retrieval)
+- [Windows Event Collector](https://learn.microsoft.com/en-us/windows/win32/wec/windows-event-collector)
+- [Per-user services and dependencies](https://learn.microsoft.com/en-us/windows/application-management/per-user-services-in-windows)
+- [Administrator protection and separate profiles](https://blogs.windows.com/windowsdeveloper/2025/05/19/enhance-your-application-security-with-administrator-protection/)
+- [Microsoft system-service reference](https://learn.microsoft.com/en-us/windows/iot/iot-enterprise/optimize/services) for infrastructure roles; specialized IoT defaults and disable recommendations are not copied into the desktop guide
+
+### Validation
+
+`tools/test-data.mjs` checks all 157 entries, 24 per-user services, 28 eligible selections, and 129 excluded services; the PowerShell allowlist; the unchanged preset; Work Folders selection expansion; and ID, display-name, alias, and per-user search behavior.
+
+`tools/test-script-dependencies.ps1` executes the actual template's ordering and preview/apply sections with mock service objects and mutation commands. All 12 scenarios passed under PowerShell 7.6.6 on Linux: an eligible pair; blocked chains and branches; enabled, disabled, stopped, running, and transitioning dependents; dependent-first application; and blocked application. Reintroducing the previous predicate makes the blocked-chain regression fail. The template also passed PowerShell parsing. GitHub Actions is configured to run the tests under PowerShell 7 and Windows PowerShell 5.1; the Windows job has not been run in this workspace.
+
+Browser checks passed in dark and light mode for the new entries and aliases, builder exclusions, connected-device relationship, recommended Search settings, folder-path instructions, and displayed version and date. Selection, removal, preview, and script download also passed. The 390-pixel layout had no horizontal overflow, and no JavaScript page errors occurred. The standalone HTML matches its sources.
+
+Windows service changes were not executed on a live PC. A build-specific inventory is still required to establish the exact services and dependencies present on any particular 26H2 installation.

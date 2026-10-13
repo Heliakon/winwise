@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 #Requires -RunAsAdministrator
 <#
-Winwise - selected Windows 11 services
+Winwise v1.4 - selected Windows 11 services
 Review the selected names and tradeoffs before running on your own PC.
 Selecting Windows Search in the builder also selects Work Folders; its file sync stops.
 Preview: .\Winwise-Services.ps1 -WhatIf
@@ -189,17 +189,25 @@ if (-not $WhatIfPreference) {
 $changed = 0
 $skipped = 0
 $failed = 0
+$previewDisabled = @{}
 foreach ($name in $ordered) {
     $approved = $false
     try {
         $svc = Get-Service -Name $name -ErrorAction Stop
         $blockers = @($svc.DependentServices | Where-Object {
             # Disabled services can still be running until stopped or restarted.
-            ($_.StartType -ne 'Disabled' -or $_.Status -ne 'Stopped') -and -not ($WhatIfPreference -and $snapshots.ContainsKey($_.Name))
+            # In a preview, only ignore dependents already cleared by this pass.
+            # A selected service can itself be blocked further down the chain.
+            ($_.StartType -ne 'Disabled' -or $_.Status -ne 'Stopped') -and -not ($WhatIfPreference -and $previewDisabled.ContainsKey($_.Name))
         })
         if ($blockers.Count -gt 0) {
             $skipped++
             Write-Warning ("Skipped {0}: enabled or active dependent services: {1}" -f $name, (($blockers | ForEach-Object { $_.Name }) -join ', '))
+            continue
+        }
+        if ($WhatIfPreference) {
+            [void]$PSCmdlet.ShouldProcess($name, 'Stop service and set startup type to Disabled')
+            $previewDisabled[$name] = $true
             continue
         }
         if ($PSCmdlet.ShouldProcess($name, 'Stop service and set startup type to Disabled')) {

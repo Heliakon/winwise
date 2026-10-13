@@ -18,3 +18,17 @@ jobs:
           persist-credentials: false
       - name: Rebuild and compare index.html
         run: node tools/build.mjs --check
+      - name: Check service data and script selections
+        run: node tools/test-data.mjs
+      - name: Check dependencies with mock services (PowerShell 7)
+        shell: pwsh
+        run: ./tools/test-script-dependencies.ps1
+  powershell-51:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check dependencies with mock services (Windows PowerShell 5.1)
+        shell: powershell
+        run: ./tools/test-script-dependencies.ps1
