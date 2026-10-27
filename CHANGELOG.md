@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.5 — October 27, 2026
+
+### Updated
+
+- **How to back up your OS** is now an overview of Windows 11 backup and recovery options. It covers File History, Windows Backup and OneDrive, System Restore, Point-in-time restore, a Recovery Drive with the BitLocker recovery key, and full system images, followed by steps for Windows Recovery Environment.
+- Each option shows what it protects, where the copy is stored, what happens to personal files, what it needs, and when it is useful. Warnings sit next to the steps they apply to.
+- Point-in-time restore is described as available on supported Windows 11, version 24H2 and later devices, not only 26H2. The 200 GB default-on condition refers to the size of the Windows volume, not its free space.
+- The page no longer compares the Winwise JSON backup with a restore point, and it no longer uses script-specific wording. The script builder still explains its own backup and undo features.
+- The Volume Shadow Copy (`VSS`) entry explains that VSS coordinates the snapshots used by System Restore and Point-in-time restore, and that not every file backup or cloud sync depends on it. The recommendation to keep it available is unchanged. A new Microsoft source covers both features' use of VSS.
+- The visible version is **v1.5**, and the displayed update date is **October 27, 2026**. Generated scripts carry the v1.5 label; their behavior is unchanged.
+- The standalone `index.html` has been rebuilt with all changes.
+
+The directory still has **157 entries**, and the builder still offers **28 services** in **12 feature groups**. Apart from `VSS`, service entries were not re-reviewed for this release.
+
+The backup guide was checked against Microsoft documentation on October 27, 2026. Microsoft's sources currently differ on the Point-in-time restore default for organization-managed 26H2 devices, so the guide makes no claim about it. The recovery steps were not tested on a Windows PC.
+
 ## v1.4 — October 10, 2026
 
 ### Added

@@ -1,4 +1,4 @@
-# Service review — October 4, 2026; updated October 10 (v1.4)
+# Service review — October 4, 2026; updated October 10 (v1.4); VSS entry updated October 27 (v1.5)
 
 The 70 original entries were reviewed for service identity, purpose, consequences of disabling, recommended controls, and script eligibility. With the follow-ups below, the directory now contains **157 entries**, including **87 additions**. This is a documentation and application review; it is not a new Windows execution test or a claim that every service is installed on every PC.
 
@@ -137,3 +137,9 @@ The pre-change backup, restore logic, allowed service names, and use of `Stop-Se
 Browser checks passed in dark and light mode for the new entries and aliases, builder exclusions, connected-device relationship, recommended Search settings, folder-path instructions, and displayed version and date. Selection, removal, preview, and script download also passed. The 390-pixel layout had no horizontal overflow, and no JavaScript page errors occurred. The standalone HTML matches its sources.
 
 Windows service changes were not executed on a live PC. A build-specific inventory is still required to establish the exact services and dependencies present on any particular 26H2 installation.
+
+## Version 1.5 — October 27, 2026
+
+Only the Volume Shadow Copy (`VSS`) entry changed. It now explains that VSS coordinates the volume snapshots used by System Restore and Point-in-time restore, and that copying files manually or syncing them to the cloud usually doesn't depend on it. The recommendation to keep the service available, including when it is stopped, is unchanged. The entry links to [Microsoft's comparison of Point-in-time restore and System Restore](https://learn.microsoft.com/en-us/windows/configuration/point-in-time-restore#difference-with-system-restore), which states that both use VSS. The shared `vss` source used by `swprv` is unchanged.
+
+No other service entries were re-reviewed for this release. The directory remains at 157 entries, with 28 script choices in 12 feature groups. `tools/test-data.mjs` passed.

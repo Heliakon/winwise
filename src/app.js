@@ -168,6 +168,7 @@ async function copyText(value,button){try{await navigator.clipboard.writeText(va
 document.addEventListener('click',event=>{
   const featureInfo=event.target.closest('[data-feature-info]');if(featureInfo){event.preventDefault();event.stopPropagation();showFeatureServices(featureInfo.dataset.featureInfo);return;}
   const view=event.target.closest('[data-view]');if(view){event.preventDefault();navigate(view.dataset.view);return;}
+  const backupJump=event.target.closest('[data-backup-jump]');if(backupJump){event.preventDefault();const heading=document.getElementById(backupJump.dataset.backupJump);heading?.scrollIntoView({block:'start'});heading?.focus({preventScroll:true});return;}
   const category=event.target.closest('[data-category]');if(category){state.category=category.dataset.category;state.status='all';state.query='';$('#search').value='';setView('directory');renderDirectory();return;}
   const status=event.target.closest('[data-status]');if(status){state.status=status.dataset.status;renderDirectory();return;}
   const serviceButton=event.target.closest('[data-service]');if(serviceButton){serviceDetails(serviceButton.dataset.service);return;}
