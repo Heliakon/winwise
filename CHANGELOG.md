@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.6 — October 28, 2026
 
 ### Updated
 
@@ -11,9 +11,12 @@
 - The Recovery Drive is now a short optional note. The BitLocker recovery key is a short note that also mentions Device Encryption on Windows 11 Home.
 - System Restore and Point-in-time restore now include their Windows RE restore steps. System images are shorter, with the Backup and Restore (Windows 7) steps moved into a collapsed legacy section that notes deprecated is not the same as removed.
 - The OneDrive warning is more precise and mentions OneDrive's Recycle bin and Version history.
-- The standalone `index.html` has been rebuilt.
+- The visible version is **v1.6**, and the displayed update date is **October 28, 2026**. Generated scripts carry the v1.6 label; their behavior is unchanged.
+- The standalone `index.html` has been rebuilt with all changes.
 
-The new sections were written from Microsoft's support documentation but were not re-fetched or tested on a Windows PC for this change. The Windows RE path for Reset this PC (**Troubleshoot → Reset this PC**) should be confirmed on a Windows 11 PC or VM before release.
+The directory still has **157 entries**, and the builder still offers **28 services** in **12 feature groups**. Service entries were not changed.
+
+The new sections were written from Microsoft's support documentation but were not re-fetched or tested on a Windows PC for this change. The Windows RE path for Reset this PC (**Troubleshoot → Reset this PC**) has not been confirmed on a Windows 11 PC.
 
 ## v1.5 — October 27, 2026
 

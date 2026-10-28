@@ -1,4 +1,4 @@
-# Winwise v1.5
+# Winwise v1.6
 
 A guide to Windows 11 services: what each one does, what you gain or lose by turning it off, and a builder that creates a reversible PowerShell script for the services you choose.
 
@@ -21,7 +21,7 @@ Get-FileHash .\winwise.html -Algorithm SHA256
 - **Windows 11 backup and recovery guide** with a table of what each option does to your personal files, apps, and settings. It covers File History, Windows Backup and OneDrive, Fix problems using Windows Update, System Restore, Point-in-time restore, Reset this PC, a Windows 11 installation USB, and system images, plus a short list of useful Windows tools.
 - Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion preference stays in your browser.
 
-Version **1.5**, updated **October 27, 2026**, turns the backup page into an overview of Windows 11 backup and recovery options and updates the Volume Shadow Copy entry. See [CHANGELOG.md](CHANGELOG.md) for the release changes and [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
+Version **1.6**, updated **October 28, 2026**, reorganizes the backup page around Windows 11 recovery choices, with a table of what each option does to your personal files and a new guide to the Windows 11 installation USB. See [CHANGELOG.md](CHANGELOG.md) for the release changes and [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
 
 ## Using a generated script
 

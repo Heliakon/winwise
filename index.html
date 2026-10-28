@@ -417,7 +417,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
     <div class="header-utilities"><span class="os-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z" fill="currentColor"/></svg>Windows 11</span><nav class="header-resources" aria-label="Tools and recovery"><a href="#tools" data-view="tools">Useful tools</a><a href="#backup" data-view="backup">How to back up your OS</a></nav><div class="appearance-controls"><button id="motion-toggle" class="appearance-button" aria-label="Pause background animation" title="Pause background animation"><svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button id="theme-toggle" class="appearance-button theme-toggle" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5 9 9 0 1 0 20.5 14.2Z"/></svg><span class="theme-toggle-label">Light mode</span></button></div></div>
   </div></header>
   <main class="page-shell">
-    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-27">October 27, 2026</time></span></div></section>
+    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-28">October 28, 2026</time></span></div></section>
     <div class="directory-stage">
     <section id="welcome" class="launch-panel" aria-labelledby="launch-title" hidden>
       <canvas class="launch-glass" id="launch-glass" aria-hidden="true"></canvas>
@@ -799,7 +799,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
         <div class="backup-bottom"><p>Updated <time datetime="2026-10-28">October 28, 2026</time>, from Microsoft documentation. Menu names and availability can change with Windows 11 updates.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
       </div>
     </section>
-    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.5 · Independent guide. Not affiliated with Microsoft.</p><button data-dialog="sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
+    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.6 · Independent guide. Not affiliated with Microsoft.</p><button data-dialog="sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
   </main>
   <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-topline"><span id="dialog-eyebrow">SERVICE DETAILS</span><button id="close-dialog" class="icon-button" aria-label="Close details"><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -807,7 +807,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 <script type="text/plain" id="winwise-template">#Requires -Version 5.1
 #Requires -RunAsAdministrator
 <#
-Winwise v1.5 - selected Windows 11 services
+Winwise v1.6 - selected Windows 11 services
 Review the selected names and tradeoffs before running on your own PC.
 Selecting Windows Search in the builder also selects Work Folders; its file sync stops.
 Preview: .\Winwise-Services.ps1 -WhatIf
