@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Updated
+
+- **How to back up your OS** now covers Windows 11 only and starts with two entry points: **Back up my files** and **Recover Windows**.
+- A new table, **Which options keep your personal files?**, shows what each option does to personal files and to apps and settings, and whether Windows must start.
+- **Fix problems using Windows Update** and **Reset this PC** have their own sections instead of sitting in a collapsed list. Reset this PC explains both entry paths, Keep my files versus Remove everything, and that Cloud download is not a cloud backup.
+- A new **Windows 11 installation USB** section replaces the Recovery Drive as the main external recovery option. It covers making the USB (8 GB or larger, erased, x64 media) and its three uses: Repair my PC, reinstalling from inside Windows with Keep personal files and apps, and a clean install, with the removal warning beside the clean install.
+- The Recovery Drive is now a short optional note. The BitLocker recovery key is a short note that also mentions Device Encryption on Windows 11 Home.
+- System Restore and Point-in-time restore now include their Windows RE restore steps. System images are shorter, with the Backup and Restore (Windows 7) steps moved into a collapsed legacy section that notes deprecated is not the same as removed.
+- The OneDrive warning is more precise and mentions OneDrive's Recycle bin and Version history.
+- The standalone `index.html` has been rebuilt.
+
+The new sections were written from Microsoft's support documentation but were not re-fetched or tested on a Windows PC for this change. The Windows RE path for Reset this PC (**Troubleshoot → Reset this PC**) should be confirmed on a Windows 11 PC or VM before release.
+
 ## v1.5 — October 27, 2026
 
 ### Updated
