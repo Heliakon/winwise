@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.6.1 — October 29, 2026
+
+### Fixed
+
+- **Clean install** now includes Microsoft's safety steps: check that the digital license is linked or have a product key, choose the matching edition, delete partitions only on **Disk 0**, and don't change partitions on any other disk.
+- **Recovery Drive** has short creation steps again, with the warning that creating it erases the selected USB drive. The practical combination suggests an installation USB or a Recovery Drive, and mentions manufacturer recovery media, as Microsoft's recovery guidance does.
+- **Reinstall and keep everything** follows Microsoft's steps: **Change what to keep → Keep personal files and apps**. The unsourced language-and-edition condition is replaced by Microsoft's edition-match requirement.
+- **System Image Recovery** no longer gives an exact menu path. It may appear only after **See more recovery options**, and the page again notes that a Microsoft technical reference describes the tool as Windows Server-only.
+- The Windows on Arm note links to Microsoft's Windows 11 Arm64 download, which may need manufacturer drivers.
+- **Reset this PC** warns not to restart the PC during a reset, even if the screen stays black for more than 15 minutes, and mentions **Clean data** before giving a PC away.
+- **Fix problems using Windows Update** lists Microsoft's minimum version: Windows 11, version 22H2 or later with the February 2024 optional update or a later update.
+- Startup Repair is no longer described as keeping files and apps; only Uninstall Updates carries that statement, as Microsoft documents.
+- The BitLocker note again says to check the key from another device and to keep any copy private and secure.
+- Option summaries include **Protects**, **Stored**, and **Useful when** rows where they apply.
+- Accessibility: sections under **Back up my files** and **Recover Windows** are now one heading level below those group headings, and the personal-files table has explicit table roles so it stays a table for screen readers in the phone layout.
+
+### Updated
+
+- The clean install now has its own full-width card below the other two installation USB uses.
+- The visible version is **v1.6.1**, and the displayed update date is **October 29, 2026**. Generated scripts carry the v1.6.1 label; their behavior is unchanged.
+- The standalone `index.html` has been rebuilt with all changes.
+
+The directory still has **157 entries**, and the builder still offers **28 services** in **12 feature groups**. Service entries were not changed.
+
+The corrected backup sections were checked against Microsoft documentation on October 29, 2026. The steps were not tested on a Windows PC.
+
 ## v1.6 — October 28, 2026
 
 ### Updated
@@ -16,7 +42,7 @@
 
 The directory still has **157 entries**, and the builder still offers **28 services** in **12 feature groups**. Service entries were not changed.
 
-The new sections were written from Microsoft's support documentation but were not re-fetched or tested on a Windows PC for this change. The Windows RE path for Reset this PC (**Troubleshoot → Reset this PC**) has not been confirmed on a Windows 11 PC.
+The new sections were written from Microsoft's support documentation but were not re-fetched or tested on a Windows PC for this change. Microsoft documents the Windows RE path for Reset this PC (**Troubleshoot → Reset this PC**) on its Recovery options and Reset your PC pages; it has not been tested on a Windows 11 PC.
 
 ## v1.5 — October 27, 2026
 

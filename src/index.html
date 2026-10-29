@@ -30,7 +30,7 @@
     <div class="header-utilities"><span class="os-tag"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h7v6H2zm9 0h7v6h-7zM2 11h7v6H2zm9 0h7v6h-7z" fill="currentColor"/></svg>Windows 11</span><nav class="header-resources" aria-label="Tools and recovery"><a href="#tools" data-view="tools">Useful tools</a><a href="#backup" data-view="backup">How to back up your OS</a></nav><div class="appearance-controls"><button id="motion-toggle" class="appearance-button" aria-label="Pause background animation" title="Pause background animation"><svg class="pause-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg></button><button id="theme-toggle" class="appearance-button theme-toggle" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A9 9 0 0 1 9.8 3.5 9 9 0 1 0 20.5 14.2Z"/></svg><span class="theme-toggle-label">Light mode</span></button></div></div>
   </div></header>
   <main class="page-shell">
-    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-28">October 28, 2026</time></span></div></section>
+    <section class="intro" aria-labelledby="page-title"><div><p class="eyebrow"><span class="tiny-line"></span>A LITTLE LESS IN THE BACKGROUND</p><h1 id="page-title">Windows 11 services<span>.</span></h1><p class="intro-copy">Find what you can turn off. Understand what may be unnecessarily slowing down your computer.</p></div><div class="intro-action"><a class="primary-button" href="#builder" data-view="builder"><span data-icon="terminal"></span>Build a PowerShell script <span aria-hidden="true">↗</span></a><span class="builder-button-note">Select services using the creator, then download the script.</span><span>Updated <time datetime="2026-10-29">October 29, 2026</time></span></div></section>
     <div class="directory-stage">
     <section id="welcome" class="launch-panel" aria-labelledby="launch-title" hidden>
       <canvas class="launch-glass" id="launch-glass" aria-hidden="true"></canvas>
@@ -173,7 +173,7 @@
           <div class="backup-note"><h3>A practical combination</h3><ul class="backup-list">
             <li>Keep a copy of important files away from the PC: on another drive with File History, or in cloud storage.</li>
             <li>Keep System Restore turned on, and check whether your PC has Point-in-time restore.</li>
-            <li>Make a Windows 11 installation USB while you have a working PC.</li>
+            <li>While the PC works, make a Windows 11 installation USB or a Recovery Drive. Your PC’s manufacturer may also offer recovery media with its own drivers.</li>
             <li>If your PC uses Device Encryption or BitLocker, know where to find its <a href="https://support.microsoft.com/en-us/windows/security/encryption/find-your-bitlocker-recovery-key" target="_blank" rel="noopener noreferrer">recovery key</a>.</li>
           </ul></div>
           <p class="backup-limits">Availability depends on your Windows 11 version and edition, installed updates, account type, storage, administrator access, and your organization’s policies. Menu names can differ slightly between builds. No backup or recovery method is guaranteed to succeed, so it helps to have more than one.</p>
@@ -182,18 +182,18 @@
           <div class="backup-section-heading"><h2 id="keep-files-title" tabindex="-1">Which options keep your personal files?</h2></div>
           <p>This is what each option is designed to do when it completes successfully. It isn’t a guarantee against a failing drive or an interrupted recovery, so back up files you can’t replace first.</p>
           <div class="backup-table-wrap">
-            <table class="backup-table">
-              <thead><tr><th scope="col">Option</th><th scope="col">Personal files</th><th scope="col">Apps and settings</th><th scope="col">Windows must start?</th></tr></thead>
-              <tbody>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="windows-update-repair-title">Fix problems using Windows Update</a></th><td data-label="Personal files"><span class="backup-type backup-type-files">Kept</span></td><td data-label="Apps and settings"><span class="backup-type backup-type-files">Kept</span> Windows is reinstalled around them.</td><td data-label="Windows must start?">Yes</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="system-restore-title">System Restore</a></th><td data-label="Personal files"><span class="backup-type backup-type-files">Kept</span> Not part of the restore point.</td><td data-label="Apps and settings"><span class="backup-type backup-type-points">Rolled back</span> Apps, drivers, and updates installed after the point can be removed.</td><td data-label="Windows must start?">No, it also runs from Windows RE</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="pitr-title">Point-in-time restore</a></th><td data-label="Personal files"><span class="backup-type backup-type-points">Rolled back</span> Local files on the Windows drive return to the selected point. Newer files and changes are lost.</td><td data-label="Apps and settings"><span class="backup-type backup-type-points">Rolled back</span></td><td data-label="Windows must start?">No, it runs from Windows RE</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="reset-title">Reset this PC → Keep my files</a></th><td data-label="Personal files"><span class="backup-type backup-type-files">Kept</span></td><td data-label="Apps and settings"><span class="backup-type backup-type-removed">Removed</span> Some manufacturer apps may be restored, depending on your choices.</td><td data-label="Windows must start?">No, it also runs from Windows RE</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="reset-title">Reset this PC → Remove everything</a></th><td data-label="Personal files"><span class="backup-type backup-type-removed">Removed</span></td><td data-label="Apps and settings"><span class="backup-type backup-type-removed">Removed</span></td><td data-label="Windows must start?">No, it also runs from Windows RE</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="install-usb-title">USB: reinstall from inside Windows</a></th><td data-label="Personal files"><span class="backup-type backup-type-files">Kept</span> If Setup offers <strong>Keep personal files and apps</strong>.</td><td data-label="Apps and settings"><span class="backup-type backup-type-files">Kept</span> With the same choice.</td><td data-label="Windows must start?">Yes</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="install-usb-title">USB: Repair my PC</a></th><td data-label="Personal files"><span class="backup-type backup-type-media">Depends</span> On the recovery tool you choose.</td><td data-label="Apps and settings"><span class="backup-type backup-type-media">Depends</span> Opening the tools changes nothing by itself.</td><td data-label="Windows must start?">No</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="install-usb-title">USB: clean install</a></th><td data-label="Personal files"><span class="backup-type backup-type-removed">Removed</span> From the Windows installation and the partitions you replace.</td><td data-label="Apps and settings"><span class="backup-type backup-type-removed">Removed</span> A fresh start.</td><td data-label="Windows must start?">No</td></tr>
-                <tr><th scope="row"><a class="backup-inline-jump" href="#backup" data-backup-jump="system-image-title">Restore a full system image</a></th><td data-label="Personal files"><span class="backup-type backup-type-points">Rolled back</span> Files on restored partitions return to the image. Newer files there are overwritten.</td><td data-label="Apps and settings"><span class="backup-type backup-type-points">Rolled back</span> To the image’s state, on the restored partitions.</td><td data-label="Windows must start?">No</td></tr>
+            <table class="backup-table" role="table">
+              <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">Option</th><th scope="col" role="columnheader">Personal files</th><th scope="col" role="columnheader">Apps and settings</th><th scope="col" role="columnheader">Windows must start?</th></tr></thead>
+              <tbody role="rowgroup">
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="windows-update-repair-title">Fix problems using Windows Update</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-files">Kept</span></td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-files">Kept</span> Windows is reinstalled around them.</td><td role="cell" data-label="Windows must start?">Yes</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="system-restore-title">System Restore</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-files">Kept</span> Not part of the restore point.</td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-points">Rolled back</span> Apps, drivers, and updates installed after the point can be removed.</td><td role="cell" data-label="Windows must start?">No, it also runs from Windows RE</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="pitr-title">Point-in-time restore</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-points">Rolled back</span> Local files on the Windows drive return to the selected point. Newer files and changes are lost.</td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-points">Rolled back</span></td><td role="cell" data-label="Windows must start?">No, it runs from Windows RE</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="reset-title">Reset this PC → Keep my files</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-files">Kept</span></td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-removed">Removed</span> Some manufacturer apps may be restored, depending on your choices.</td><td role="cell" data-label="Windows must start?">No, it also runs from Windows RE</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="reset-title">Reset this PC → Remove everything</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-removed">Removed</span></td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-removed">Removed</span></td><td role="cell" data-label="Windows must start?">No, it also runs from Windows RE</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="install-usb-title">USB: reinstall from inside Windows</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-files">Kept</span> If Setup offers <strong>Keep personal files and apps</strong>.</td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-files">Kept</span> With the same choice.</td><td role="cell" data-label="Windows must start?">Yes</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="install-usb-title">USB: Repair my PC</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-media">Depends</span> On the recovery tool you choose.</td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-media">Depends</span> Opening the tools changes nothing by itself.</td><td role="cell" data-label="Windows must start?">No</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="install-usb-title">USB: clean install</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-removed">Removed</span> Everything on the drive you install to.</td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-removed">Removed</span> A fresh start.</td><td role="cell" data-label="Windows must start?">No</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="system-image-title">Restore a full system image</a></th><td role="cell" data-label="Personal files"><span class="backup-type backup-type-points">Rolled back</span> Files on restored partitions return to the image. Newer files there are overwritten.</td><td role="cell" data-label="Apps and settings"><span class="backup-type backup-type-points">Rolled back</span> To the image’s state, on the restored partitions.</td><td role="cell" data-label="Windows must start?">No</td></tr>
               </tbody>
             </table>
           </div>
@@ -201,14 +201,16 @@
         </section>
         <div class="backup-group" id="backup-files-group"><span class="backup-type backup-type-files">Prepare</span><h2>Back up my files</h2></div>
         <section class="backup-section" aria-labelledby="file-history-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">01</span><h2 id="file-history-title" tabindex="-1">File History: back up personal files</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">01</span><h3 id="file-history-title" tabindex="-1">File History: back up personal files</h3></div>
           <p>File History saves copies of the files in your libraries, such as Documents, Pictures, Videos, and Music, and on your Desktop. It keeps earlier versions, so you can get back a file as it was before a change or deletion.</p>
           <dl class="backup-facts">
+            <div><dt>Protects</dt><dd>Personal files in your libraries and on your Desktop</dd></div>
             <div><dt>Stored</dt><dd>An external drive or a network location</dd></div>
             <div><dt>Personal files</dt><dd>Copies and earlier versions, for the included folders only</dd></div>
             <div><dt>You need</dt><dd>A drive or network location with enough free space</dd></div>
+            <div><dt>Useful when</dt><dd>A file is deleted or overwritten, or the PC’s drive fails</dd></div>
           </dl>
-          <h3 class="backup-subheading">Turn on File History</h3>
+          <h4 class="backup-subheading">Turn on File History</h4>
           <ol class="backup-steps">
             <li>Connect an external drive, or make sure the network location you want to use is available.</li>
             <li>Open <strong>Control Panel → System and Security → File History</strong>.</li>
@@ -216,7 +218,7 @@
             <li>Check which folders are covered: your libraries and Desktop. To add another folder, right-click it in File Explorer, select <strong>Show more options → Include in library</strong>, and choose a library.</li>
             <li>Leave the drive connected until the first backup finishes, then reopen File History to check that a backup has completed.</li>
           </ol>
-          <h3 class="backup-subheading">Restore an earlier version</h3>
+          <h4 class="backup-subheading">Restore an earlier version</h4>
           <ol class="backup-steps">
             <li>In File Explorer, open the folder that contains, or used to contain, the file.</li>
             <li>Right-click the folder and select <strong>Restore previous versions</strong>. If you don’t see it, select <strong>Show more options</strong> first.</li>
@@ -228,14 +230,16 @@
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/backup-and-restore-with-file-history" target="_blank" rel="noopener noreferrer">Microsoft: File History <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="windows-backup-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">02</span><h2 id="windows-backup-title" tabindex="-1">Windows Backup and OneDrive</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">02</span><h3 id="windows-backup-title" tabindex="-1">Windows Backup and OneDrive</h3></div>
           <p>The Windows Backup app can sync selected folders to OneDrive and remember supported settings and app information with your Microsoft account. It helps you get set up again on a new or reinstalled PC.</p>
           <dl class="backup-facts">
+            <div><dt>Protects</dt><dd>Selected folders, supported Windows settings, and information about your apps</dd></div>
             <div><dt>Stored</dt><dd>OneDrive and your Microsoft account</dd></div>
             <div><dt>Personal files</dt><dd>Selected folders, such as Desktop, Documents, and Pictures, kept in sync with OneDrive</dd></div>
             <div><dt>You need</dt><dd>A personal Microsoft account, an internet connection, and enough OneDrive storage</dd></div>
+            <div><dt>Useful when</dt><dd>You move to a new PC, reinstall Windows, or want your files on more than one device</dd></div>
           </dl>
-          <h3 class="backup-subheading">Set up Windows Backup</h3>
+          <h4 class="backup-subheading">Set up Windows Backup</h4>
           <ol class="backup-steps">
             <li>Sign in to Windows with a personal Microsoft account, such as an outlook.com address. The consumer app doesn’t work with work or school accounts.</li>
             <li>Open <strong>Windows Backup</strong> from Start, or go to <strong>Settings → Accounts → Windows backup</strong>.</li>
@@ -244,7 +248,7 @@
             <li>Check the backup status in Windows Backup or in <strong>Settings → Accounts → Windows backup</strong>. If OneDrive reports a problem, check that you’re signed in and have enough storage.</li>
           </ol>
           <div class="backup-warning" role="note"><p><strong>OneDrive can keep a cloud copy of synced files.</strong> Changes and deletions can also sync, so keep another backup of files you cannot replace.</p></div>
-          <h3 class="backup-subheading">Get things back</h3>
+          <h4 class="backup-subheading">Get things back</h4>
           <ul class="backup-list">
             <li><strong>Files:</strong> sign in to OneDrive with the same Microsoft account to get to your synced folders.</li>
             <li><strong>Deleted or changed files:</strong> OneDrive’s <strong>Recycle bin</strong> can bring back deleted files, and <strong>Version history</strong> can bring back an earlier version of a file. Both keep items only for a limited time, which depends on your account and settings.</li>
@@ -256,12 +260,13 @@
         </section>
         <div class="backup-group" id="backup-recover-group"><span class="backup-type backup-type-points">Fix a problem</span><h2>Recover Windows</h2></div>
         <section class="backup-section" aria-labelledby="windows-update-repair-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">03</span><h2 id="windows-update-repair-title" tabindex="-1">Fix problems using Windows Update</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">03</span><h3 id="windows-update-repair-title" tabindex="-1">Fix problems using Windows Update</h3></div>
           <p>If Windows still starts but isn’t working properly, this reinstalls the current version of Windows to repair system components. It keeps your <strong>files, apps, and settings</strong>, so it’s a good first step before anything more drastic.</p>
           <dl class="backup-facts">
             <div><dt>Personal files</dt><dd>Kept</dd></div>
             <div><dt>Apps and settings</dt><dd>Kept</dd></div>
-            <div><dt>You need</dt><dd>Windows that starts and an internet connection. It may not appear on PCs managed by an organization.</dd></div>
+            <div><dt>You need</dt><dd>Windows 11, version 22H2 or later with the February 2024 optional update or a later update, Windows that starts, and an internet connection. It may not appear on PCs managed by an organization.</dd></div>
+            <div><dt>Useful when</dt><dd>Windows starts but system files or components seem damaged, especially after an update</dd></div>
           </dl>
           <ol class="backup-steps">
             <li>Go to <strong>Settings → System → Recovery</strong>.</li>
@@ -271,14 +276,16 @@
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/deployment/install-upgrade/fix-issues-by-reinstalling-the-current-version-of-windows" target="_blank" rel="noopener noreferrer">Microsoft: reinstall through Windows Update <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="system-restore-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">04</span><h2 id="system-restore-title" tabindex="-1">System Restore</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">04</span><h3 id="system-restore-title" tabindex="-1">System Restore</h3></div>
           <p>System Restore rolls back system files, registry settings, and installed programs to an earlier restore point. Microsoft says it doesn’t affect your personal files, which also means it doesn’t back them up.</p>
           <dl class="backup-facts">
+            <div><dt>Stored</dt><dd>On the same PC, in disk space you allow on the protected drive</dd></div>
             <div><dt>Personal files</dt><dd>Kept unchanged; not part of the restore point</dd></div>
             <div><dt>Apps and settings</dt><dd>Rolled back. Apps, drivers, and updates installed after the point can be removed.</dd></div>
             <div><dt>You need</dt><dd>System Protection turned on for the Windows drive, and a restore point. Administrator access may be needed.</dd></div>
+            <div><dt>Useful when</dt><dd>Windows misbehaves after an app, driver, update, or settings change</dd></div>
           </dl>
-          <h3 class="backup-subheading">Create a restore point</h3>
+          <h4 class="backup-subheading">Create a restore point</h4>
           <ol class="backup-steps">
             <li>Open <strong>Start</strong>, search for <strong>Create a restore point</strong>, and open the matching result.</li>
             <li>On the <strong>System Protection</strong> tab, select the Windows drive, usually <strong>C:</strong>.</li>
@@ -286,7 +293,7 @@
             <li>Select <strong>Create</strong>, enter a name you’ll recognize, such as <strong>Before graphics driver update</strong>, and select <strong>Create</strong>.</li>
           </ol>
           <p class="backup-limits">Windows also creates restore points automatically. Older points can be removed as Windows manages the space you allowed, so a named point might not be available later.</p>
-          <h3 class="backup-subheading">Restore</h3>
+          <h4 class="backup-subheading">Restore</h4>
           <ul class="backup-list">
             <li><strong>Windows starts:</strong> press <strong>Windows logo key + R</strong>, type <strong>rstrui.exe</strong>, and press <strong>Enter</strong>. Choose a restore point, optionally select <strong>Scan for affected programs</strong>, then <strong>Next → Finish</strong>.</li>
             <li><strong>Windows doesn’t start:</strong> <a href="#backup" data-backup-jump="recovery-title">open Windows RE</a> and select <strong>Troubleshoot → Advanced options → System Restore</strong>.</li>
@@ -294,21 +301,23 @@
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-protection" target="_blank" rel="noopener noreferrer">Microsoft: create a restore point <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/system-restore" target="_blank" rel="noopener noreferrer">Microsoft: System Restore <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="pitr-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">05</span><h2 id="pitr-title" tabindex="-1">Point-in-time restore</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">05</span><h3 id="pitr-title" tabindex="-1">Point-in-time restore</h3></div>
           <p>Point-in-time restore is separate from System Restore. When it’s on, Windows creates restore points automatically, about every 24 hours by default, and normally keeps each one for up to 72 hours. Restoring a point rolls back the <strong>whole Windows drive</strong>, including your local files.</p>
           <dl class="backup-facts">
+            <div><dt>Stored</dt><dd>On the same PC, for up to 72 hours; points can be removed sooner when storage runs low</dd></div>
             <div><dt>Personal files</dt><dd>Rolled back. Local files on the Windows drive return to the selected point; newer files and changes are lost. Other drives aren’t restored, and Microsoft says files in cloud services such as OneDrive aren’t affected.</dd></div>
             <div><dt>Apps and settings</dt><dd>Rolled back</dd></div>
             <div><dt>You need</dt><dd>A supported device with Windows 11, version 24H2 or later, the feature turned on, and enough free disk space</dd></div>
+            <div><dt>Useful when</dt><dd>Something went wrong in the last few days and you want the whole PC back as it was</dd></div>
           </dl>
           <p>On Home devices, and on Pro devices not managed by an organization, Microsoft says it’s on by default only when the Windows volume is 200 GB or larger (its size, not its free space). On a smaller volume you can turn it on yourself. Microsoft’s documentation currently differs about the default on organization-managed devices running 26H2, so check the setting and follow your organization’s policy.</p>
-          <h3 class="backup-subheading">Check that it’s on</h3>
+          <h4 class="backup-subheading">Check that it’s on</h4>
           <ol class="backup-steps">
             <li>Go to <strong>Settings → System → Recovery → Point-in-time restore → View or edit</strong>, and approve the administrator prompt.</li>
             <li>Check that the feature is on, and look at the available restore points. If you just turned it on, check again later to confirm that one has been created.</li>
           </ol>
           <p class="backup-limits">Points are created on a schedule, not on demand. Windows removes them when they expire, when they reach their storage limit, or when free space drops to 20 GB or less. It’s short-term protection, not a replacement for a file backup.</p>
-          <h3 class="backup-subheading">Restore a point</h3>
+          <h4 class="backup-subheading">Restore a point</h4>
           <div class="backup-warning" role="note"><p><strong>Everything on the Windows drive returns to the selected point.</strong> Local files, apps, settings, and passwords changed after it are lost. If you can still reach important newer files, copy them to another drive or to cloud storage first.</p></div>
           <ol class="backup-steps">
             <li><a href="#backup" data-backup-jump="recovery-title">Open Windows RE</a> and select <strong>Troubleshoot → Point-in-time restore</strong>.</li>
@@ -319,16 +328,16 @@
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/point-time-restore-for-windows" target="_blank" rel="noopener noreferrer">Microsoft: Point-in-time restore <span aria-hidden="true">↗</span></a><a class="source-link" href="https://learn.microsoft.com/en-us/windows/configuration/point-in-time-restore" target="_blank" rel="noopener noreferrer">Microsoft: Point-in-time restore technical details <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="reset-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">06</span><h2 id="reset-title" tabindex="-1">Reset this PC</h2></div>
-          <p>Reset this PC reinstalls Windows using the PC’s own recovery tools. You choose whether to keep your personal files. Either way, your installed apps and settings are removed.</p>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">06</span><h3 id="reset-title" tabindex="-1">Reset this PC</h3></div>
+          <p>Reset this PC reinstalls Windows using the PC’s own recovery tools. You choose whether to keep your personal files. Either way, your installed apps and settings are removed. Microsoft suggests trying the less disruptive options above first.</p>
           <div class="backup-comparison">
             <div>
-              <h3>Keep my files</h3>
+              <h4>Keep my files</h4>
               <p><strong>Personal files:</strong> kept.<br><strong>Apps and settings:</strong> removed. Some manufacturer apps or customizations may be restored, depending on the options you choose.</p>
             </div>
             <div>
-              <h3>Remove everything</h3>
-              <p><strong>Personal files:</strong> removed.<br><strong>Apps and settings:</strong> removed. Use this before giving the PC away, or for a fresh start.</p>
+              <h4>Remove everything</h4>
+              <p><strong>Personal files:</strong> removed.<br><strong>Apps and settings:</strong> removed. Use this for a fresh start. Before giving the PC away, also turn on <strong>Clean data</strong>, which makes removed files harder to recover.</p>
             </div>
           </div>
           <ol class="backup-steps">
@@ -337,53 +346,65 @@
             <li>Choose <strong>Cloud download</strong> or <strong>Local reinstall</strong>.</li>
             <li>Review the summary of what will happen, then select <strong>Reset</strong>. Keep the PC plugged in.</li>
           </ol>
+          <div class="backup-warning" role="note"><p><strong>Don’t restart the PC during a reset.</strong> Microsoft notes that the screen can stay black for a long time, sometimes more than 15 minutes, and the PC may restart by itself. Restarting it yourself can make the reset fail.</p></div>
           <p><strong>Cloud download</strong> downloads fresh Windows installation files from Microsoft. It isn’t a cloud backup of your files. <strong>Local reinstall</strong> uses files already on the PC; if it fails, try Cloud download.</p>
           <p class="backup-limits">Make a list of the apps you’ll need to reinstall, and have your installers and licenses ready.</p>
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/reset-your-pc" target="_blank" rel="noopener noreferrer">Microsoft: reset your PC <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/recovery-options-in-windows" target="_blank" rel="noopener noreferrer">Microsoft: recovery options <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="install-usb-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">07</span><h2 id="install-usb-title" tabindex="-1">Windows 11 installation USB</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">07</span><h3 id="install-usb-title" tabindex="-1">Windows 11 installation USB</h3></div>
           <p>An installation USB is the most useful thing to have when Windows won’t start. You can make it in advance, or on another working PC when you need it. It can open the recovery tools, reinstall Windows while keeping your files, or install a fresh copy.</p>
-          <h3 class="backup-subheading">Make the USB</h3>
+          <h4 class="backup-subheading">Make the USB</h4>
           <div class="backup-warning" role="note"><p><strong>Making the USB erases everything on it.</strong> Use a blank USB drive of at least 8 GB, or copy anything you need from it first.</p></div>
           <ol class="backup-steps">
             <li>On a working Windows PC, go to Microsoft’s <a href="https://www.microsoft.com/software-download/windows11" target="_blank" rel="noopener noreferrer">Download Windows 11</a> page. Under <strong>Create Windows 11 Installation Media</strong>, select <strong>Download now</strong>.</li>
             <li>Run the Media Creation Tool, approve the administrator prompt, and accept the license terms.</li>
             <li>Choose the language and edition, select <strong>USB flash drive</strong>, pick your USB drive, and let the tool finish.</li>
           </ol>
-          <p class="backup-limits">The Media Creation Tool makes media for x64 PCs. If your PC runs Windows on Arm, follow Microsoft’s Arm instructions or use your manufacturer’s recovery media.</p>
-          <h3 class="backup-subheading">Three ways to use it</h3>
+          <p class="backup-limits">The Media Creation Tool makes media for x64 PCs. If your PC runs Windows on Arm, use Microsoft’s <a href="https://www.microsoft.com/software-download/windows11arm64" target="_blank" rel="noopener noreferrer">Windows 11 Arm64 download</a>, which may need drivers from your PC’s manufacturer to start, or use your manufacturer’s recovery media. For the best driver compatibility on any PC, Microsoft suggests checking whether your manufacturer offers its own recovery media.</p>
+          <h4 class="backup-subheading">Three ways to use it</h4>
           <div class="backup-usb-uses">
             <div>
-              <h3>1. Repair without reinstalling</h3>
+              <h5>1. Repair without reinstalling</h5>
               <p class="backup-usb-result"><strong>Files, apps, settings:</strong> depend on the tool you choose</p>
               <p>Start the PC from the USB. On the first Windows Setup screen, select <strong>Next</strong>, then <strong>Repair my PC</strong>. This opens recovery tools such as Startup Repair and System Restore. The tools offered can differ from those on the PC’s own recovery menu. Opening them changes nothing by itself.</p>
             </div>
             <div>
-              <h3>2. Reinstall and keep everything</h3>
+              <h5>2. Reinstall and keep everything</h5>
               <p class="backup-usb-result"><strong>Files, apps, settings:</strong> kept</p>
-              <p>Only if Windows still starts. Open the USB in File Explorer and run <strong>setup.exe</strong>. When Setup asks what to keep, choose <strong>Keep personal files and apps</strong>. Setup offers this only when the USB matches the installed Windows, such as the same language and edition.</p>
+              <p>Only if Windows still starts. Open the USB in File Explorer and run <strong>setup.exe</strong>. Select <strong>Change what to keep</strong>, choose <strong>Keep personal files and apps</strong>, then select <strong>Next</strong> and <strong>Install</strong>. Use media for the same edition as your installed Windows. If <strong>Keep personal files and apps</strong> isn’t offered, stop unless you’re ready to reinstall your apps.</p>
             </div>
             <div>
-              <h3>3. Clean install</h3>
+              <h5>3. Clean install</h5>
               <p class="backup-usb-result"><strong>Files, apps, settings:</strong> removed</p>
-              <p>Start the PC from the USB and choose to install Windows. Follow the prompts and pick the drive to install to.</p>
-              <div class="backup-warning" role="note"><p><strong>A clean install removes the existing Windows installation and the data on the partitions you replace.</strong> Back up your files first.</p></div>
+              <div class="backup-warning" role="note"><p><strong>A clean install removes your personal files, apps, settings, and manufacturer customizations.</strong> Back up your files first.</p></div>
+              <p>Before you start, check that the PC’s digital license is linked to your Microsoft account, or have your product key. Microsoft says not to continue without one of them.</p>
+              <p>Start the PC from the USB, select <strong>Install Windows 11</strong>, and confirm that everything will be deleted. Choose the edition that matches your license. Where Setup lists partitions, delete only those on <strong>Disk 0</strong>, then install to <strong>Disk 0 Unallocated Space</strong>.</p>
+              <div class="backup-warning" role="note"><p><strong>Don’t change partitions on any other disk,</strong> such as Disk 1. On a PC with more than one drive, that can erase a data drive.</p></div>
             </div>
           </div>
           <p class="backup-limits"><strong>Starting from the USB:</strong> if Windows runs, go to <strong>Settings → System → Recovery → Advanced startup → Restart now</strong>, then select <strong>Use a device</strong>. Otherwise use your PC’s boot menu key while it starts; the key varies by manufacturer. A PC that was activated before normally reactivates after reinstalling the same edition.</p>
-          <details class="backup-recovery-option"><summary>Optional: Recovery Drive</summary>
-            <p>A Recovery Drive is a USB drive made on your PC with the <strong>Recovery Drive</strong> app (search Start for it). It’s still supported and can include recovery files specific to your device. It contains <strong>no backup of your personal files</strong>: reinstalling with <strong>Recover from a drive</strong> removes files, apps, and settings. It can also open the same recovery tools as the installation USB. For most people, the installation USB is the simpler choice. If you make one, recreate it about once a year.</p>
+          <details class="backup-recovery-option"><summary>Alternative: Recovery Drive</summary>
+            <p>A Recovery Drive is a USB drive made on your PC. It includes the built-in Windows files, updates installed when you made it, and any customizations from your PC’s manufacturer, and it’s meant for that PC. Microsoft recommends making one while your PC works, as a last-resort option. It contains <strong>no backup of your personal files</strong>: reinstalling with <strong>Recover from a drive</strong> removes files, apps, and settings. It can also open the recovery tools.</p>
+            <div class="backup-warning" role="note"><p><strong>Creating a Recovery Drive erases existing data on the selected USB drive.</strong> Copy anything you need from it first.</p></div>
+            <ol class="backup-steps">
+              <li>Search Start for <strong>Recovery Drive</strong> and open it. Approve the administrator prompt if Windows asks.</li>
+              <li>Keep <strong>Back up system files to the recovery drive</strong> selected, then select <strong>Next</strong>.</li>
+              <li>Connect the USB drive, select it, then select <strong>Next</strong> and <strong>Create</strong>. Copying can take a while.</li>
+            </ol>
+            <p>Microsoft recommends recreating it once a year so it includes recent updates.</p>
           </details>
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/deployment/install-upgrade/create-installation-media-for-windows" target="_blank" rel="noopener noreferrer">Microsoft: create installation media <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/windows/deployment/install-upgrade/reinstall-windows-with-the-installation-media" target="_blank" rel="noopener noreferrer">Microsoft: reinstall with installation media <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/recovery-drive" target="_blank" rel="noopener noreferrer">Microsoft: Recovery Drive <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="system-image-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">08</span><h2 id="system-image-title" tabindex="-1">Full system images</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">08</span><h3 id="system-image-title" tabindex="-1">Full system images</h3></div>
           <p>A system image is a copy of whole drives or partitions, saved to another drive, so you can restore the PC as a whole after a drive fails or is replaced.</p>
           <dl class="backup-facts">
+            <div><dt>Stored</dt><dd>An external drive or another location your backup tool supports</dd></div>
             <div><dt>Personal files</dt><dd>Files on restored partitions return to the image’s state. Newer files there are overwritten.</dd></div>
             <div><dt>Apps and settings</dt><dd>Windows, apps, and settings on restored partitions return to the image’s state</dd></div>
             <div><dt>You need</dt><dd>A backup tool, enough storage on another drive, and a way to start the restore</dd></div>
+            <div><dt>Useful when</dt><dd>A drive fails or is replaced and you want the whole system back, not just files</dd></div>
           </dl>
           <p>For full-disk backups, Microsoft suggests a product from another software publisher. Winwise doesn’t recommend a specific one. Before you choose, check its Windows 11 support, how recovery works (including whether you need its own recovery media), and its pricing. Whichever tool you use, confirm that backups complete, and know how you’d start a restore before you need it.</p>
           <details class="backup-recovery-option"><summary>Legacy built-in tool: Backup and Restore (Windows 7)</summary>
@@ -392,27 +413,28 @@
               <li>Connect an external drive with enough free space.</li>
               <li>Open <strong>Control Panel → System and Security → Backup and Restore (Windows 7)</strong>, and select <strong>Create a system image</strong>.</li>
               <li>Choose where to save it, then follow the steps.</li>
-              <li>To restore, <a href="#backup" data-backup-jump="recovery-title">open Windows RE</a> and select <strong>Troubleshoot → Advanced options → System Image Recovery</strong>. Check that you can find it before you rely on the image.</li>
+              <li>To restore, <a href="#backup" data-backup-jump="recovery-title">open Windows RE</a>, select <strong>Troubleshoot → Advanced options</strong>, and look for <strong>System Image Recovery</strong>. On some PCs it appears only after you select <strong>See more recovery options</strong>.</li>
             </ol>
+            <p>Microsoft’s support pages list System Image Recovery among the Windows RE tools, but a Microsoft technical reference describes it as available on Windows Server editions only. Check that you can find it on your PC before you rely on the image.</p>
           </details>
           <div class="backup-source-links"><a class="source-link" href="https://learn.microsoft.com/en-us/windows/whats-new/deprecated-features" target="_blank" rel="noopener noreferrer">Microsoft: deprecated features <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/accessibility/windows/use-a-screen-reader-to-back-up-and-restore-data-on-windows" target="_blank" rel="noopener noreferrer">Microsoft: create a system image <span aria-hidden="true">↗</span></a></div>
         </section>
         <section class="backup-section" aria-labelledby="recovery-title">
-          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">09</span><h2 id="recovery-title" tabindex="-1">Open Windows Recovery Environment</h2></div>
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">09</span><h3 id="recovery-title" tabindex="-1">Open Windows Recovery Environment</h3></div>
           <p>Windows Recovery Environment (Windows RE) is where System Restore, Point-in-time restore, Reset this PC, and the other recovery tools run when Windows can’t. If Windows fails to start several times, it opens Windows RE automatically.</p>
           <ul class="backup-list">
             <li><strong>From Windows:</strong> go to <strong>Settings → System → Recovery</strong>, and next to <strong>Advanced startup</strong>, select <strong>Restart now</strong>. Or hold <strong>Shift</strong> while you select <strong>Power → Restart</strong>, which also works from the sign-in screen.</li>
             <li><strong>From a USB:</strong> start from your <a href="#backup" data-backup-jump="install-usb-title">installation USB</a> and select <strong>Next → Repair my PC</strong>.</li>
             <li><strong>Only if normal startup is already failing:</strong> turn the PC on, and when the logo appears, hold the power button until it shuts down. Repeat once. On the third start, let it continue to <strong>Automatic Repair</strong>, then select <strong>Advanced options</strong>. Don’t interrupt the PC while it’s installing an update or running a restore.</li>
           </ul>
-          <p>Two other tools in <strong>Troubleshoot → Advanced options</strong> keep your files and apps: <strong>Startup Repair</strong> tries to fix common problems that stop Windows from starting, and <strong>Uninstall Updates</strong> removes a recent update.</p>
-          <div class="backup-note"><p><strong>If your PC uses Device Encryption or BitLocker, know where to find its recovery key.</strong> Windows may ask for it when you use recovery tools. <a href="https://support.microsoft.com/en-us/windows/security/encryption/find-your-bitlocker-recovery-key" target="_blank" rel="noopener noreferrer">Check your Microsoft account or contact your organization’s IT team</a>. Device Encryption is available on supported Windows 11 Home PCs too.</p></div>
+          <p>Two other tools are in <strong>Troubleshoot → Advanced options</strong>. <strong>Startup Repair</strong> tries to fix common problems that stop Windows from starting. <strong>Uninstall Updates</strong> removes a recent update; Microsoft says your files and apps aren’t affected.</p>
+          <div class="backup-note"><p><strong>If your PC uses Device Encryption or BitLocker, know where to find its recovery key.</strong> Windows may ask for it when you use recovery tools. Check now that you can open it from another device: <a href="https://support.microsoft.com/en-us/windows/security/encryption/find-your-bitlocker-recovery-key" target="_blank" rel="noopener noreferrer">it’s usually in your Microsoft account, or your work or school account</a>, or your organization’s IT team can help. Keep any copy private and somewhere secure, separate from the PC. Device Encryption is available on supported Windows 11 Home PCs too.</p></div>
           <div class="backup-source-links"><a class="source-link" href="https://support.microsoft.com/en-us/windows/experience/backup-recovery/windows-recovery-environment" target="_blank" rel="noopener noreferrer">Microsoft: Windows Recovery Environment <span aria-hidden="true">↗</span></a><a class="source-link" href="https://support.microsoft.com/en-us/windows/security/encryption/device-encryption-in-windows" target="_blank" rel="noopener noreferrer">Microsoft: Device Encryption <span aria-hidden="true">↗</span></a></div>
         </section>
-        <div class="backup-bottom"><p>Updated <time datetime="2026-10-28">October 28, 2026</time>, from Microsoft documentation. Menu names and availability can change with Windows 11 updates.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
+        <div class="backup-bottom"><p>Checked against Microsoft documentation on <time datetime="2026-10-29">October 29, 2026</time>. Menu names and availability can change with Windows 11 updates.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
       </div>
     </section>
-    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.6 · Independent guide. Not affiliated with Microsoft.</p><button data-dialog="sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
+    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.6.1 · Independent guide. Not affiliated with Microsoft.</p><button data-dialog="sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
   </main>
   <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-topline"><span id="dialog-eyebrow">SERVICE DETAILS</span><button id="close-dialog" class="icon-button" aria-label="Close details"><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
