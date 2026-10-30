@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.6.2 — October 30, 2026
+
+### Changed
+
+- **How to back up your OS** is wider (up to 1,320 px) and shows each section as a separate card, with page background between them.
+- On screens wider than 1,100 px, each section uses two columns: the introduction, summary and sources on the left, and the steps on the right. Smaller screens keep a single column.
+- The overview shows **Back up my files**, **Recover Windows** and **A practical combination** side by side.
+
+### Removed
+
+- The clean install no longer asks you to check that the digital license is linked to a Microsoft account, or to have a product key, before you start.
+
+### Updated
+
+- The visible version is **v1.6.2**, and the displayed update date is **October 30, 2026**. Generated scripts carry the v1.6.2 label; their behavior is unchanged.
+- The standalone `index.html` has been rebuilt with all changes.
+
+The directory still has **157 entries**, and the builder still offers **28 services** in **12 feature groups**. Service entries were not changed. The backup content was last checked against Microsoft documentation on October 29, 2026; this release changes its layout and removes one sentence.
+
 ## v1.6.1 — October 29, 2026
 
 ### Fixed

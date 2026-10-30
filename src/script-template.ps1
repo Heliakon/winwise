@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 #Requires -RunAsAdministrator
 <#
-Winwise v1.6.1 - selected Windows 11 services
+Winwise v1.6.2 - selected Windows 11 services
 Review the selected names and tradeoffs before running on your own PC.
 Selecting Windows Search in the builder also selects Work Folders; its file sync stops.
 Preview: .\Winwise-Services.ps1 -WhatIf
