@@ -1,4 +1,4 @@
-# Winwise v1.6.2
+# Winwise v1.7
 
 A guide to Windows 11 services: what each one does, what you gain or lose by turning it off, and a builder that creates a reversible PowerShell script for the services you choose.
 
@@ -18,10 +18,12 @@ Get-FileHash .\winwise.html -Algorithm SHA256
 - **157 Windows 11 service entries** explained in plain language, with privacy and performance tradeoffs, search, filters and sorting.
 - **Script builder:** pick the features you don't use and Winwise selects the related services for your script.
 - **Safety built in:** every script supports a `-WhatIf` dry run, saves the original settings to a JSON backup before changing anything, and restores them with `-RestoreFrom`. Services that can break boot or sign-in are excluded.
-- **Windows 11 backup and recovery guide** with a table of what each option does to your personal files, apps, and settings. It covers File History, Windows Backup and OneDrive, Fix problems using Windows Update, System Restore, Point-in-time restore, Reset this PC, a Windows 11 installation USB, and system images, plus a short list of useful Windows tools.
-- Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion preference stays in your browser.
+- **Windows 11 backup options:** Windows Backup and OneDrive, File History, and a full disk image with Rescuezilla.
+- **Windows 11 repair options:** from Fix problems using Windows Update to a clean install, ordered from the mildest option, with what each one does to your files and apps. Plus a short list of useful Windows tools.
+- **English, Polish and Swedish.** The page follows your browser's language list and falls back to English. A language you pick yourself is remembered in your browser.
+- Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion and language preferences stay in your browser.
 
-Version **1.6.2**, updated **October 30, 2026**, makes the backup page wider and easier to read on a PC, with each section as a separate card and two columns on wide screens. Version 1.6.1 corrected the page against Microsoft's documentation, including the Recovery Drive warning. See [CHANGELOG.md](CHANGELOG.md) for the release changes and [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
+Version **1.7**, updated **November 3, 2026**, adds Polish and Swedish and splits the backup guide into **Windows 11 backup options** and **Windows 11 repair options**, with a new disk image section using Rescuezilla. See [CHANGELOG.md](CHANGELOG.md) for the release changes and [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
 
 ## Using a generated script
 
@@ -41,6 +43,7 @@ The script only changes service startup settings and running state. It downloads
 | `src/` | The source files listed below |
 | `tools/build.mjs` | Combines `src/` into `index.html`. Node.js only, no dependencies. |
 | `tools/test-data.mjs`, `tools/test-script-dependencies.ps1` | Check directory data, selection rules, and script dependency handling using mock services. |
+| `tools/test-i18n.mjs` | Checks language detection, plural forms, and that the Polish and Swedish text is complete and keeps the English markup. |
 | `.github/workflows/` | Checks that `index.html` matches `src/`, and attaches `winwise.html` to each release |
 
 | File in `src/` | What it does |
@@ -54,6 +57,8 @@ The script only changes service startup settings and running state. It downloads
 | `galaxy.js` | Shared particle distribution, spiral shape, colors, and nebula glow for the three galaxy scenes |
 | `launch-glass.js` | A rotating particle galaxy with mint and violet arms, a warm nebula glow, and compact gears in the START panel’s bottom-right corner; pauses with motion preferences and stops after START |
 | `appearance-init.js`, `appearance.js` | Theme and motion settings |
+| `i18n.js` | Language detection and switching, English interface text, and translation of data and page text |
+| `i18n-pl.js`, `i18n-sv.js` | Polish and Swedish text: interface, static page text, the Tools, Backup and Repair pages, and service data |
 | `theme.css`, `styles.css` | Colours and layout |
 
 ## Making changes
@@ -65,7 +70,7 @@ The script only changes service startup settings and running state. It downloads
 
 GitHub Actions rebuilds `index.html` on every push and pull request and fails if it doesn't match `src/`. While you edit, you can also serve `src/` with any local web server, for example `python3 -m http.server 8000 --directory src`, to see changes without rebuilding.
 
-Run the data checks with `node tools/test-data.mjs`. Run the dependency regression checks with `pwsh -NoProfile -File tools/test-script-dependencies.ps1`, or use `powershell` instead of `pwsh` on Windows PowerShell 5.1. The dependency checks execute the template's ordering and preview/apply code against mock services; they do not change Windows services or the registry. GitHub Actions also runs both checks, including a Windows PowerShell 5.1 job.
+Run the data checks with `node tools/test-data.mjs` and the translation checks with `node tools/test-i18n.mjs`. Run the dependency regression checks with `pwsh -NoProfile -File tools/test-script-dependencies.ps1`, or use `powershell` instead of `pwsh` on Windows PowerShell 5.1. The dependency checks execute the template's ordering and preview/apply code against mock services; they do not change Windows services or the registry. GitHub Actions also runs both checks, including a Windows PowerShell 5.1 job.
 
 Corrections and new services are welcome. Open an issue or a pull request, and link a Microsoft source for any change to what a service does. To report a security problem, see [SECURITY.md](SECURITY.md).
 

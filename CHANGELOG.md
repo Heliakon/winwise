@@ -1,5 +1,32 @@
 # Changelog
 
+## v1.7 — November 3, 2026
+
+### Changed
+
+- The backup page is split into two pages. **Windows 11 backup options** (`#backup`) covers copies of your files and your whole PC. **Windows 11 repair options** (`#repair`) covers what to do when Windows doesn't work. The menu shows **Backup options** and **Repair options**.
+- Every option uses the same layout: **What it does**, **What you need**, **Watch out**, and **Steps**. Warnings about data loss come before the steps.
+- The backup page starts with **Which option do I need?** and a table that compares Windows Backup and OneDrive, File History, and a disk image.
+- The repair page starts with two tables, **Windows starts** and **Windows doesn't start**, each ordered from the option that changes the least. Startup Repair and Uninstall Updates have their own sections, and the Recovery Drive is a full section again.
+- The script builder, the change guide, and the run instructions now link to **How to create a restore point** on the repair page.
+- Each page has its own accent so you can tell them apart: green for **Backup options** and amber for **Repair options**. The color appears on the section borders, the key word in the page title, and the word in the menu.
+
+### Added
+
+- **Polish and Swedish.** Every view, including the service directory, the script builder, dialogs, messages, and accessibility labels, is available in English, Polish, and Swedish. A switcher in the header shows **English**, **Polski**, and **Svenska**.
+- The language is chosen from a saved manual choice, then the browser's language list (regional variants such as pl-PL or sv-SE count), then English. Only a manual choice is saved, in the browser's local storage; without storage, switching still works until the page is reloaded. Location and IP addresses are not used.
+- Windows menu paths in the Polish and Swedish text use the labels of Polish and Swedish Windows, checked against Microsoft's localized support pages. Where no localized page shows a label, the English label follows in parentheses. Service display names, product names, commands, and URLs stay unchanged.
+- `tools/test-i18n.mjs` checks language detection, storage fallback, plural forms, complete dictionaries, and that translated pages keep the English markup. GitHub Actions runs it.
+- **Disk image with Rescuezilla:** making and restoring a full disk image with Rescuezilla 2.6.2 or newer, written to a USB stick with balenaEtcher. It includes checking the image with Verify Image and Image Explorer, and links to Rescuezilla on GitHub.
+
+### Removed
+
+- Backup and Restore (Windows 7) and the old full system image section.
+
+### Updated
+
+- The visible version is **v1.7**, and the displayed update date is **November 3, 2026**. Generated scripts carry the v1.7 label; their behavior is unchanged, and they are the same in every language.
+
 ## v1.6.2 — October 30, 2026
 
 ### Changed

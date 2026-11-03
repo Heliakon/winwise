@@ -20,6 +20,8 @@ jobs:
         run: node tools/build.mjs --check
       - name: Check service data and script selections
         run: node tools/test-data.mjs
+      - name: Check translations
+        run: node tools/test-i18n.mjs
       - name: Check dependencies with mock services (PowerShell 7)
         shell: pwsh
         run: ./tools/test-script-dependencies.ps1

@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const root = new URL('../', import.meta.url);
 const read = path => readFileSync(new URL(path, root), 'utf8');
 const context = vm.createContext({});
-vm.runInContext(`${read('src/services.js')}\n${read('src/script-builder.js')}\nthis.api={SERVICES,SOURCES,SCRIPT_IDS,FEATURE_GROUPS,CONSERVATIVE_PRESET,resolveScriptSelection,buildPowerShell,filterServices};`, context);
+vm.runInContext(`${read('src/services.js')}\n${read('src/script-builder.js')}\n${read('src/i18n-pl.js')}\n${read('src/i18n-sv.js')}\n${read('src/i18n.js')}\nthis.api={SERVICES,SOURCES,SCRIPT_IDS,FEATURE_GROUPS,CONSERVATIVE_PRESET,resolveScriptSelection,buildPowerShell,filterServices};`, context);
 const {SERVICES, SOURCES, SCRIPT_IDS, FEATURE_GROUPS, CONSERVATIVE_PRESET, resolveScriptSelection, buildPowerShell, filterServices} = context.api;
 const template = read('src/script-template.ps1');
 const added = ['Sysmon','MidiSrv','AppReadiness','AppIDSvc','BrokerInfrastructure','CoreMessagingRegistrar','SystemEventsBroker','TimeBrokerSvc','KeyIso','NcbService','Wecsvc'];

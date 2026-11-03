@@ -18,11 +18,12 @@
 
   function updateControls() {
     const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    themeButton.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
-    themeButton.title = `Switch to ${nextTheme} mode`;
-    themeButton.querySelector('.theme-toggle-label').textContent = nextTheme === 'light' ? 'Light mode' : 'Dark mode';
+    const themeLabel = t(nextTheme === 'light' ? 'theme.switchToLight' : 'theme.switchToDark');
+    themeButton.setAttribute('aria-label', themeLabel);
+    themeButton.title = themeLabel;
+    themeButton.querySelector('.theme-toggle-label').textContent = t(nextTheme === 'light' ? 'theme.light' : 'theme.dark');
     const paused = root.dataset.motion === 'paused';
-    const motionLabel = reducedMotion.matches ? 'Background paused by your reduced-motion preference' : `${paused ? 'Resume' : 'Pause'} background animation`;
+    const motionLabel = t(reducedMotion.matches ? 'motion.reduced' : paused ? 'motion.resume' : 'motion.pause');
     motionButton.setAttribute('aria-label', motionLabel);
     motionButton.title = motionLabel;
     motionButton.disabled = reducedMotion.matches;
@@ -103,6 +104,7 @@
     manualPause = !manualPause;save('winwise.motion',manualPause ? 'paused' : 'running');syncAnimation();
   });
   reducedMotion.addEventListener('change', syncAnimation);
+  document.addEventListener('winwise:language', updateControls);
   document.addEventListener('visibilitychange', syncAnimation);
   window.addEventListener('resize', resize, {passive:true});
   window.addEventListener('pagehide', () => {cancelAnimationFrame(frame);frame=0;});
