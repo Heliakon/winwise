@@ -164,12 +164,11 @@
               <p>Windows, apps, settings, and files in one disk image, so you can get the PC back after a drive failure or a virus.</p>
               <ul class="backup-entry-links">
                 <li><a class="backup-jump" href="#backup" data-backup-jump="disk-image-title">Disk image with Rescuezilla <span aria-hidden="true">↓</span></a><span class="backup-entry-note">Free, open-source software that runs from a USB stick. Saves the whole drive as an image on another drive.</span></li>
+                <li><a class="backup-jump" href="#backup" data-backup-jump="veeam-title">Automatic disk image with Veeam Agent FREE <span aria-hidden="true">↓</span></a><span class="backup-entry-note">Free software from Veeam that runs inside Windows. Backs up the whole drive on a schedule and copies only changes after the first backup.</span></li>
               </ul>
             </div>
           </div>
-          <div class="backup-note"><h3>Keep important files in two places</h3><p>For example, in OneDrive and on an external drive. If one copy is lost or damaged, you still have the other.</p></div>
           <p>Restore points are not backups. They don’t keep a separate copy of your files, and they can’t help if the drive fails. <a href="#repair" data-view="repair" data-backup-jump="system-restore-title">Restore points are on the repair page</a>.</p>
-          <p class="backup-limits">Availability depends on your Windows 11 version and edition, account type, storage, and your organization’s policies. No backup is guaranteed to succeed, so check that you can get files back from yours.</p>
         </section>
         <section class="backup-section" aria-labelledby="backup-compare-title">
           <div class="backup-section-heading"><h2 id="backup-compare-title">Compare the options</h2></div>
@@ -180,6 +179,7 @@
                 <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="windows-backup-title">Windows Backup and OneDrive</a></th><td role="cell" data-label="Protects">Folders you choose (Desktop, Documents, Pictures, Videos, Music), your installed apps list, Wi-Fi networks, and settings</td><td role="cell" data-label="Where the copy is">OneDrive and your Microsoft account (5 GB free)</td><td role="cell" data-label="When to choose it">You use a personal Microsoft account and want your files on more than one device</td></tr>
                 <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="file-history-title">File History</a></th><td role="cell" data-label="Protects">Your libraries, Desktop, and folders you add, with earlier versions</td><td role="cell" data-label="Where the copy is">An external drive or a network location</td><td role="cell" data-label="When to choose it">You want copies of your files, with earlier versions, on your own drive</td></tr>
                 <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="disk-image-title">Disk image with Rescuezilla</a></th><td role="cell" data-label="Protects">The whole drive: Windows, apps, settings, and files</td><td role="cell" data-label="Where the copy is">Image files on an external drive or a network share</td><td role="cell" data-label="When to choose it">You want the whole PC back quickly after a drive failure or a virus</td></tr>
+                <tr role="row"><th scope="row" role="rowheader"><a class="backup-inline-jump" href="#backup" data-backup-jump="veeam-title">Automatic disk image with Veeam Agent FREE</a></th><td role="cell" data-label="Protects">The whole drive: Windows, apps, settings, and files</td><td role="cell" data-label="Where the copy is">Backup files on an external drive or a network share</td><td role="cell" data-label="When to choose it">You want whole-PC backups to run on their own, from inside Windows</td></tr>
               </tbody>
             </table>
           </div>
@@ -270,6 +270,13 @@
               <h3 class="backup-subheading">What it does</h3>
               <p>A disk image is a copy of your whole drive, with Windows, apps, settings, and files, saved as files on another drive. You can keep several images from different days. If the drive fails or you get a virus, you restore an image to the same drive or a new one, and the PC is back as it was on that day.</p>
               <p>Rescuezilla is free, open-source software. It runs from a USB stick, so nothing is installed on Windows.</p>
+              <h3 class="backup-subheading">When to choose it over Veeam</h3>
+              <ul class="backup-list">
+                <li>You want open-source software that you can download without filling in a form.</li>
+                <li>You don’t want backup software installed on Windows or running in the background.</li>
+                <li>You want each image to be a complete copy on its own. Veeam backups after the first one hold only changes and need the earlier files to restore.</li>
+                <li>You also want to clone Windows to a new drive.</li>
+              </ul>
               <h3 class="backup-subheading">What you need</h3>
               <ul class="backup-list">
                 <li>Rescuezilla 2.6.2 or newer: <a href="https://github.com/rescuezilla/rescuezilla" target="_blank" rel="noopener noreferrer">Rescuezilla on GitHub</a> (2.8k stars, November 2026). Download the ISO file from <a href="https://github.com/rescuezilla/rescuezilla/releases/latest" target="_blank" rel="noopener noreferrer">Releases</a>. Older versions may not start on PCs with Secure Boot turned on.</li>
@@ -312,7 +319,74 @@
             </div>
           </div>
         </section>
-        <div class="backup-bottom"><p><strong>Last step: check that you can get files back from your backup.</strong> Based on Microsoft and Rescuezilla documentation, checked in October and November 2026.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
+        <section class="backup-section" aria-labelledby="veeam-title">
+          <div class="backup-section-heading"><span class="backup-number" aria-hidden="true">04</span><h2 id="veeam-title" tabindex="-1">Automatic disk image with Veeam Agent FREE</h2></div>
+          <div class="backup-split">
+            <div class="backup-aside">
+              <h3 class="backup-subheading">What it does</h3>
+              <p>Veeam Agent for Microsoft Windows FREE makes a disk image of your whole drive from inside Windows, on a schedule or when you connect the backup drive. The first backup copies everything. Later backups copy only what changed, so they’re much faster. You can get single files back in Windows, or restore the whole PC from a recovery USB stick.</p>
+              <p>It’s free, but not open source. Veeam makes backup software for businesses, and the free edition is limited to one backup job.</p>
+              <h3 class="backup-subheading">When to choose it over Rescuezilla</h3>
+              <ul class="backup-list">
+                <li>You want backups to happen on their own, without starting the PC from a USB stick.</li>
+                <li>You want to keep working while the backup runs.</li>
+                <li>You want quick daily backups. After the first one, only changes are copied.</li>
+                <li>You often need a single file back. You can copy it from a backup without leaving Windows.</li>
+                <li>You want old backups removed automatically, keeping the last few days.</li>
+              </ul>
+              <h3 class="backup-subheading">What you need</h3>
+              <ul class="backup-list">
+                <li><a href="https://www.veeam.com/products/free/microsoft-windows.html" target="_blank" rel="noopener noreferrer">Veeam Agent for Microsoft Windows FREE</a>. The download page asks you to fill in a form with your contact details.</li>
+                <li>Windows 11 version 22H2 or newer on a PC with an x64 processor. PCs with Arm processors aren’t supported.</li>
+                <li>An external drive for the backups, with more free space than the data on your PC. Don’t use a drive formatted as FAT32, because it can’t store files larger than 4 GB.</li>
+                <li>A USB stick that can be erased, for the recovery media. Label it “Veeam” and keep it with your backup drive.</li>
+                <li>Your <a href="https://support.microsoft.com/en-us/windows/security/encryption/find-your-bitlocker-recovery-key" target="_blank" rel="noopener noreferrer">BitLocker recovery key</a>, if Windows or the backup drive is encrypted. You may need it to unlock a drive during a restore.</li>
+              </ul>
+              <div class="backup-source-links"><a class="source-link" href="https://helpcenter.veeam.com/docs/agentforwindows/userguide/howto_protect_computer.html" target="_blank" rel="noopener noreferrer">Veeam: protect a Windows computer <span aria-hidden="true">↗</span></a><a class="source-link" href="https://helpcenter.veeam.com/docs/agentforwindows/userguide/howto_restore_files.html" target="_blank" rel="noopener noreferrer">Veeam: restore files <span aria-hidden="true">↗</span></a><a class="source-link" href="https://helpcenter.veeam.com/docs/agentforwindows/userguide/howto_baremetal_recovery.html" target="_blank" rel="noopener noreferrer">Veeam: restore the whole PC <span aria-hidden="true">↗</span></a></div>
+            </div>
+            <div class="backup-main">
+              <h3 class="backup-subheading">Watch out</h3>
+              <div class="backup-warning" role="note"><p><strong>Restoring the whole PC overwrites the drive you restore to.</strong> Check the summary before you click <strong>Restore</strong>.</p></div>
+              <ul class="backup-list">
+                <li>Backups run only while the backup drive is connected. If you unplug it between backups, which keeps it safe from ransomware, select <strong>When backup target is connected</strong> so a backup starts each time you plug it in.</li>
+                <li>A PC that is off or asleep misses its scheduled backup. Select <strong>Backup once powered on</strong> to run it later.</li>
+                <li>By default, Veeam keeps backups for 7 days. To go back further, increase the number of days in <strong>Keep backups for</strong> when you set up the backup.</li>
+                <li>Start the PC from the USB stick with its one-time boot menu, often <strong>F8</strong>, <strong>F11</strong>, or <strong>F12</strong>.</li>
+              </ul>
+              <h3 class="backup-subheading">Steps: set up automatic backups</h3>
+              <ol class="backup-steps">
+                <li>Download Veeam Agent for Microsoft Windows FREE, open the archive, and run the setup file.</li>
+                <li>Click <strong>Next</strong>, then <strong>I Accept</strong>. Restart the PC if Windows asks.</li>
+                <li>On the last screen, keep <strong>Run Veeam Recovery Media creation wizard</strong> selected and click <strong>Finish</strong>.</li>
+                <li>Insert the USB stick. Click the refresh icon, select the USB stick, and click <strong>Next</strong>. Click <strong>Yes</strong> to format it, then <strong>Create</strong>. When it’s done, after about 2–5 minutes, click <strong>Finish</strong>.</li>
+                <li>Connect the backup drive. Right-click the Veeam icon in the system tray, next to the clock, and select <strong>Backup</strong> → <strong>Configure backup</strong>.</li>
+                <li>Enter a name, select <strong>Entire computer</strong>, then <strong>Local storage</strong>.</li>
+                <li>Select the backup drive and choose how many days of backups to keep.</li>
+                <li>Under <strong>Schedule</strong>, select <strong>Daily at</strong> and a time, and <strong>Backup once powered on</strong>. Click <strong>Apply</strong>.</li>
+                <li>Select <strong>Run the job when I click Finish</strong>, then click <strong>Finish</strong>. Wait until the first backup finishes; it takes the longest.</li>
+                <li>Check that you can get a file back, as described below.</li>
+              </ol>
+              <h3 class="backup-subheading">Steps: get files back</h3>
+              <ol class="backup-steps">
+                <li>Double-click the Veeam icon in the system tray. Point to the backup job and select <strong>Restore file</strong>.</li>
+                <li>Select the backup with the date you want and click <strong>Next</strong>, then <strong>Open</strong>.</li>
+                <li>In the Veeam Backup browser, right-click a file or folder and select <strong>Restore</strong> → <strong>Keep</strong>. Veeam saves it next to the original, with <code>RESTORED-</code> at the start of the name. To save it somewhere else, select <strong>Copy To</strong>.</li>
+                <li>Close the Veeam Backup browser when you’re done.</li>
+              </ol>
+              <h3 class="backup-subheading">Steps: restore the whole PC</h3>
+              <ol class="backup-steps">
+                <li>Connect the backup drive and the Veeam USB stick. Start the PC from the USB stick, and press any key if asked.</li>
+                <li>Click <strong>Bare Metal Recovery</strong>.</li>
+                <li>Veeam usually finds the latest backup on the connected drive. If it doesn’t, select <strong>Local storage</strong>, click <strong>Browse</strong>, and select the backup’s <code>.vbm</code> file.</li>
+                <li>Select the backup with the date you want, then <strong>Entire computer</strong>.</li>
+                <li>Check the summary, then click <strong>Restore</strong>. Veeam overwrites the drive with the backup.</li>
+                <li>When it finishes, close the wizard, remove the USB stick, and restart the PC.</li>
+              </ol>
+              <p class="backup-limits">If the Veeam icon is missing from the system tray, open the app from Start: search for <strong>Configure Backup</strong>, or for <strong>Create Recovery Media</strong> to make a new USB stick.</p>
+            </div>
+          </div>
+        </section>
+        <div class="backup-bottom"><p><strong>Last step: check that you can get files back from your backup.</strong> Based on Microsoft, Rescuezilla, and Veeam documentation, checked in October and November 2026.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
       </div>
     </section>
     <section id="repair" class="backup-view backup-view-repair" aria-labelledby="repair-title" hidden>
@@ -649,7 +723,7 @@
         <div class="backup-bottom"><p>Based on Microsoft documentation, checked in October and November 2026. Menu names and availability can change with Windows 11 updates.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
       </div>
     </section>
-    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.7.1 · <span data-i18n="footer.note">Independent guide. Not affiliated with Microsoft.</span></p><button data-dialog="sources" data-i18n="footer.sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
+    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.8 · <span data-i18n="footer.note">Independent guide. Not affiliated with Microsoft.</span></p><button data-dialog="sources" data-i18n="footer.sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
   </main>
   <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-topline"><span id="dialog-eyebrow">SERVICE DETAILS</span><button id="close-dialog" class="icon-button" aria-label="Close details" data-i18n-attr="aria-label:dialog.close"><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>

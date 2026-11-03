@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.8 — November 3, 2026
+
+### Added
+
+- **Automatic disk image with Veeam Agent FREE:** setting up scheduled whole-drive backups from inside Windows, making the recovery USB stick, getting single files back, and restoring the whole PC. Based on Veeam's user guide for build 13.1.2.812.
+- The Rescuezilla and Veeam sections each say when to choose one over the other. The **Back up the whole drive** choice and the comparison table include Veeam.
+
+### Removed
+
+- `SERVICE-REVIEW.md`, which was out of date, and the links to it.
+- From the start of the backup page: the **Keep important files in two places** note and the paragraph about availability and checking restores. The note about restore points stays.
+
+### Updated
+
+- The visible version is **v1.8**. Generated scripts carry the v1.8 label; their behavior is unchanged.
+
 ## v1.7.1 — November 3, 2026
 
 ### Changed
@@ -140,4 +156,4 @@ The backup guide was checked against Microsoft documentation on October 27, 2026
 
 The builder still offers **28 services** in **12 feature groups**. The new directory entries are excluded from generated scripts. Windows Search still includes Work Folders, and the three-service conservative preset is unchanged.
 
-Validation covers the data, generated scripts, dependency logic with mocked services, and the browser interface. This release does not claim a complete Windows 11 26H2 service inventory or execution testing against live Windows services. See [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for details.
+Validation covers the data, generated scripts, dependency logic with mocked services, and the browser interface. This release does not claim a complete Windows 11 26H2 service inventory or execution testing against live Windows services.
