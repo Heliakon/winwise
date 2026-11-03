@@ -1,4 +1,4 @@
-# Winwise v1.7
+# Winwise v1.7.1
 
 A guide to Windows 11 services: what each one does, what you gain or lose by turning it off, and a builder that creates a reversible PowerShell script for the services you choose.
 
@@ -23,7 +23,7 @@ Get-FileHash .\winwise.html -Algorithm SHA256
 - **English, Polish and Swedish.** The page follows your browser's language list and falls back to English. A language you pick yourself is remembered in your browser.
 - Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion and language preferences stay in your browser.
 
-Version **1.7**, updated **November 3, 2026**, adds Polish and Swedish and splits the backup guide into **Windows 11 backup options** and **Windows 11 repair options**, with a new disk image section using Rescuezilla. See [CHANGELOG.md](CHANGELOG.md) for the release changes and [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
+Version **1.7.1**, updated **November 3, 2026**, gives light mode stronger colors and makes the start of the backup page clearer. Version 1.7 added Polish and Swedish and split the backup guide into **Windows 11 backup options** and **Windows 11 repair options**, with a new disk image section using Rescuezilla. See [CHANGELOG.md](CHANGELOG.md) for the release changes and [SERVICE-REVIEW.md](SERVICE-REVIEW.md) for coverage, corrections, and validation scope. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
 
 ## Using a generated script
 

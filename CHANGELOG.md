@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.7.1 — November 3, 2026
+
+### Changed
+
+- Light mode has stronger colors: darker borders and secondary text, a page background that sets off the white cards, and stronger green, amber, purple, blue, and red labels. All text pairs keep at least 4.5:1 contrast. Dark mode is unchanged.
+- The backup page starts with **What are you looking for?** and two choices: **Back up only my personal files** and **Back up the whole drive**. Polish and Swedish use the same wording.
+- The links to Windows Backup and OneDrive, File History, and Rescuezilla are larger, and each has a one-line explanation of the tool.
+
+### Updated
+
+- The visible version is **v1.7.1**. Generated scripts carry the v1.7.1 label; their behavior is unchanged.
+
 ## v1.7 — November 3, 2026
 
 ### Changed
