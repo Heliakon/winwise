@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.8.1 — November 27, 2026
+
+### Added
+
+- **Link previews:** a shared Winwise link shows the title, description and a preview image on social media and in chat apps. The image is `social-preview.jpg` at the repository root.
+
+### Updated
+
+- The visible version is **v1.8.1**. Generated scripts carry the v1.8.1 label; their behavior is unchanged.
+
 ## v1.8 — November 3, 2026
 
 ### Added

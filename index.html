@@ -7,6 +7,17 @@
   <meta name="theme-color" content="#0a101b">
   <meta name="color-scheme" content="dark light">
   <meta name="description" content="Explore Windows 11 services and useful tools, understand privacy and performance tradeoffs, and build a PowerShell script with backup and restore instructions.">
+  <link rel="canonical" href="https://heliakon.github.io/winwise/">
+  <meta property="og:site_name" content="Winwise">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Winwise — Windows 11 service guide">
+  <meta property="og:description" content="Explore Windows 11 services and useful tools, understand privacy and performance tradeoffs, and build a PowerShell script with backup and restore instructions.">
+  <meta property="og:url" content="https://heliakon.github.io/winwise/">
+  <meta property="og:image" content="https://heliakon.github.io/winwise/social-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Winwise: Know what's running. Choose what stays. A guide to Windows 11 services, plus a builder for a reversible PowerShell script.">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Winwise — Windows 11 service guide</title>
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiM2OTUxZDUiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTYgMTZoMTN2MTNIMTZ6bTE5IDBoMTN2MTNIMzV6TTE2IDM1aDEzdjEzSDE2em0xOSAwaDEzdjEzSDM1eiIvPjwvc3ZnPgo=">
   <script>'use strict';
@@ -1108,7 +1119,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
         <div class="backup-bottom"><p>Based on Microsoft documentation, checked in October and November 2026. Menu names and availability can change with Windows 11 updates.</p><a class="tools-directory-link" href="#directory" data-view="directory"><span aria-hidden="true">←</span> Back to services</a></div>
       </div>
     </section>
-    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.8 · <span data-i18n="footer.note">Independent guide. Not affiliated with Microsoft.</span></p><button data-dialog="sources" data-i18n="footer.sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
+    <footer class="site-footer"><span class="footer-wordmark">winwise.</span><p>v1.8.1 · <span data-i18n="footer.note">Independent guide. Not affiliated with Microsoft.</span></p><button data-dialog="sources" data-i18n="footer.sources">Scope &amp; sources <span aria-hidden="true">↗</span></button></footer>
   </main>
   <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="dialog-title"><div class="dialog-topline"><span id="dialog-eyebrow">SERVICE DETAILS</span><button id="close-dialog" class="icon-button" aria-label="Close details" data-i18n-attr="aria-label:dialog.close"><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -1116,7 +1127,7 @@ button,input,select{font:inherit}button,a{touch-action:manipulation;-webkit-tap-
 <script type="text/plain" id="winwise-template">#Requires -Version 5.1
 #Requires -RunAsAdministrator
 <#
-Winwise v1.8 - selected Windows 11 services
+Winwise v1.8.1 - selected Windows 11 services
 Review the selected names and tradeoffs before running on your own PC.
 Selecting Windows Search in the builder also selects Work Folders; its file sync stops.
 Preview: .\Winwise-Services.ps1 -WhatIf

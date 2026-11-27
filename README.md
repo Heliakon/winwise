@@ -1,4 +1,4 @@
-# Winwise v1.8
+# Winwise v1.8.1
 
 A guide to Windows 11 services: what each one does, what you gain or lose by turning it off, and a builder that creates a reversible PowerShell script for the services you choose.
 
@@ -23,7 +23,7 @@ Get-FileHash .\winwise.html -Algorithm SHA256
 - **English, Polish and Swedish.** The page follows your browser's language list and falls back to English. A language you pick yourself is remembered in your browser.
 - Opens in dark mode, with a light-mode switch for the current visit. No tracking or cookies; your motion and language preferences stay in your browser.
 
-Version **1.8**, updated **November 3, 2026**, adds automatic whole-drive backups with Veeam Agent FREE and explains when to choose Veeam or Rescuezilla. Version 1.7.1 gave light mode stronger colors, and version 1.7 added Polish and Swedish and split the backup guide into **Windows 11 backup options** and **Windows 11 repair options**, with a new disk image section using Rescuezilla. See [CHANGELOG.md](CHANGELOG.md) for the release changes. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
+Version **1.8.1**, updated **November 27, 2026**, adds link previews, so a shared Winwise link shows a title, description and image on social media and in chat apps. Version 1.8 added automatic whole-drive backups with Veeam Agent FREE and explained when to choose Veeam or Rescuezilla, version 1.7.1 gave light mode stronger colors, and version 1.7 added Polish and Swedish and split the backup guide into **Windows 11 backup options** and **Windows 11 repair options**, with a new disk image section using Rescuezilla. See [CHANGELOG.md](CHANGELOG.md) for the release changes. The guide includes optional and build-dependent entries; your PC will not necessarily have every listed service.
 
 ## Using a generated script
 
